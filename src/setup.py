@@ -13,3 +13,4 @@ def modelsLoad():
     for fn in filenames:
         models.append(Model(fn))
 
+    return models
