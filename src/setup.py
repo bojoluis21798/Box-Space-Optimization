@@ -2,26 +2,23 @@ from os import listdir, system
 from os.path import isfile, join
 from src.model import Model
 from src.optimization import optimize
-
-def __displayModel(model):
-    """ Display 3D model """
-    pass
+from src.objloader import displayModel
 
 def __displayAttrbs(model):
     """ Display attributes of model """
     system('cls')
-    print ("id: "+str(models[modelNum].id))
-    print ("name: "+str(models[modelNum].name))
-    print ("category: "+str(models[modelNum].category))
-    print ("Dimension X: "+str(models[modelNum].dimX))
-    print ("Dimension Y: "+str(models[modelNum].dimY))
-    print ("Dimensions Z: "+str(models[modelNum].dimZ))
-    print ("isContainer: "+str(models[modelNum].isContainer))
-    print ("surfaceVolume: "+str(models[modelNum].surfaceVolume))
-    print ("solidVolume: "+str(models[modelNum].solidVolume))
-    print ("supportSurfaceArea: "+str(models[modelNum].supportSurfaceArea))
-    print ("weight: "+str(models[modelNum].weight))
-    print ("staticFriction: "+str(models[modelNum].staticFriction))
+    print ("id: "+str(model.id))
+    print ("name: "+str(model.name))
+    print ("category: "+str(model.category))
+    print ("Dimension X: "+str(model.dimX))
+    print ("Dimension Y: "+str(model.dimY))
+    print ("Dimensions Z: "+str(model.dimZ))
+    print ("isContainer: "+str(model.isContainer))
+    print ("surfaceVolume: "+str(model.surfaceVolume))
+    print ("solidVolume: "+str(model.solidVolume))
+    print ("supportSurfaceArea: "+str(model.supportSurfaceArea))
+    print ("weight: "+str(model.weight))
+    print ("staticFriction: "+str(model.staticFriction))
 
     print ("Type 'd' to display 3d model")
     option = input("Type 'b' to go back to menu\n... ")
@@ -29,7 +26,7 @@ def __displayAttrbs(model):
     if option == "b":
         return
     elif option == "d":
-        __displayModel(model)
+        displayModel(model)
 
 def menu(models):
     """ Menu to display models and their attributes """
