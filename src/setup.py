@@ -12,3 +12,4 @@ def modelsLoad():
     models = []
     for fn in filenames:
         models.append(Model(fn))
+
