@@ -7,10 +7,10 @@ class Model:
         # id is filename
         self.id = 'wss.'+str.split(filename, '.')[0]
 
-        # find row based on id in metadata and populate instance variables
+        # find row based on id in metadata
         for row in csv_file:
             if(self.id == row[0]):
-
+                # Populate instance variables based on columns in the metadata
                 self.name = row[14]
                 self.category = row[1]
                 self.up = row[4]
