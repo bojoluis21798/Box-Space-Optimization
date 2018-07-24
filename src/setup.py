@@ -1,11 +1,14 @@
-from os import walk
+from os import listdir
+from os.path import isfile, join
+from src.model import Model
 
 def modelsLoad():
-    """ Load all models in ./data/stage to memory and get all attributes of object from metadata.csv"""
+    """ Load all models in ./data/stage to memory and get all attributes of object from metadata.csv """
 
-    filenames = []
-    for __, __, files in walk("./data/stage/"):
-        filenames.extend(files)
+    # Get all filenames in data/stage
+    filenames = [f for f in listdir("./data/stage/") if isfile(join("./data/stage/", f))]
 
-    # print (filenames)
-
+    # Make instance objects of each model and store to array
+    models = []
+    for fn in filenames:
+        models.append(Model(fn))
