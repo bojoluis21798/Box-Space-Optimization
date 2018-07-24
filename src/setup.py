@@ -1,6 +1,35 @@
 from os import listdir, system
 from os.path import isfile, join
 from src.model import Model
+from src.optimization import optimize
+
+def __displayModel(model):
+    """ Display 3D model """
+    pass
+
+def __displayAttrbs(model):
+    """ Display attributes of model """
+    system('cls')
+    print ("id: "+str(models[modelNum].id))
+    print ("name: "+str(models[modelNum].name))
+    print ("category: "+str(models[modelNum].category))
+    print ("Dimension X: "+str(models[modelNum].dimX))
+    print ("Dimension Y: "+str(models[modelNum].dimY))
+    print ("Dimensions Z: "+str(models[modelNum].dimZ))
+    print ("isContainer: "+str(models[modelNum].isContainer))
+    print ("surfaceVolume: "+str(models[modelNum].surfaceVolume))
+    print ("solidVolume: "+str(models[modelNum].solidVolume))
+    print ("supportSurfaceArea: "+str(models[modelNum].supportSurfaceArea))
+    print ("weight: "+str(models[modelNum].weight))
+    print ("staticFriction: "+str(models[modelNum].staticFriction))
+
+    print ("Type 'd' to display 3d model")
+    option = input("Type 'b' to go back to menu\n... ")
+
+    if option == "b":
+        return
+    elif option == "d"
+        __displayModel(model)
 
 def menu(models):
     """ Menu to display models and their attributes """
@@ -24,25 +53,14 @@ def menu(models):
         if option == "q":
             break
 
-        # Display model info
-        if (option.isdigit()):
-            modelNum = int(option)
-            system('cls')
-            print ("id: "+str(models[modelNum].id))
-            print ("name: "+str(models[modelNum].name))
-            print ("category: "+str(models[modelNum].category))
-            print ("Dimension X: "+str(models[modelNum].dimX))
-            print ("Dimension Y: "+str(models[modelNum].dimY))
-            print ("Dimensions Z: "+str(models[modelNum].dimZ))
-            print ("isContainer: "+str(models[modelNum].isContainer))
-            print ("surfaceVolume: "+str(models[modelNum].surfaceVolume))
-            print ("solidVolume: "+str(models[modelNum].solidVolume))
-            print ("supportSurfaceArea: "+str(models[modelNum].supportSurfaceArea))
-            print ("weight: "+str(models[modelNum].weight))
-            print ("staticFriction: "+str(models[modelNum].staticFriction))
+        # Optimize on optimize command
+        if option == "o":
+            optimize()
 
-            print ("Type 'd' to display 3d model")
-            option = input("Type 'b' to go back to menu\n... ")
+        # Display model info on display command
+        elif option.isdigit():
+            modelNum = int(option)
+            __displayAttrbs(models[modelNum])
 
 def modelsLoad():
     """ Load all models in ./data/stage to memory and get all attributes of object from metadata.csv """
