@@ -2,7 +2,7 @@ from os import listdir, system
 from os.path import isfile, join
 from src.model import Model
 from src.optimization import optimize
-from src.objloader import displayModel
+#from src.objloader import displayModel
 
 def __displayAttrbs(model):
     """ Display attributes of model """
@@ -10,9 +10,9 @@ def __displayAttrbs(model):
     print ("id: "+str(model.id))
     print ("name: "+str(model.name))
     print ("category: "+str(model.category))
-    print ("Dimension X: "+str(model.dimX))
-    print ("Dimension Y: "+str(model.dimY))
-    print ("Dimensions Z: "+str(model.dimZ))
+    print ("Dimension X: "+str(model.dimX) + " meters")
+    print ("Dimension Y: "+str(model.dimY) + " meters")
+    print ("Dimensions Z: "+str(model.dimZ)+ " meters")
     print ("isContainer: "+str(model.isContainer))
     print ("surfaceVolume: "+str(model.surfaceVolume))
     print ("solidVolume: "+str(model.solidVolume))
