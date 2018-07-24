@@ -4,19 +4,45 @@ from src.model import Model
 
 def menu(models):
     """ Menu to display models and their attributes """
+
     while(True):
         system('cls')
         print ("Loaded models\n")
 
+        # Loop through all loaded models
         for i in range(len(models)):
             print ("Model Number: "+str(i))
             print ("Name: "+models[i].name)
             print ("========================")
 
-        modelNum = input('Enter model number (-1 to exit): ')
+        # Print possible options
+        print ('\nType the model number to access model info')
+        print ("Type 'o' to optimize")
+        option = input ("Type 'q' to exit\n... ")
 
-        if int(modelNum) == -1:
+        # Exit loop on exit command
+        if option == "q":
             break
+
+        # Display model info
+        if (option.isdigit()):
+            modelNum = int(option)
+            system('cls')
+            print ("id: "+str(models[modelNum].id))
+            print ("name: "+str(models[modelNum].name))
+            print ("category: "+str(models[modelNum].category))
+            print ("Dimension X: "+str(models[modelNum].dimX))
+            print ("Dimension Y: "+str(models[modelNum].dimY))
+            print ("Dimensions Z: "+str(models[modelNum].dimZ))
+            print ("isContainer: "+str(models[modelNum].isContainer))
+            print ("surfaceVolume: "+str(models[modelNum].surfaceVolume))
+            print ("solidVolume: "+str(models[modelNum].solidVolume))
+            print ("supportSurfaceArea: "+str(models[modelNum].supportSurfaceArea))
+            print ("weight: "+str(models[modelNum].weight))
+            print ("staticFriction: "+str(models[modelNum].staticFriction))
+
+            print ("Type 'd' to display 3d model")
+            option = input("Type 'b' to go back to menu\n... ")
 
 def modelsLoad():
     """ Load all models in ./data/stage to memory and get all attributes of object from metadata.csv """
