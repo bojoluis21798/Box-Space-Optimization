@@ -7,6 +7,8 @@ class Model:
         # id is filename
         self.id = 'wss.'+str.split(filename, '.')[0]
 
+        self.filename = 'data/stage/'+filename
+
         # find row based on id in metadata
         for row in csv_file:
             if(self.id == row[0]):
