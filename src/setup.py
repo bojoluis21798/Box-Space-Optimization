@@ -28,7 +28,7 @@ def __displayAttrbs(model):
 
     if option == "b":
         return
-    elif option == "d"
+    elif option == "d":
         __displayModel(model)
 
 def menu(models):
