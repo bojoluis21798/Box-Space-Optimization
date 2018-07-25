@@ -37,6 +37,10 @@ def menu(models):
 
         # Loop through all loaded models
         for i in range(len(models)):
+            #skip index 0 because 0 is considered empty in the Box container
+            if i == 0:
+                continue
+
             print ("Model Number: "+str(i))
             print ("Name: "+models[i].name)
             print ("========================")
@@ -67,6 +71,10 @@ def modelsLoad():
 
     # Make instance objects of each model and store to array
     models = []
+
+    #initialize index 0 as a null object
+    models.append(Model(""))
+
     for fn in filenames:
         models.append(Model(fn))
 
