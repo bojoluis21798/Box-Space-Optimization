@@ -9,7 +9,7 @@ class Box:
         self.height = height
         self.totalVolume = length * width * height
         self.numObjects = 0
-        self.boxgrid = np.zeros((length * 1000, width * 1000, height * 1000), dtype = 'u1')
+        self.boxgrid = np.zeros( int(length * 1000), int(width * 1000), int(height * 1000) ), dtype = 'u1')
     
     #for attribute conversion
     def convertMeterToMilli(meter):
