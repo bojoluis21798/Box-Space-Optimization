@@ -4,7 +4,6 @@ class LocustParticle:
         self.position_i = []        # particle position
         self.velocity_i = []        # particle current velocity
         self.pos_best_i = []        # best position (self, not group)
-        self.pos_best_global = []   # best position globally
         self.err_best_i=-1          # best error individual
         self.err_i=-1               # error individual
         self.c1 = 1                 # cognitive parameter constant
