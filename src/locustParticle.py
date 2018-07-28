@@ -34,4 +34,18 @@ class LocustParticle:
 
             vel_cognitive = self.c1 * r1 * ( self.pos_best_i[i] - self.position_i[i] )
             vel_social = self.c2 * r2 * ( pos_best_g[i] - self.position_i[i] )
-            self.velocity_i[i] = self.w * self.velocity_i[i] + vel_cognitive +vel_social 
+            self.velocity_i[i] = self.w * self.velocity_i[i] + vel_cognitive + vel_social
+
+    # update particles position
+    def updatePosition(self, bounds, num_dimensions):
+        for i in range(0, num_dimensions):
+            self.position_i[i] = self.position_i[i] + self.velocity_i[i]
+
+            # adjust maximum position if necessary
+            if self.position_i[i] > bounds[i][1]:
+                self.position_i[i] = bounds[i][1]
+
+            # adjust minimum position if neseccary
+            if self.position_i[i] < bounds[i][0]:
+                self.position_i[i] = bounds[i][0]
+
