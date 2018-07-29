@@ -9,6 +9,7 @@ class Box:
         self.height = height
         self.totalVolume = length * width * height
         self.numObjects = 0
+        self.totalObjectVolume = 0;
 
         #3dbox with l x w x h mm dimension with datatype 'u1' = 8bit unsigned int (0 to 160)
         self.boxgrid = np.zeros( ( int(length * 1000), int(width * 1000), int(height * 1000) ), dtype = 'u1')

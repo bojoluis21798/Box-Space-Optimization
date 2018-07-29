@@ -19,7 +19,7 @@ class LocustParticle:
 
     # evaluate this particle's current fitness
     def evaluate(self, costFunc, box):
-        self.err_i=costFunc(self.position_i, box)
+        self.err_i = costFunc(self.position_i, box)
         
         # check to see if the current position is an individual best
         if self.err_i < self.err_best_i or self.err_best_i == -1:
