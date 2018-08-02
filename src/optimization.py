@@ -14,5 +14,13 @@ def objectiveFuncBox(item, box):
 # Do optimization here
 def optimize(models):
     pass
-        
     
+    #start of solitary phase
+        #initialization (identification)
+        #updating       (verification)
+    
+    # identification
+    maxIter = 30 
+    numParticles = 30
+    mainBox = Box(18,18,24) #user input, but for now is not. box(length,width,height) in inches
+
