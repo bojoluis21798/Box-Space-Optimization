@@ -3,7 +3,7 @@ import random
 # doesnt conform to a 3D box yet, just 1d array pa
 class LocustParticle:
 
-    def __init__(self, bounds, num_dimensions, item):
+    def __init__(self, bounds, num_dimensions, item = None):
         self.state = 0              # 0 - solitary, 1 - gregarious
         self.position_i = []        # particle position
         self.velocity_i = []        # particle current velocity
@@ -19,6 +19,9 @@ class LocustParticle:
             self.velocity_i.append(random.uniform(-1,1)) #### why (-1,1)
             self.position_i.append(bounds[i]) #check if space is available
 
+    def addItem(self, item):
+        self.item =  item           # add item for particle to find space for
+    
     # evaluate this particle's current fitness
     def evaluate(self, costFunc, box):
         self.err_i = costFunc(self.position_i, box)
