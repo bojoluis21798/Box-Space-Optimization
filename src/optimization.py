@@ -6,11 +6,12 @@ from src.locustParticle import LocustParticle
 def objectiveFuncBox(item, box):
 
     # checks if item is container-like or not and gets appropriate volume
-    # (falsevalue,truevalue)[condition]
-    addedVolume = (item.solidVolume + box.totalObjectVolume, item.surfaceVolume + box.totalObjectVolume)[item.isContainer == True]
+    addedVolume  = (item.surfaceVolume + box.totalObjectVolume) if item.isContainer == True else (item.solidVolume + box.totalObjectVolume)
+    
+    #maybe add insert operation here? or just do it to the calling function
 
     #check if addedVolume of objects inside box is less than volume of box
-    return (-1,addedVolume/box.totalVolume)[addedVolume <= box.totalVolume]
+    return (addedVolume/box.totalVolume) if addedVolume <= box.totalVolume else -1
 
 # Do optimization here
 def optimize(models):
@@ -36,4 +37,11 @@ def optimize(models):
         swarm.append(LocustParticle(bounds,problem_dimensions))
         
     #verification
-    
+    for model in models:
+        volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
+
+        if volume > mainBox.totalVolume or volume > mainbox.totalVolume - mainbox.totalObjectVolume:
+            continue
+        
+        #insert locust work here on item
+
