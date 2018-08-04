@@ -34,14 +34,25 @@ def optimize(models):
 
     swarm = []                                                              #locust swarm
     for i in range(0,numParticles):
-        swarm.append(LocustParticle(bounds,problem_dimensions))
+        swarm.append(LocustParticle(initial,problem_dimensions))
         
     #verification
-    for model in models:
-        volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
+    i = 0
+    while i < maxIter:
+        for model in models:
+            volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
 
-        if volume > mainBox.totalVolume or volume > mainbox.totalVolume - mainbox.totalObjectVolume:
-            continue
-        
-        #insert locust work here on item
+            if volume > mainBox.totalVolume or volume > mainbox.totalVolume - mainbox.totalObjectVolume:
+                continue
+            
+            #insert locust work here on item
+            for j in range(0, numParticles):
+                swarm[j].addItem(model)
+                swarm[j].evaluate(objectiveFuncBox, mainBox)    #passing objectiveFunc for items, not box space
 
+                #update global bests
+                if swarm[j].err_i < err_best_g or err_best_g == -1:
+                    pos_best_g = list(swarm[j].position_i)
+                    err_best_g = float(swarm[j].err_i)
+            
+            #insert gregarious phase here
