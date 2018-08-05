@@ -42,7 +42,10 @@ def optimize(models):
         for model in models:
             volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
 
-            if volume > mainBox.totalVolume or volume > mainbox.totalVolume - mainbox.totalObjectVolume:
+            if volume > mainBox.totalVolume:
+                break
+
+            if volume > mainbox.totalVolume - mainbox.totalObjectVolume:
                 continue
             
             #insert locust work here on item
