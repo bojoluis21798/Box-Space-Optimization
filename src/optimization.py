@@ -52,10 +52,20 @@ def optimize(models):
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
                 swarm[j].evaluate(objectiveFuncBox, mainBox)    #passing objectiveFunc for items, not box space
-
-                #update global bests
+                
+                # update global bests
+                # add checker here
+                # gregarious phase - analysis part 1
                 if swarm[j].err_i < err_best_g or err_best_g == -1:
                     pos_best_g = list(swarm[j].position_i)
                     err_best_g = float(swarm[j].err_i)
             
-            #insert gregarious phase here
+            # cycle through swarm and update velocities and position
+            # gregarious phase - analysis part 2
+            for j in range(0,num_particles):
+                swarm[j].update_velocity(pos_best_g, problem_dimensions)
+                swarm[j].update_position(bounds, problem_dimensions)
+        
+            # insert gregarious - solution (attack) here
+
+        i+=1
