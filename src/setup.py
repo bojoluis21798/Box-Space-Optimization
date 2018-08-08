@@ -2,62 +2,46 @@ from os import listdir, system
 from os.path import isfile, join
 from src.model import Model
 from src.optimization import optimize
-from src.objloader import displayModel
 
-def __displayAttrbs(model):
-    """ Display attributes of model """
-    system('cls')
-    print ("id: "+str(model.id))
-    print ("name: "+str(model.name))
-    print ("category: "+str(model.category))
-    print ("Dimension X: "+str(model.dimX))
-    print ("Dimension Y: "+str(model.dimY))
-    print ("Dimensions Z: "+str(model.dimZ))
-    print ("isContainer: "+str(model.isContainer))
-    print ("surfaceVolume: "+str(model.surfaceVolume))
-    print ("solidVolume: "+str(model.solidVolume))
-    print ("supportSurfaceArea: "+str(model.supportSurfaceArea))
-    print ("weight: "+str(model.weight))
-    print ("staticFriction: "+str(model.staticFriction))
-
-    print ("Type 'd' to display 3d model")
-    option = input("Type 'b' to go back to menu\n... ")
-
-    if option == "b":
-        return
-    elif option == "d":
-        displayModel(model)
+import direct.directbase.DirectStart
+from direct.gui.OnscreenText import OnscreenText
+from direct.gui.DirectGui import *
+from panda3d.core import TextNode
 
 def menu(models):
-    """ Menu to display models and their attributes """
+    """GUI Menu to display models and their attributes """
 
-    while(True):
-        system('cls')
-        print ("Loaded models\n")
+    menu = aspect2d.attachNewNode("Menu")
 
-        # Loop through all loaded models
-        for i in range(len(models)):
-            print ("Model Number: "+str(i))
-            print ("Name: "+models[i].name)
-            print ("========================")
+    def displayModels():
+        """ Show models models """
 
-        # Print possible options
-        print ('\nType the model number to access model info')
-        print ("Type 'o' to optimize")
-        option = input ("Type 'q' to exit\n... ")
+        # hide menu items
+        menu.hide()
 
-        # Exit loop on exit command
-        if option == "q":
-            break
+        i = 0
+        currentModel = loader.loadModel(models[2].filename)
+        # mult = 2
+        currentModel.setScale(models[2].unit*15)
+        # print(currentModel.getSx())
+        # print(currentModel.getSy())
+        currentModel.setPos(-0.1,2,-0.2)
 
-        # Optimize on optimize command
-        if option == "o":
-            optimize()
+        currentModel.reparentTo(render)
 
-        # Display model info on display command
-        elif option.isdigit():
-            modelNum = int(option)
-            __displayAttrbs(models[modelNum])
+    bk_text = "Box Space Optimizer\n\nLoad models to data/stage"
+    textObject = OnscreenText(text = bk_text, pos = (0,0.7),
+    scale = 0.07,fg=(1,0.5,0.5,1), parent = menu, align=TextNode.ACenter,mayChange=0)
+
+    loadedModels = DirectButton(text = "View Loaded Models",
+        pos=(0,0,0.3), parent=menu, scale=.05, command = displayModels)
+    optimize = DirectButton(text = "Optimize Loaded Models",
+        pos=(0,0,0.2), parent=menu, scale=.05)
+
+
+    # Callback to display models
+
+    base.run()
 
 def modelsLoad():
     """ Load all models in ./data/stage to memory and get all attributes of object from metadata.csv """
