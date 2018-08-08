@@ -17,6 +17,11 @@ class Model:
                 self.category = row[1]
                 self.up = row[4]
                 self.front = row[5]
+
+                if row[6] == "": row[6] = 1
+
+                self.unit = float(row[6])
+
                 self.dimX = float(str.split(row[7], ',')[0]) * float(row[6])
                 self.dimY = float(str.split(row[7], ',')[1]) * float(row[6])
                 self.dimZ = float(str.split(row[7], ',')[2]) * float(row[6])
