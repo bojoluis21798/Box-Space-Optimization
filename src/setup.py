@@ -19,12 +19,10 @@ def menu(models):
         # hide menu items
         menu.hide()
 
+        # display 3d model
         i = 0
         currentModel = loader.loadModel(models[2].filename)
-        # mult = 2
         currentModel.setScale(models[2].unit*15)
-        # print(currentModel.getSx())
-        # print(currentModel.getSy())
         currentModel.setPos(-0.1,2,-0.2)
 
         currentModel.reparentTo(render)
