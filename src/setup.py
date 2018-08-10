@@ -2,11 +2,12 @@ from os import listdir, system
 from os.path import isfile, join
 from src.model import Model
 from src.optimization import optimize
-
+import math
 import direct.directbase.DirectStart
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 from panda3d.core import TextNode, DirectionalLight, VBase4
+from direct.task import Task
 
 def menu(models):
     """GUI Menu to display models and their attributes """
@@ -14,7 +15,7 @@ def menu(models):
     menu = aspect2d.attachNewNode("Menu")
 
     i = 0
-
+    spin = None
     def displayModels(idx = 0):
         """ Show models models """
 
@@ -23,26 +24,6 @@ def menu(models):
 
         info = aspect2d.attachNewNode("Info")
         currentModel = loader.loadModel(models[idx].filename)
-
-        # function to modve to next model loaded in memory: (1 to move to next, -1 to move to previous)
-        def moveModel(inc):
-            nonlocal i
-            nonlocal models
-
-            if inc == 1:
-                i = (i+inc)%len(models)
-            elif inc == -1:
-                i = i - 1 if (i-1) > -1 else len(models)-1
-
-            info.removeNode()
-            currentModel.removeNode()
-            displayModels(i)
-
-        def moveNext():
-            moveModel(1)
-
-        def movePrevious():
-            moveModel(-1)
 
         # display model info
         textObject = OnscreenText(text = "id: "+models[idx].id, pos = (-1.2,0.9),
@@ -64,23 +45,57 @@ def menu(models):
         textObject = OnscreenText(text = "Static Friction: "+str(models[idx].staticFriction), pos = (1.2,0.5),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ARight,mayChange=0)
 
+         # function to modve to next model loaded in memory: (1 to move to next, -1 to move to previous)
+        def moveModel(inc):
+            taskMgr.remove(spin)
+            nonlocal i
+            nonlocal models
+
+            if inc == 1:
+                i = (i+inc)%len(models)
+            elif inc == -1:
+                i = i - 1 if (i-1) > -1 else len(models)-1
+
+            info.removeNode()
+            currentModel.removeNode()
+            displayModels(i)
+
+        def moveNext():
+            moveModel(1)
+
+        def movePrevious():
+            moveModel(-1)
+
         # next and back buttons
         nextButton = DirectButton(text = "Next",
         pos=(1.2,0,-0.9), parent=info, scale=.05, command = moveNext)
         backButton = DirectButton(text = "Back",
         pos=(-1.2,0,-0.9), parent=info, scale=.05, command = movePrevious)
 
-        # display 3d model
+        # set model position and scale
+        currentModel.setPos(0,2,-0.2)
         currentModel.setScale(0.3)
-        currentModel.setPos(0,2,0)
 
         # lights
         dlight = DirectionalLight('dlight')
-        dlight.setColor(VBase4(0.8, 0.8, 0.5, 1))
+        dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.7))
         dlnp = render.attachNewNode(dlight)
         dlnp.lookAt(currentModel)
         render.setLight(dlnp)
 
+        # Define a procedure to move the object.
+        def spinObjectTask(task):
+            angleDegrees = task.time * 8.0
+            currentModel.setHpr(angleDegrees, angleDegrees, angleDegrees)
+            return Task.cont
+
+        # Add the spinCameraTask procedure to the task manager.
+        spin = taskMgr.add(spinObjectTask, "SpinObjectTask")
+
+        # disable default camera control
+        base.disableMouse()
+
+        # render model
         currentModel.reparentTo(render)
 
     bk_text = "Box Space Optimizer\n\nLoad models to data/stage"
@@ -94,7 +109,6 @@ def menu(models):
 
 
     # Callback to display models
-
     base.run()
 
 def modelsLoad():
