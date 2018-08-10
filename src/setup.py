@@ -24,17 +24,27 @@ def menu(models):
         info = aspect2d.attachNewNode("Info")
         currentModel = loader.loadModel(models[idx].filename)
 
-        def next():
+        # function to modve to next model loaded in memory: (1 to move to next, -1 to move to previous)
+        def moveModel(inc):
             nonlocal i
             nonlocal models
-            i = (i+1)%len(models)
+
+            if inc == 1:
+                i = (i+inc)%len(models)
+            elif inc == -1:
+                i = i - 1 if (i-1) > -1 else len(models)-1
+
             info.removeNode()
             currentModel.removeNode()
             displayModels(i)
 
+        def moveNext():
+            moveModel(1)
+
+        def movePrevious():
+            moveModel(-1)
+
         # display model info
-
-
         textObject = OnscreenText(text = "id: "+models[idx].id, pos = (-1.2,0.9),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "x-dimension: "+str(models[idx].dimX), pos = (-1.2,0.8),
@@ -54,11 +64,14 @@ def menu(models):
         textObject = OnscreenText(text = "Static Friction: "+str(models[idx].staticFriction), pos = (1.2,0.5),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ARight,mayChange=0)
 
+        # next and back buttons
         nextButton = DirectButton(text = "Next",
-        pos=(1.2,0,-0.9), parent=info, scale=.05, command = next)
+        pos=(1.2,0,-0.9), parent=info, scale=.05, command = moveNext)
+        backButton = DirectButton(text = "Back",
+        pos=(-1.2,0,-0.9), parent=info, scale=.05, command = movePrevious)
 
         # display 3d model
-        currentModel.setScale(models[idx].unit*15)
+        currentModel.setScale(0.3)
         currentModel.setPos(-0.1,2,-0.2)
 
         currentModel.reparentTo(render)
