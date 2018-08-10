@@ -72,6 +72,17 @@ def menu(models):
         backButton = DirectButton(text = "Back",
         pos=(-1.2,0,-0.9), parent=info, scale=.05, command = movePrevious)
 
+        # define callback to go to main menu
+        def goToMainMenu():
+            info.removeNode()
+            currentModel.removeNode()
+            taskMgr.remove(spin)
+            menu.show()
+
+        # go back to main menu
+        exit = DirectButton(text = "Exit to main menu",
+        pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
+
         # set model position and scale
         currentModel.setPos(0,2,-0.2)
         currentModel.setScale(0.3)
