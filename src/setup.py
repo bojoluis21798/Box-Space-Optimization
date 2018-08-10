@@ -118,6 +118,12 @@ def menu(models):
     optimize = DirectButton(text = "Optimize Loaded Models",
         pos=(0,0,0.2), parent=menu, scale=.05)
 
+    def exitApp():
+        menu.removeNode()
+        exit()
+
+    exitButton = DirectButton(text = "Exit",
+        pos=(0,0,0.1), parent=menu, scale=.05, command=exitApp)
 
     # Callback to display models
     base.run()
