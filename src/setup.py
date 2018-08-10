@@ -6,7 +6,7 @@ from src.optimization import optimize
 import direct.directbase.DirectStart
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
-from panda3d.core import TextNode
+from panda3d.core import TextNode, DirectionalLight, VBase4
 
 def menu(models):
     """GUI Menu to display models and their attributes """
@@ -72,7 +72,14 @@ def menu(models):
 
         # display 3d model
         currentModel.setScale(0.3)
-        currentModel.setPos(-0.1,2,-0.2)
+        currentModel.setPos(0,2,0)
+
+        # lights
+        dlight = DirectionalLight('dlight')
+        dlight.setColor(VBase4(0.8, 0.8, 0.5, 1))
+        dlnp = render.attachNewNode(dlight)
+        dlnp.lookAt(currentModel)
+        render.setLight(dlnp)
 
         currentModel.reparentTo(render)
 
