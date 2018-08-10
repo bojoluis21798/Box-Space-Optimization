@@ -24,7 +24,7 @@ def menu(models):
         info = aspect2d.attachNewNode("Info")
         currentModel = loader.loadModel(models[idx].filename)
 
-        def increment():
+        def next():
             nonlocal i
             nonlocal models
             i = (i+1)%len(models)
@@ -55,7 +55,7 @@ def menu(models):
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ARight,mayChange=0)
 
         nextButton = DirectButton(text = "Next",
-        pos=(1.2,0,-0.9), parent=info, scale=.05, command = increment)
+        pos=(1.2,0,-0.9), parent=info, scale=.05, command = next)
 
         # display 3d model
         currentModel.setScale(models[idx].unit*15)
