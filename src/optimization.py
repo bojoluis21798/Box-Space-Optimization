@@ -37,9 +37,9 @@ def optimize(models):
         swarm.append(LocustParticle(initial,problem_dimensions))
         
     #verification
-    i = 0
-    while i < maxIter:
-        for model in models:
+    for model in models:
+        i = 0
+        while i < maxIter:
             volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
 
             if volume > mainBox.totalVolume:
@@ -65,7 +65,7 @@ def optimize(models):
             for j in range(0,num_particles):
                 swarm[j].update_velocity(pos_best_g, problem_dimensions)
                 swarm[j].update_position(bounds, problem_dimensions)
-        
-            # insert gregarious - solution (attack) here
 
-        i+=1
+            i+=1
+        
+        # insert gregarious - solution (attack) here
