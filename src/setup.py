@@ -148,7 +148,11 @@ def menu(models):
         pos = (0,0,0.3), parent = boxParams)
 
         def optimize():
-            pass
+            nonlocal length, width, height
+            length = float(length.get())
+            width = float(width.get())
+            height = float(height.get())
+            print(length, width, height)
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
         parent = boxParams, scale = 0.05, command = optimize)
