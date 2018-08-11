@@ -22,9 +22,10 @@ class Model:
 
                 self.unit = float(row[6])
 
-                self.dimX = float(str.split(row[7], ',')[0]) * float(row[6])
-                self.dimY = float(str.split(row[7], ',')[1]) * float(row[6])
-                self.dimZ = float(str.split(row[7], ',')[2]) * float(row[6])
+                self.dimX = float(str.split(row[7], ',')[0])
+                self.dimY = float(str.split(row[7], ',')[1])
+                self.dimZ = float(str.split(row[7], ',')[2])
+
                 self.isContainer = True if row[8] == "TRUE" else False
                 self.surfaceVolume = 0.0 if row[9] == "" else float(row[9])
                 self.solidVolume = 0.0 if row[10] == "" else float(row[10])
