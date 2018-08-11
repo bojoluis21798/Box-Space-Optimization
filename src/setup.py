@@ -109,6 +109,58 @@ def menu(models):
         # render model
         currentModel.reparentTo(render)
 
+    # function for displaying optimized models
+    def displayOptimize():
+        menu.hide()
+
+        # create gui fields to enter length width and height
+        boxParams = aspect2d.attachNewNode("BoxParams")
+
+        length = 0
+        width = 0
+        height = 0
+
+        lengthLabel = OnscreenText(text = "Enter Length of Box (in)",
+        pos = (-0.6,0.5), parent = boxParams, scale = 0.05, align = TextNode.ALeft)
+
+        def setLength(textEntered):
+            length = textEntered
+
+        length = DirectEntry(scale=.05, command=setLength, numLines = 1, focus=1,
+        pos = (0,0,0.5), parent = boxParams)
+
+        widthLabel = OnscreenText(text = "Enter Width of Box (in)",
+        pos = (-0.6,0.4), parent = boxParams, scale = 0.05, align = TextNode.ALeft)
+
+        def setWidth(textEntered):
+            width = textEntered
+
+        width = DirectEntry(scale=.05, command=setWidth, numLines = 1, focus=1,
+        pos = (0,0,0.4), parent = boxParams)
+
+        heightLabel = OnscreenText(text = "Enter Height of Box (in)",
+        pos = (-0.6,0.3), parent = boxParams, scale = 0.05, align = TextNode.ALeft)
+
+        def setHeight(textEntered):
+            height = textEntered
+
+        height = DirectEntry(scale=.05, command=setHeight, numLines = 1, focus=1,
+        pos = (0,0,0.3), parent = boxParams)
+
+        def optimize():
+            pass
+
+        optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
+        parent = boxParams, scale = 0.05, command = optimize)
+
+        def goToMainMenu():
+            boxParams.hide()
+            menu.show()
+
+        backToMenu = DirectButton(text = "Back to menu",
+        pos=(0,0,0), parent=boxParams, scale=.05, command = goToMainMenu)
+
+
     bk_text = "Box Space Optimizer\n\nLoad models to data/stage"
     textObject = OnscreenText(text = bk_text, pos = (0,0.7),
     scale = 0.07,fg=(1,0.5,0.5,1), parent = menu, align=TextNode.ACenter,mayChange=0)
@@ -116,7 +168,7 @@ def menu(models):
     loadedModels = DirectButton(text = "View Loaded Models",
         pos=(0,0,0.3), parent=menu, scale=.05, command = displayModels)
     optimize = DirectButton(text = "Optimize Loaded Models",
-        pos=(0,0,0.2), parent=menu, scale=.05)
+        pos=(0,0,0.2), parent=menu, scale=.05, command = displayOptimize)
 
     def exitApp():
         menu.removeNode()
