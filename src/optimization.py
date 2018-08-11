@@ -16,38 +16,44 @@ def objectiveFuncBox(item, box):
 # Do optimization here
 def optimize(models):
     pass
-
-    #start of solitary phase
-        #initialization (identification)
-        #updating       (verification)
+    # start of solitary phase
+        # initialization (identification)
+        # updating       (verification)
+        
+    #initialization part one
+    models_inside = []
+    models_position = []
+    mainBox = Box(18,18,24)                                                     #user input, but for now is not. box(length,width,height) in inches
     
-    # identification
     maxIter = 30 
     numParticles = 30
-    mainBox = Box(18,18,24)                                                 #user input, but for now is not. box(length,width,height) in inches
     initial = []                                                            #initial location of particles
     bounds = [(0,mainBox.length), (0,mainBox.width), (0,mainBox.height)]    #bounds for search space (min,max)
 
     problem_dimensions = len(initial)
-    err_best_g = -1                                                         #global best error
-    pos_best_g = []                                                         #global best position
 
-    swarm = []                                                              #locust swarm
-    for i in range(0,numParticles):
-        swarm.append(LocustParticle(initial,problem_dimensions))
-        
-    #verification
     for model in models:
+        volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
+
+        if volume > mainBox.totalVolume:
+            break
+
+        if volume > mainbox.totalVolume - mainbox.totalObjectVolume:
+            continue
+        
+        models_inside.append(model)
+
+        # identification (initialization part two)
+        err_best_g = -1                                                         #global best error
+        pos_best_g = []                                                         #global best position
+
+        swarm = []                                                              #locust swarm
+        for i in range(0,numParticles):
+            swarm.append(LocustParticle(initial,problem_dimensions))
+        
+        #verification
         i = 0
         while i < maxIter:
-            volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
-
-            if volume > mainBox.totalVolume:
-                break
-
-            if volume > mainbox.totalVolume - mainbox.totalObjectVolume:
-                continue
-            
             #insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
@@ -68,4 +74,5 @@ def optimize(models):
 
             i+=1
         
-        # insert gregarious - solution (attack) here
+        # solution (attack)
+        models_position.append(pos_best_g)
