@@ -149,10 +149,16 @@ def menu(models):
 
         def optimize():
             nonlocal length, width, height
-            length = float(length.get())
-            width = float(width.get())
-            height = float(height.get())
-            print(length, width, height)
+            length = float(length.get()) * 0.0254 # convert to meters
+            width = float(width.get()) * 0.0254 # convert to meters
+            height = float(height.get()) * 0.0254 # convert to meters
+
+            box = loader.loadModel("data/box.x")
+            box.setScale(length/2, width/2, height/2)
+
+            box.reparentTo(render)
+
+            boxParams.removeNode()
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
         parent = boxParams, scale = 0.05, command = optimize)
