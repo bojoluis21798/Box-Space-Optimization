@@ -13,6 +13,23 @@ def objectiveFuncBox(item, box):
     #check if addedVolume of objects inside box is less than volume of box
     return (addedVolume/box.totalVolume) if addedVolume <= box.totalVolume else -1
 
+# insert an item inside the box; assuming the given pos is an empty space
+def insertToBox(box, item, pos, itemNum):
+    x = pos[0]
+    y = pos[1]
+    z = pos[2]
+    
+    i = 0
+    while x < x + item.dimX:
+        j = 0
+        while y < y + item.dimY:
+            k = 0
+            while z < z + item.dimZ:
+                boxgrid[i,j,k] = itemNum
+                k+=1
+            j+=1
+        i+=1
+
 # Do optimization here
 def optimize(models):
     pass
@@ -21,9 +38,10 @@ def optimize(models):
         # updating       (verification)
         
     #initialization part one
-    models_inside = []
-    models_position = []
-    mainBox = Box(18,18,24)                                                     #user input, but for now is not. box(length,width,height) in inches
+    models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
+    models_position = [None]
+    model_tracker = 0                                                           # assigns a model id to each item inserted
+    mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
     
     maxIter = 30 
     numParticles = 30
@@ -75,4 +93,6 @@ def optimize(models):
             i+=1
         
         # solution (attack)
+        model_tracker+=1
+        insertToBox(box, model, pos_best_g, model_tracker)
         models_position.append(pos_best_g)

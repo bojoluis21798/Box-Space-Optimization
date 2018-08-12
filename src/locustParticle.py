@@ -5,7 +5,7 @@ class LocustParticle:
 
     def __init__(self, initials, num_dimensions, item = None):
         self.state = 0              # 0 - solitary, 1 - gregarious
-        self.position_i = []        # particle position
+        self.position_i = []        # particle position, contains array of positions [x,y,z] per element
         self.velocity_i = []        # particle current velocity
         self.pos_best_i = []        # best position (self, not group)
         self.err_best_i=-1          # best error individual
@@ -47,6 +47,7 @@ class LocustParticle:
     # questionnable because this position is 1d
     def updatePosition(self, bounds, num_dimensions):
         for i in range(0, num_dimensions):
+            #wonder if this should be an array
             self.position_i[i] = self.position_i[i] + self.velocity_i[i] #check if space is available
 
             # adjust maximum position if necessary
