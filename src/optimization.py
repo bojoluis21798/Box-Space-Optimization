@@ -14,21 +14,17 @@ def objectiveFuncBox(item, box):
     return (addedVolume/box.totalVolume) if addedVolume <= box.totalVolume else -1
 
 # insert an item inside the box; assuming the given pos is an empty space
-def insertToBox(box, item, pos, itemNum):
+def insertToBox(box, item, pos, itemNum):    
     x = pos[0]
-    y = pos[1]
-    z = pos[2]
-    
-    i = 0
     while x < x + item.dimX:
-        j = 0
+        y = pos[1]
         while y < y + item.dimY:
-            k = 0
+            z = pos[2]
             while z < z + item.dimZ:
                 boxgrid[i,j,k] = itemNum
-                k+=1
-            j+=1
-        i+=1
+                z+=1
+            y+=1
+        z+=1
 
 # Do optimization here
 def optimize(models):
