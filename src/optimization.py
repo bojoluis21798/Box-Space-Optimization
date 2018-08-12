@@ -27,8 +27,8 @@ def optimize(models):
     
     maxIter = 30 
     numParticles = 30
-    initial = []                                                            #initial location of particles
-    bounds = [(0,mainBox.length), (0,mainBox.width), (0,mainBox.height)]    #bounds for search space (min,max)
+    initial = [0,0,0]                                                               #initial location of particles
+    bounds = [(0,mainBox.length), (0,mainBox.width), (0,mainBox.height)]            #bounds for search space (min,max)
 
     problem_dimensions = len(initial)
 
@@ -57,7 +57,7 @@ def optimize(models):
             #insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
-                swarm[j].evaluate(objectiveFuncBox, mainBox)    #passing objectiveFunc for items, not box space
+                swarm[j].evaluate(objectiveFuncBox, mainBox)    #passing objectiveFunc for items, not box space; questionnable due to costfunc
                 
                 # update global bests
                 # add checker here
@@ -69,8 +69,8 @@ def optimize(models):
             # cycle through swarm and update velocities and position
             # gregarious phase - analysis part 2
             for j in range(0,num_particles):
-                swarm[j].update_velocity(pos_best_g, problem_dimensions)
-                swarm[j].update_position(bounds, problem_dimensions)
+                swarm[j].update_velocity(pos_best_g, problem_dimensions)    
+                swarm[j].update_position(bounds, problem_dimensions)        #questionnable due to space checking
 
             i+=1
         

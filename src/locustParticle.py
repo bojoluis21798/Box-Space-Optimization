@@ -44,6 +44,7 @@ class LocustParticle:
             self.velocity_i[i] = self.w * self.velocity_i[i] + vel_cognitive + vel_social
 
     # update particles position
+    # questionnable because this position is 1d
     def updatePosition(self, bounds, num_dimensions):
         for i in range(0, num_dimensions):
             self.position_i[i] = self.position_i[i] + self.velocity_i[i] #check if space is available
