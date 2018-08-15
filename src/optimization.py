@@ -14,17 +14,23 @@ def terminationCriteria(item, box):
     #check if addedVolume of objects inside box is less than volume of box
     return (addedVolume/box.totalVolume) if addedVolume <= box.totalVolume else -1
 
+# this is the actual fitness equation for the optimization
 def objectiveFunctionSpace(item, pos, box):
+    freeSpace = 0
     # [x,y,z] is the starting position of the item location
     x = pos[0]
     y = pos[1]
     z = pos[2]
 
     # search the radial location of the item location (bottom and sides)
+        # increment z til an occupied cell is found
+        # decrement z til an occupied cell is found
+        # increment y til an occupied cell is found
+        # decrement y til an occupied cell is found
+        # increment x til an occupied cell is found
 
-    # return number of cells (mm)
-
-
+    # return number of empty cells found (mm)
+    return freeSpace
 
 # insert an item inside the box; assuming the given pos is an empty space
 def insertToBox(box, item, pos, itemNum):    
@@ -84,7 +90,7 @@ def optimize(models):
             #insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
-                swarm[j].evaluate(objectiveFuncBox, mainBox)    #passing objectiveFunc for items, not box space; questionnable due to costfunc
+                swarm[j].evaluate(objectiveFunctionSpace, mainBox)
                 
                 # update global bests
                 # add checker here
