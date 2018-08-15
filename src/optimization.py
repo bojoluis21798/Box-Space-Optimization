@@ -2,8 +2,9 @@ from src.model import Model
 from src.box import Box
 from src.locustParticle import LocustParticle
 
- #refer to fitness equation of document
-def objectiveFuncBox(item, box):
+ # refer to fitness equation of document
+ # stop the optimization if box is at 100% or near but cant add any more object
+def terminationCriteria(item, box):
 
     # checks if item is container-like or not and gets appropriate volume
     addedVolume  = (item.surfaceVolume + box.totalObjectVolume) if item.isContainer == True else (item.solidVolume + box.totalObjectVolume)
@@ -12,6 +13,18 @@ def objectiveFuncBox(item, box):
 
     #check if addedVolume of objects inside box is less than volume of box
     return (addedVolume/box.totalVolume) if addedVolume <= box.totalVolume else -1
+
+def objectiveFunctionSpace(item, pos, box):
+    # [x,y,z] is the starting position of the item location
+    x = pos[0]
+    y = pos[1]
+    z = pos[2]
+
+    # search the radial location of the item location (bottom and sides)
+
+    # return number of cells (mm)
+
+
 
 # insert an item inside the box; assuming the given pos is an empty space
 def insertToBox(box, item, pos, itemNum):    
