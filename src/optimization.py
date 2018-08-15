@@ -23,11 +23,11 @@ def objectiveFunctionSpace(item, pos, box):
     z = pos[2]
 
     # search the radial location of the item location (bottom and sides)
-        # increment z til an occupied cell is found
-        # decrement z til an occupied cell is found
-        # increment y til an occupied cell is found
-        # decrement y til an occupied cell is found
-        # increment x til an occupied cell is found
+        # increment z til an occupied cell is found or bound is reached
+        # decrement z til an occupied cell is found or bound is reached
+        # increment y til an occupied cell is found or bound is reached
+        # decrement y til an occupied cell is found or bound is reached
+        # increment x til an occupied cell is found or bound is reached
 
     # return number of empty cells found (mm)
     return freeSpace
