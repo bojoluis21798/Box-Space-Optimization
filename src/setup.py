@@ -6,7 +6,7 @@ import math
 import direct.directbase.DirectStart
 from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
-from panda3d.core import TextNode, DirectionalLight, VBase4
+from panda3d.core import TextNode, DirectionalLight, VBase4, TransparencyAttrib
 from direct.task import Task
 
 def menu(models):
@@ -84,8 +84,9 @@ def menu(models):
         pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
 
         # set model position and scale
-        currentModel.setPos(0,2,-0.2)
-        currentModel.setScale(0.3)
+        currentModel.setPos(0,2,0)
+        highestDim = max(models[idx].dimX, models[idx].dimY, models[idx].dimZ)
+        currentModel.setScale(50/(highestDim/models[idx].unit))
 
         # lights
         dlight = DirectionalLight('dlight')
@@ -155,8 +156,14 @@ def menu(models):
 
             box = loader.loadModel("data/box.x")
             box.setScale(length/2, width/2, height/2)
-
+            box.setPos(0,2,0)
             box.reparentTo(render)
+
+            # model = loader.loadModel(models[0].filename)
+            # model.setScale(models[0].unit)
+            # model.setPos(box.getX(), box.getY(), box.getZ())
+
+            # model.reparentTo(render)
 
             boxParams.removeNode()
 
