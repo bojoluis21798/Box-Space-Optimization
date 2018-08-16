@@ -16,25 +16,8 @@ def terminationCriteria(item, box):
 
 # this is the actual fitness equation for the optimization
 def objectiveFunctionSpace(item, pos, box):
-
-    def resetPosition(pos):
-        return pos[0], pos[1], pos[2]
-
     freeSpace = 0
-    # [x,y,z] is the starting position of the item location
-
-    # search the radial location of the item location (bottom and sides)
-    # increment x til an occupied cell is found or bound is reached
-    # decrement x til an occupied cell is found or bound is reached
-    # increment y til an occupied cell is found or bound is reached
-    # decrement y til an occupied cell is found or bound is reached
-    # increment z til an occupied cell is found or bound is reached
-    # decrement z til an occupied cell is found or bound is reached
-
-    #### alternative
-    #### use of splice
-    #### limit = box[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
-    x,y,z = resetPosition(pos)
+    x,y,z = pos[0], pos[1], pos[2]
 
     #check addition or make sure passed position is available and valid
     sideArea_1  = box.boxgrid[x + item.dimX : box.length, y : item.dimY, z : item.dimZ]
@@ -73,6 +56,8 @@ def insertToBox(box, item, pos, itemNum):
 
 # Do optimization here
 def optimize(models):
+    pass
+    break
     # start of solitary phase
         # initialization (identification)
         # updating       (verification)
