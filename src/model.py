@@ -10,6 +10,7 @@ class Model:
         else:
             # id is filename
             self.id = 'wss.'+str.split(filename, '.')[0]
+            self.modelNum = None
 
             # find row based on id in metadata
             for row in csv_file:

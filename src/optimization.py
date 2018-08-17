@@ -94,7 +94,6 @@ def insertToBox(box, item, pos, itemNum):
 # Do optimization here
 def optimize(models):
     pass
-    break
     # start of solitary phase
         # initialization (identification)
         # updating       (verification)
@@ -102,7 +101,6 @@ def optimize(models):
     #initialization part one
     models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
     models_position = [None]
-    model_tracker = 0                                                           # assigns a model id to each item inserted
     mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
     
     maxIter = 30 
@@ -113,16 +111,18 @@ def optimize(models):
     problem_dimensions = len(initial)
 
     for model in models:
+        print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
         volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
 
         if volume > mainBox.totalVolume:
             break
 
         if volume > mainbox.totalVolume - mainbox.totalObjectVolume:
+            print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
             continue
         
         models_inside.append(model)
-
+        print(f"Optimizing on {model.name} with Model Num = {model.modelNum}")
         # identification (initialization part two)
         err_best_g = -1                                                         #global best error
         pos_best_g = []                                                         #global best position
@@ -134,6 +134,8 @@ def optimize(models):
         #verification
         i = 0
         while i < maxIter:
+            print("=====================================================")
+            print(f"Generation # {i}")
             #insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
@@ -154,6 +156,6 @@ def optimize(models):
             i+=1
         
         # solution (attack)
-        model_tracker+=1
-        insertToBox(box, model, pos_best_g, model_tracker)
+        insertToBox(box, model, pos_best_g, model.modelNum)
         models_position.append(pos_best_g)
+        print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")

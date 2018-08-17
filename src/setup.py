@@ -41,6 +41,7 @@ def menu(models):
             if i == 0:
                 continue
 
+            models[i].modelNum = i
             print ("Model Number: "+str(i))
             print ("Name: "+models[i].name)
             print ("========================")
