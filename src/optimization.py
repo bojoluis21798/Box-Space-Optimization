@@ -168,3 +168,5 @@ def optimize(models):
         print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
 
     print(f"Current optimized space for box = {mainBox.totalObjectVolume/mainBox.totalVolume}%")
+    input("Press enter to go back to menu .... ")
+    
