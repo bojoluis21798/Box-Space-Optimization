@@ -16,9 +16,8 @@ class LocustParticle:
         self.item = item            # the item it currently is looking for an optimal space
 
         for i in range(0,num_dimensions):
-            self.velocity_i.append(random.uniform(-1,1))    #### why (-1,1)
-            self.position_i.append(initials[i])             #check if space is available;
-                                                            #can also be randomed
+            self.velocity_i.append(random.uniform(-1,1))    # questionnable
+            self.position_i.append(initials[i])             # random?
 
     def addItem(self, item):
         self.item = item           # add item for particle to find space for
@@ -47,8 +46,7 @@ class LocustParticle:
     # questionnable because this position is 1d
     def updatePosition(self, bounds, num_dimensions):
         for i in range(0, num_dimensions):
-            #wonder if this should be an array
-            self.position_i[i] = self.position_i[i] + self.velocity_i[i] #check if space is available
+            self.position_i[i] = self.position_i[i] + self.velocity_i[i]
 
             # adjust maximum position if necessary
             if self.position_i[i] > bounds[i][1]:
@@ -57,25 +55,5 @@ class LocustParticle:
             # adjust minimum position if neseccary
             if self.position_i[i] < bounds[i][0]:
                 self.position_i[i] = bounds[i][0]
-
-    # @params item = self.item
-    # @params position = given particle position
-    # @params box = box space being  worked on (probably bounds)
-    # this function is used assuming a particle position is the beginning of the space
-    def checkSpaceAvailability(item, position, box):
-        #get item dimensions
-        #compare with position if available in box
-        ret = False
-        posX = position[0]
-        posY = position[1]
-        posZ = position[2]
-        #check if not over the box dimensions
-        if posX + item.dimX < box.convertMeterToMilli(box.length) and posY + item.dimY < convertMeterToMilli(box.width)  and posZ < convertMeterToMilli(box.height) :
-            limit = box[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
-            #check if all in splice is 0, otherwise return false
-            if np.count_nonzero(limit) == 0:
-                ret = True
-        
-        return ret
         
 

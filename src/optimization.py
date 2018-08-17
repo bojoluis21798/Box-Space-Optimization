@@ -54,6 +54,25 @@ def insertToBox(box, item, pos, itemNum):
             y+=1
         z+=1
 
+# @params item = self.item
+# @params position = given particle position
+# @params box = box space being  worked on (probably bounds)
+# this function is used assuming a particle position is the beginning of the space
+def isSpaceAvailable(item, position, box):
+    #get item dimensions
+    #compare with position if available in box
+    ret = False
+    posX = position[0]
+    posY = position[1]
+    posZ = position[2]
+    #check if not over the box dimensions
+    if posX + item.dimX < box.convertMeterToMilli(box.length) and posY + item.dimY < convertMeterToMilli(box.width)  and posZ < convertMeterToMilli(box.height) :
+        limit = box[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            ret = True       
+    return ret
+
 # Do optimization here
 def optimize(models):
     pass
@@ -114,6 +133,9 @@ def optimize(models):
             for j in range(0,num_particles):
                 swarm[j].update_velocity(pos_best_g, problem_dimensions)    
                 swarm[j].update_position(bounds, problem_dimensions)        #questionnable due to space checking
+
+                # add checker here
+                if not isSpaceAvailable(model, swarm[j].position_i, mainBox) :
 
             i+=1
         
