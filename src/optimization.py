@@ -1,8 +1,9 @@
+import numpy as np
+import sys
+
 from src.model import Model
 from src.box import Box
 from src.locustParticle import LocustParticle
-
-import sys
 
 # @params item = self.item
 # @params position = given particle position
@@ -16,8 +17,8 @@ def isSpaceAvailable(item, position, box):
     posY = position[1]
     posZ = position[2]
     #check if not over the box dimensions
-    if posX + item.dimX < box.convertMeterToMilli(box.length) and posY + item.dimY < convertMeterToMilli(box.width)  and posZ < convertMeterToMilli(box.height) :
-        limit = box[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
+    if posX + item.dimX < box.length) and posY + item.dimY < box.width  and posZ < box.height :
+        limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
             ret = True       
@@ -111,13 +112,16 @@ def optimize(models):
     problem_dimensions = len(initial)
 
     for model in models:
+        if model.id == sys.maxsize:
+            continue
+
         print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
         volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
 
         if volume > mainBox.totalVolume:
             break
 
-        if volume > mainbox.totalVolume - mainbox.totalObjectVolume:
+        if volume > mainBox.totalVolume - mainBox.totalObjectVolume:
             print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
             continue
         
@@ -149,10 +153,11 @@ def optimize(models):
             
             # cycle through swarm and update velocities and position
             # gregarious phase - analysis part 2
-            for j in range(0,num_particles):
-                swarm[j].update_velocity(pos_best_g, problem_dimensions)    
-                swarm[j].update_position(bounds, problem_dimensions)
+            for j in range(0,numParticles):
+                swarm[j].updateVelocity(pos_best_g, problem_dimensions)    
+                swarm[j].updatePosition(bounds, problem_dimensions)
 
+            print(f"Current pos_best_g {pos_best_g}")
             i+=1
         
         # solution (attack)

@@ -1,4 +1,5 @@
 import csv
+import sys
 
 csv_file = csv.reader(open('./data/metadata.csv', 'r'), delimiter=',')
 
@@ -6,7 +7,7 @@ class Model:
     def __init__(self, filename):
 
         if filename == "":
-            self.id = 'null'
+            self.id = sys.maxsize
         else:
             # id is filename
             self.id = 'wss.'+str.split(filename, '.')[0]

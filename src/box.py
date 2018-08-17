@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 class Box:
     #maintained meters for attributes, but not in grid system which is in milli
     def __init__(self, length, width, height):
-        self.convertionFactor = 25.4                        # 1 inch == 25.4 mm
-        self.length = length * self.convertionFactor        # convert inch
-        self.width  = width * self.convertionFactor         # convert inch
-        self.height = height * self.convertionFactor        # convert inch
-        self.totalVolume = length * width * height
+        self.convertionFactor = 25.4                                        # 1 inch == 25.4 mm
+        self.length = int( length * self.convertionFactor )                 # convert inch
+        self.width  = int( width * self.convertionFactor  )                 # convert inch
+        self.height = int( height * self.convertionFactor )                 # convert inch
+        self.totalVolume = int( self.length * self.width * self.height )
         self.numObjects = 0                                 # number of objects inserted in box
         self.totalObjectVolume = 0                          # gives the total occupied volume of the objects inside box
 
