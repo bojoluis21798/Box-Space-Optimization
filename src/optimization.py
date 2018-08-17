@@ -78,19 +78,20 @@ def objectiveFunctionSpace(item, pos, box):
     # return number of empty cells found (mm)
     return freeSpace
 
-# insert an item inside the box; assuming the given pos is an empty space
+# insert an item inside the box
 # dont need to return anything since arrays are passed by reference
 def insertToBox(box, item, pos, itemNum):    
-    x = pos[0]
-    while x < x + item.dimX:
+    x,y,z = pos[0], pos[1], pos[2]
+    limitX, limitY, limitZ = x + item.dimX, y + item.dimY, z + item.dimZ
+    while x < limitX:
         y = pos[1]
-        while y < y + item.dimY:
+        while y < limitY:
             z = pos[2]
-            while z < z + item.dimZ:
-                boxgrid[i,j,k] = itemNum
+            while z < limitZ:
+                box.boxgrid[x,y,z] = itemNum
                 z+=1
             y+=1
-        z+=1
+        x+=1
 
 # Do optimization here
 def optimize(models):
@@ -161,6 +162,9 @@ def optimize(models):
             i+=1
         
         # solution (attack)
-        insertToBox(box, model, pos_best_g, model.modelNum)
+        insertToBox(mainBox, model, pos_best_g, model.modelNum)
+        mainBox.totalObjectVolume += volume
         models_position.append(pos_best_g)
         print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
+
+    print(f"Current optimized space for box = {mainBox.totalObjectVolume/mainBox.totalVolume}%")

@@ -44,7 +44,7 @@ class LocustParticle:
     # update particles position
     def updatePosition(self, bounds, num_dimensions):
         for i in range(0, num_dimensions):
-            self.position_i[i] = self.position_i[i] + self.velocity_i[i]
+            self.position_i[i] = int(self.position_i[i] + self.velocity_i[i])
 
             # adjust maximum position if necessary
             if self.position_i[i] > bounds[i][1]:
