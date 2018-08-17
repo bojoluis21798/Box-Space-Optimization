@@ -2,6 +2,37 @@ from src.model import Model
 from src.box import Box
 from src.locustParticle import LocustParticle
 
+import sys
+
+# @params item = self.item
+# @params position = given particle position
+# @params box = box space being  worked on (probably bounds)
+# this function is used assuming a particle position is the beginning of the space
+def isSpaceAvailable(item, position, box):
+    #get item dimensions
+    #compare with position if available in box
+    ret = False
+    posX = position[0]
+    posY = position[1]
+    posZ = position[2]
+    #check if not over the box dimensions
+    if posX + item.dimX < box.convertMeterToMilli(box.length) and posY + item.dimY < convertMeterToMilli(box.width)  and posZ < convertMeterToMilli(box.height) :
+        limit = box[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            ret = True       
+    return ret
+
+def isOverBound(item, position, box):
+    ret = True
+    posX = position[0]
+    posY = position[1]
+    posZ = position[2]
+    if (posX < box.length and posX + item.dimX < box.length) and (posY < box.width and posY + item.dimY < box.width) and (posZ < box.height and posZ + item.dimZ < box.height):
+        ret = False
+    
+    return ret
+
  # refer to fitness equation of document
  # stop the optimization if box is at 100% or near but cant add any more object
 def terminationCriteria(item, box):
@@ -18,8 +49,13 @@ def terminationCriteria(item, box):
 def objectiveFunctionSpace(item, pos, box):
     freeSpace = 0
     x,y,z = pos[0], pos[1], pos[2]
+    
+    if isOverBound(item, pos, box):
+        return sys.maxsize
 
-    #check addition or make sure passed position is available and valid
+    if not isSpaceAvailable(item, pos, box):
+        return sys.maxsize
+
     sideArea_1  = box.boxgrid[x + item.dimX : box.length, y : item.dimY, z : item.dimZ]
     freeSpace   += (sideArea_1.size - np.count_nonzero(sideArea_1))
 
@@ -42,6 +78,7 @@ def objectiveFunctionSpace(item, pos, box):
     return freeSpace
 
 # insert an item inside the box; assuming the given pos is an empty space
+# dont need to return anything since arrays are passed by reference
 def insertToBox(box, item, pos, itemNum):    
     x = pos[0]
     while x < x + item.dimX:
@@ -53,25 +90,6 @@ def insertToBox(box, item, pos, itemNum):
                 z+=1
             y+=1
         z+=1
-
-# @params item = self.item
-# @params position = given particle position
-# @params box = box space being  worked on (probably bounds)
-# this function is used assuming a particle position is the beginning of the space
-def isSpaceAvailable(item, position, box):
-    #get item dimensions
-    #compare with position if available in box
-    ret = False
-    posX = position[0]
-    posY = position[1]
-    posZ = position[2]
-    #check if not over the box dimensions
-    if posX + item.dimX < box.convertMeterToMilli(box.length) and posY + item.dimY < convertMeterToMilli(box.width)  and posZ < convertMeterToMilli(box.height) :
-        limit = box[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
-        #check if all in splice is 0, otherwise return false
-        if np.count_nonzero(limit) == 0:
-            ret = True       
-    return ret
 
 # Do optimization here
 def optimize(models):
@@ -122,7 +140,6 @@ def optimize(models):
                 swarm[j].evaluate(objectiveFunctionSpace, mainBox)
                 
                 # update global bests
-                # add checker here
                 # gregarious phase - analysis part 1
                 if swarm[j].err_i < err_best_g or err_best_g == -1:
                     pos_best_g = list(swarm[j].position_i)
@@ -132,10 +149,7 @@ def optimize(models):
             # gregarious phase - analysis part 2
             for j in range(0,num_particles):
                 swarm[j].update_velocity(pos_best_g, problem_dimensions)    
-                swarm[j].update_position(bounds, problem_dimensions)        #questionnable due to space checking
-
-                # add checker here
-                if not isSpaceAvailable(model, swarm[j].position_i, mainBox) :
+                swarm[j].update_position(bounds, problem_dimensions)
 
             i+=1
         

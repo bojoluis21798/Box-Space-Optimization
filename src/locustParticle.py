@@ -23,7 +23,6 @@ class LocustParticle:
         self.item = item           # add item for particle to find space for
     
     # evaluate this particle's current fitness
-    # needs adjustment
     def evaluate(self, costFunc, box):
         self.err_i = costFunc(self.item, self.position_i, box)
         
@@ -43,7 +42,6 @@ class LocustParticle:
             self.velocity_i[i] = self.w * self.velocity_i[i] + vel_cognitive + vel_social
 
     # update particles position
-    # questionnable because this position is 1d
     def updatePosition(self, bounds, num_dimensions):
         for i in range(0, num_dimensions):
             self.position_i[i] = self.position_i[i] + self.velocity_i[i]
