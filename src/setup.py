@@ -1,5 +1,6 @@
 from os import listdir, system
-from os.path import isfile, join
+from os.path import isfile, join, exists, makedirs
+from src.convert import convert
 from src.model import Model
 from src.optimization import optimize
 import math
@@ -161,9 +162,16 @@ def menu(models):
 
             # model = loader.loadModel(models[0].filename)
             # model.setScale(models[0].unit)
-            # model.setPos(box.getX(), box.getY(), box.getZ())
+            # model.setPos(box.getX()-2, box.getY(), box.getZ())
 
-            # model.reparentTo(render)
+            # # lights
+            # dlight = DirectionalLight('dlight')
+            # dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.7))
+            # dlnp = render.attachNewNode(dlight)
+            # dlnp.lookAt(model)
+            # render.setLight(dlnp)
+
+            model.reparentTo(render)
 
             boxParams.removeNode()
 
@@ -201,7 +209,7 @@ def modelsLoad():
     """ Load all models in ./data/stage to memory and get all attributes of object from metadata.csv """
 
     # Get all filenames in data/stage
-    filenames = [f for f in listdir("./data/stage/") if isfile(join("./data/stage/", f))]
+    filenames = [f for f in listdir("./data/models/") if isfile(join("./data/models/", f))]
 
     # Make instance objects of each model and store to array
     models = []
