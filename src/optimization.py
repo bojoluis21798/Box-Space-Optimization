@@ -57,22 +57,22 @@ def objectiveFunctionSpace(item, pos, box):
     if not isSpaceAvailable(item, pos, box):
         return sys.maxsize
 
-    sideArea_1  = box.boxgrid[x + item.dimX : box.length, y : item.dimY, z : item.dimZ]
+    sideArea_1  = box.boxgrid[x + item.dimX : box.length, y : y + item.dimY, z : z + item.dimZ]
     freeSpace   += (sideArea_1.size - np.count_nonzero(sideArea_1))
 
-    sideArea_3  = box.boxgrid[x:0, y : item.dimY, z : item.dimZ]                                 # opposite of 1
+    sideArea_3  = box.boxgrid[x : 0, y : y + item.dimY, z : z + item.dimZ]                                 # opposite of 1
     freeSpace   += (sideArea_3.size - np.count_nonzero(sideArea_3))
 
-    sideArea_2  = box.boxgrid[x : item.dimX, y : item.dimY, z + item.dimZ : box.height]
+    sideArea_2  = box.boxgrid[x : x + item.dimX, y : y + item.dimY, z + item.dimZ : box.height]
     freeSpace   += (sideArea_2.size - np.count_nonzero(sideArea_2))
 
-    sideArea_4  = box.boxgrid[x : item.dimX, y : item.dimY, z : 0]                               # opposite of 2
+    sideArea_4  = box.boxgrid[x : x + item.dimX, y : y + item.dimY, z : 0]                               # opposite of 2
     freeSpace   += (sideArea_4.size - np.count_nonzero(sideArea_4))
 
-    bottomArea  = box.boxgrid[x : item.dimX, y + item.dimY : box.width, z: item.dimZ]
+    bottomArea  = box.boxgrid[x : x + item.dimX, y + item.dimY : box.width, z: z + item.dimZ]
     freeSpace   += (bottomArea.size - np.count_nonzero(bottomArea))
 
-    topArea     = box.boxgrid[x: item.dimX, y : 0, z : item.dimZ]
+    topArea     = box.boxgrid[x : x + item.dimX, y : 0, z : z + item.dimZ]
     freeSpace   += (topArea.size - np.count_nonzero(topArea))
 
     # return number of empty cells found (mm)
