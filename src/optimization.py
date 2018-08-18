@@ -111,6 +111,7 @@ def optimize(models):
     bounds = [(0,mainBox.length), (0,mainBox.width), (0,mainBox.height)]            #bounds for search space (min,max)
 
     problem_dimensions = len(initial)
+    vel_limit = int(mainBox.height * 0.10)
 
     for model in models:
         if model.id == sys.maxsize:
@@ -134,7 +135,7 @@ def optimize(models):
 
         swarm = []                                                              #locust swarm
         for i in range(0,numParticles):
-            swarm.append(LocustParticle(initial,problem_dimensions))
+            swarm.append(LocustParticle(initial,problem_dimensions,vel_limit))
         
         #verification
         i = 0
