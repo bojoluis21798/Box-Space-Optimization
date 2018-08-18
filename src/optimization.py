@@ -96,89 +96,116 @@ def insertToBox(box, item, pos, itemNum):
 # Do optimization here
 def optimize(models):
     pass
-    # start of solitary phase
-        # initialization (identification)
-        # updating       (verification)
-        
-    #initialization part one
-    models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
-    models_position = [None]
-    mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
-    
-    maxIter = 30 
-    numParticles = 30
-    initial = [0,0,0]                                                               #initial location of particles
-    bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
+    best_mainBox = None
+    best_models_inside = []
+    best_models_position = []
+    best_percentage = 0
 
-    problem_dimensions = len(initial)
-    vel_limit = int(mainBox.height * 0.10)
-
-    for model in models:
-        is_insertable = True
-        if model.id == sys.maxsize:
-            continue
-
-        print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
-        volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
-
-        if volume > mainBox.totalVolume:
-            break
-
-        if volume > mainBox.totalVolume - mainBox.totalObjectVolume:
-            print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
-            continue
-        
-        models_inside.append(model)
-        print(f"Optimizing on {model.name} with Model Num = {model.modelNum}")
-        # identification (initialization part two)
-        err_best_g = -1                                                         #global best error
-        pos_best_g = []                                                         #global best position
-
-        swarm = []                                                              #locust swarm
-        for i in range(0,numParticles):
-            swarm.append(LocustParticle(initial,problem_dimensions,bounds,vel_limit))
-        
-        #verification
-        i = 0
-        while i < maxIter:
-            print("=====================================================")
-            print(f"Generation # {i}")
-            #insert locust work here on item
-            for j in range(0, numParticles):
-                swarm[j].addItem(model)
-                swarm[j].evaluate(objectiveFunctionSpace, mainBox)
-                
-                # update global bests
-                # gregarious phase - analysis part 1
-                if swarm[j].err_i < err_best_g or err_best_g == -1:
-                    pos_best_g = list(swarm[j].position_i)
-                    err_best_g = int(swarm[j].err_i)
+    termination_counter = 0                         # counts the number of convergence of optimization
+    maingen = 0
+    while termination_counter < 10:
+        print(f">>>>>>>>>>>Generation {maingen}")
+        # start of solitary phase
+            # initialization (identification)
+            # updating       (verification)
             
-            if err_best_g == sys.maxsize:
-                is_insertable = False
+        #initialization part one
+        models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
+        models_position = [None]
+        mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
+        
+        numParticles = 30
+        initial = [0,0,0]                                                               #initial location of particles
+        bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
+
+        problem_dimensions = len(initial)
+        vel_limit = int(mainBox.height * 0.10)
+
+        for model in models:
+            is_insertable = True
+            if model.id == sys.maxsize:
+                continue
+
+            print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
+            volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
+
+            if volume > mainBox.totalVolume:
                 break
 
-            # cycle through swarm and update velocities and position
-            # gregarious phase - analysis part 2
-            for j in range(0,numParticles):
-                swarm[j].updateVelocity(pos_best_g, problem_dimensions)    
-                swarm[j].updatePosition(bounds, problem_dimensions)
-
-            print(f"Current pos_best_g {pos_best_g}")
-            i+=1
-        
-        if is_insertable == False:
-            print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
-            continue
+            if volume > mainBox.totalVolume - mainBox.totalObjectVolume:
+                print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
+                continue
             
-        # solution (attack)
-        insertToBox(mainBox, model, pos_best_g, model.modelNum)
-        mainBox.totalObjectVolume += volume
-        models_position.append(pos_best_g)
-        print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
-        input("Press enter to work on the next model ... ")
+            models_inside.append(model)
+            print(f"Optimizing on {model.name} with Model Num = {model.modelNum}")
+            # identification (initialization part two)
+            err_best_g = -1                                                         #global best error
+            pos_best_g = []                                                         #global best position
 
-    print(f"total object volume = {mainBox.totalObjectVolume} and box total volume = {mainBox.totalVolume}")
-    print(f"Current optimized space for box = {(mainBox.totalObjectVolume/mainBox.totalVolume)*100}%")
-    input("Press enter to go back to menu .... ")
+            swarm = []                                                              #locust swarm
+            for i in range(0,numParticles):
+                swarm.append(LocustParticle(initial,problem_dimensions,bounds,vel_limit))
+            
+            #verification
+            inside_termination_ctr = 0
+            subgen = 0
+            while inside_termination_ctr < 10:
+                print("=====================================================")
+                print(f"Generation # {maingen}{subgen}")
+                #insert locust work here on item
+                for j in range(0, numParticles):
+                    swarm[j].addItem(model)
+                    swarm[j].evaluate(objectiveFunctionSpace, mainBox)
+                    
+                    # update global bests
+                    # gregarious phase - analysis part 1
+                    if swarm[j].err_i < err_best_g or err_best_g == -1:
+                        pos_best_g = list(swarm[j].position_i)
+                        err_best_g = int(swarm[j].err_i)
+                        inside_termination_ctr = 0
+                    else:
+                        inside_termination_ctr+=1
+                
+                if err_best_g == sys.maxsize:
+                    is_insertable = False
+                    break
+
+                # cycle through swarm and update velocities and position
+                # gregarious phase - analysis part 2
+                for j in range(0,numParticles):
+                    swarm[j].updateVelocity(pos_best_g, problem_dimensions)    
+                    swarm[j].updatePosition(bounds, problem_dimensions)
+
+                print(f"Current pos_best_g {pos_best_g}")
+                subgen+=1
+            
+            if is_insertable == False:
+                print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
+                continue
+                
+            # solution (attack)
+            insertToBox(mainBox, model, pos_best_g, model.modelNum)
+            mainBox.totalObjectVolume += volume
+            models_position.append(pos_best_g)
+            print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
+            input("Press enter to work on the next model ... ")
+
+        print(f"total object volume = {mainBox.totalObjectVolume} and box total volume = {mainBox.totalVolume}")
+        current_percentage = mainBox.totalObjectVolume/mainBox.totalVolume)*100
+        print(f"Current optimized space for box = {(current_percentage}%")
+
+        if float(best_percentage) == round(current_percentage, 1):
+            termination_counter+=1
+        else:
+            termination_counter = 0
+
+        if current_percentage > best_percentage:
+            best_mainBox = mainBox
+            best_models_inside = models_inside
+            best_models_position = models_position
+            best_percentage = current_percentage
+        
+        print(f">>>>>Generation {maingen} solution: {best_models_position}")
+        maingen+=1
+        input("Press enter to go back to menu .... ")
     
