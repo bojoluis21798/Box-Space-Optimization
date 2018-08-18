@@ -108,12 +108,13 @@ def optimize(models):
     maxIter = 30 
     numParticles = 30
     initial = [0,0,0]                                                               #initial location of particles
-    bounds = [(0,mainBox.length), (0,mainBox.width), (0,mainBox.height)]            #bounds for search space (min,max)
+    bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
 
     problem_dimensions = len(initial)
     vel_limit = int(mainBox.height * 0.10)
 
     for model in models:
+        is_insertable = True
         if model.id == sys.maxsize:
             continue
 
@@ -135,7 +136,7 @@ def optimize(models):
 
         swarm = []                                                              #locust swarm
         for i in range(0,numParticles):
-            swarm.append(LocustParticle(initial,problem_dimensions,vel_limit))
+            swarm.append(LocustParticle(initial,problem_dimensions,bounds,vel_limit))
         
         #verification
         i = 0
@@ -151,8 +152,12 @@ def optimize(models):
                 # gregarious phase - analysis part 1
                 if swarm[j].err_i < err_best_g or err_best_g == -1:
                     pos_best_g = list(swarm[j].position_i)
-                    err_best_g = float(swarm[j].err_i)
+                    err_best_g = int(swarm[j].err_i)
             
+            if err_best_g == sys.maxsize:
+                is_insertable = False
+                break
+
             # cycle through swarm and update velocities and position
             # gregarious phase - analysis part 2
             for j in range(0,numParticles):
@@ -162,6 +167,10 @@ def optimize(models):
             print(f"Current pos_best_g {pos_best_g}")
             i+=1
         
+        if is_insertable == False:
+            print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
+            continue
+            
         # solution (attack)
         insertToBox(mainBox, model, pos_best_g, model.modelNum)
         mainBox.totalObjectVolume += volume
