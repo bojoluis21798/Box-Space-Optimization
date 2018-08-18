@@ -153,6 +153,7 @@ def optimize(models):
                 print("=====================================================")
                 print(f"Generation # {maingen}{subgen}")
                 #insert locust work here on item
+                current_err_best = err_best_g
                 for j in range(0, numParticles):
                     swarm[j].addItem(model)
                     swarm[j].evaluate(objectiveFunctionSpace, mainBox)
@@ -163,8 +164,9 @@ def optimize(models):
                         pos_best_g = list(swarm[j].position_i)
                         err_best_g = int(swarm[j].err_i)
                         inside_termination_ctr = 0
-                    else:
-                        inside_termination_ctr+=1
+                    
+                if current_err_best == err_best_g:
+                    inside_termination_ctr+=1
                 
                 if err_best_g == sys.maxsize:
                     is_insertable = False
@@ -196,14 +198,13 @@ def optimize(models):
 
         if float(best_percentage) == round(current_percentage, 1):
             termination_counter+=1
-        else:
-            termination_counter = 0
 
         if current_percentage > best_percentage:
             best_mainBox = mainBox
             best_models_inside = models_inside
             best_models_position = models_position
             best_percentage = current_percentage
+            termination_counter = 0
         
         print(f">>>>>Generation {maingen} solution: {best_models_position}")
         maingen+=1
