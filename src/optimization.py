@@ -167,7 +167,9 @@ def optimize(models):
         mainBox.totalObjectVolume += volume
         models_position.append(pos_best_g)
         print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
+        input("Press enter to work on the next model ... ")
 
-    print(f"Current optimized space for box = {mainBox.totalObjectVolume/mainBox.totalVolume}%")
+    print(f"total object volume = {mainBox.totalObjectVolume} and box total volume = {mainBox.totalVolume}")
+    print(f"Current optimized space for box = {(mainBox.totalObjectVolume/mainBox.totalVolume)*100}%")
     input("Press enter to go back to menu .... ")
     

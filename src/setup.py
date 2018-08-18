@@ -57,7 +57,7 @@ def menu(models):
 
         # Optimize on optimize command
         if option == "o":
-            optimize()
+            optimize(models)
 
         # Display model info on display command
         elif option.isdigit():
