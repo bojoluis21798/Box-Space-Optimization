@@ -1,6 +1,5 @@
 from os import listdir, system
-from os.path import isfile, join, exists, makedirs
-from src.convert import convert
+from os.path import isfile, join, exists
 from src.model import Model
 from src.optimization import optimize
 import math
@@ -18,8 +17,6 @@ def menu(models):
     i = 0
     spin = None
     def displayModels(idx = 0):
-        """ Show models models """
-
         # hide menu items
         menu.hide()
 
@@ -59,7 +56,7 @@ def menu(models):
 
             info.removeNode()
             currentModel.removeNode()
-            displayModels(i)
+            return displayModels(i)
 
         def moveNext():
             moveModel(1)
@@ -79,6 +76,7 @@ def menu(models):
             currentModel.removeNode()
             taskMgr.remove(spin)
             menu.show()
+            return
 
         # go back to main menu
         exit = DirectButton(text = "Exit to main menu",
@@ -86,12 +84,10 @@ def menu(models):
 
         # set model position and scale
         currentModel.setPos(0,2,0)
-        highestDim = max(models[idx].dimX, models[idx].dimY, models[idx].dimZ)
-        currentModel.setScale(50/(highestDim/models[idx].unit))
 
         # lights
         dlight = DirectionalLight('dlight')
-        dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.7))
+        dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.3))
         dlnp = render.attachNewNode(dlight)
         dlnp.lookAt(currentModel)
         render.setLight(dlnp)
