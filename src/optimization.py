@@ -196,7 +196,7 @@ def optimize(models):
         current_percentage = mainBox.totalObjectVolume/mainBox.totalVolume)*100
         print(f"Current optimized space for box = {(current_percentage}%")
 
-        if float(best_percentage) == round(current_percentage, 1):
+        if float(best_percentage) == float(current_percentage):
             termination_counter+=1
 
         if current_percentage > best_percentage:
