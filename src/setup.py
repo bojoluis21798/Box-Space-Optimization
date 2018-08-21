@@ -13,10 +13,9 @@ def menu(models):
     """GUI Menu to display models and their attributes """
 
     menu = aspect2d.attachNewNode("Menu")
-
-    i = 0
+    i = 1
     spin = None
-    def displayModels(idx = 0):
+    def displayModels(idx = 1):
         # hide menu items
         menu.hide()
 
@@ -209,6 +208,10 @@ def modelsLoad():
 
     # Make instance objects of each model and store to array
     models = []
+
+    #initialize index 0 as a null object
+    models.append(Model(""))
+
     for fn in filenames:
         models.append(Model(fn))
 
