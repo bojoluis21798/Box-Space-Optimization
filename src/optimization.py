@@ -12,6 +12,7 @@ from src.locustParticle import LocustParticle
 def isSpaceAvailable(item, position, box):
     #get item dimensions
     #compare with position if available in box
+    # add comparison to different object positions
     ret = False
     posX = position[0]
     posY = position[1]
