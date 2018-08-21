@@ -1,6 +1,7 @@
 import bpy
 import sys
 import os
+from src.model import Model
 
 #directory path to convert
 convertdir = sys.argv[1]
@@ -14,18 +15,20 @@ filenames = [f for f in os.listdir(convertdir+'/') if os.path.isfile(convertdir+
 if not os.path.exists(exportdir):
     os.path.makedirs(exportdir+"/tmp")
 
-
 # convert files using blender
-
-# delete cube
-bpy.ops.object.delete()
-
 # define function for converting
 def convert(fn):
+    model = Model(fn)
+    # clear scene
+    bpy.ops.object.delete(use_global = True)
     # import obj
     bpy.ops.import_scene.obj(filepath = convertdir+"/"+fn)
     # get selected object
     obj = bpy.context.selected_objects[0]
+    # scale object
+    obj.scale[0] = model.unit
+    obj.scale[1] = model.unit
+    obj.scale[2] = model.unit
     # set origin
     bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY")
     # change location to (0,0,0)
@@ -46,13 +49,13 @@ def convert(fn):
     # modify material
     for mtl in bpy.data.materials:
         mtl.translucency = 1
-    # enable directx export
-    bpy.ops.wm.addon_enable(module = "io_scene_x")
     # save .x
     bpy.ops.export_scene.x(filepath = exportdir+"/"+modelId)
     # delete temp
     os.remove(exportdir+"/tmp/"+modelId+".dae")
 
+# enable directx export
+bpy.ops.wm.addon_enable(module = "io_scene_x")
 # convert all files
 for fn in filenames:
     convert(fn)
