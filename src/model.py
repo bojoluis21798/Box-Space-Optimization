@@ -1,12 +1,10 @@
 import csv
 
-csv_file = csv.reader(open('./data/metadata.csv', 'r'), delimiter=',')
-
 class Model:
     def __init__(self, filename):
+        csv_file = csv.reader(open('./data/metadata.csv', 'r'), delimiter=',')
         # id is filename
         self.id = 'wss.'+str.split(filename, '.')[0]
-
         self.filename = 'data/models/'+filename
 
         # find row based on id in metadata
@@ -18,13 +16,14 @@ class Model:
                 self.up = row[4]
                 self.front = row[5]
 
-                if row[6] == "": row[6] = 1
+                if row[6] == "":
+                    self.unit = 1
+                else:
+                    self.unit = float(row[6])
 
-                self.unit = float(row[6])
-
-                self.dimX = float(str.split(row[7], ',')[0])
-                self.dimY = float(str.split(row[7], ',')[1])
-                self.dimZ = float(str.split(row[7], ',')[2])
+                self.dimX = 0 if row[7] == "" else float(str.split(row[7], ',')[0])
+                self.dimY = 0 if row[7] == "" else float(str.split(row[7], ',')[1])
+                self.dimZ = 0 if row[7] == "" else float(str.split(row[7], ',')[2])
 
                 self.isContainer = True if row[8] == "TRUE" else False
                 self.surfaceVolume = 0.0 if row[9] == "" else float(row[9])
