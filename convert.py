@@ -30,7 +30,7 @@ def convert(fn):
     obj.scale[1] = model.unit
     obj.scale[2] = model.unit
     # set origin
-    bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY")
+    bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = 'BOUNDS')
     # change location to (0,0,0)
     obj.location = 0,0,0
     # modify material
