@@ -115,10 +115,11 @@ def optimize(models):
         models_position = [None]
         mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
         
+        sample_solution = [0,0,0]
         numParticles = 30
         bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
 
-        problem_dimensions = len(initial)
+        problem_dimensions = len(sample_solution)
         vel_limit = int(mainBox.height * 0.10)
 
         for model in models:
