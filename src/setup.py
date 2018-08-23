@@ -16,6 +16,7 @@ def menu(models):
     menu = aspect2d.attachNewNode("Menu")
     i = 1
     spin = None
+    chosenModels = {}
     def displayModels(idx = 1):
         # hide menu items
         menu.hide()
@@ -71,6 +72,17 @@ def menu(models):
         pos=(1.2,0,-0.9), parent=info, scale=.05, command = moveNext)
         backButton = DirectButton(text = "Back",
         pos=(-1.2,0,-0.9), parent=info, scale=.05, command = movePrevious)
+
+        chosenStatus = "Select model"
+        def chooseModel(status):
+            if(status):
+                chosenModels[idx] = models[idx]
+            else:
+                del chosenModels[idx]
+
+        selectButton = DirectCheckButton(text = chosenStatus, scale = 0.1,
+            command = chooseModel, pos = (0,0,-0.8), parent = info,
+            indicatorValue = idx in chosenModels)
 
         # define callback to go to main menu
         def goToMainMenu():
