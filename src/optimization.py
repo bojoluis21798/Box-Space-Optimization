@@ -116,7 +116,6 @@ def optimize(models):
         mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
         
         numParticles = 30
-        initial = [0,0,0]                                                               #initial location of particles
         bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
 
         problem_dimensions = len(initial)
@@ -145,7 +144,7 @@ def optimize(models):
 
             swarm = []                                                              #locust swarm
             for i in range(0,numParticles):
-                swarm.append(LocustParticle(initial,problem_dimensions,bounds,vel_limit))
+                swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
             
             #verification
             inside_termination_ctr = 0
@@ -209,5 +208,9 @@ def optimize(models):
         
         print(f">>>>>Generation {maingen} solution: {best_models_position}")
         maingen+=1
-        input("Press enter to go back to menu .... ")
+
+    print(f"Best box space optimization: {best_percentage}")
+    print(f"Models position: {best_models_position}")
+    print(f"Models inserted: {best_models_inside.length - 1})
+    input("Press enter to go back to menu .... ")
     
