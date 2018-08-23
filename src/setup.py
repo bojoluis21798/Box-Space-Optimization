@@ -160,6 +160,15 @@ def menu(models):
         pos = (0,0,0.3), parent = boxParams)
 
         def optimize():
+            # convert chosenModels to list
+            modelsList = []
+            modelsList.append(Model(""))
+            for i in chosenModels:
+                modelsList.append(chosenModels[i])
+
+            # call optimize model here
+            ###
+
             nonlocal length, width, height
             length = float(length.get()) * 0.0254 # convert to meters
             width = float(width.get()) * 0.0254 # convert to meters
