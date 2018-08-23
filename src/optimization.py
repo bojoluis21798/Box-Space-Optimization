@@ -137,7 +137,6 @@ def optimize(models):
                 print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
                 continue
             
-            models_inside.append(model)
             print(f"Optimizing on {model.name} with Model Num = {model.modelNum}")
             # identification (initialization part two)
             err_best_g = -1                                                         #global best error
@@ -162,6 +161,7 @@ def optimize(models):
                     # update global bests
                     # gregarious phase - analysis part 1
                     if swarm[j].err_i < err_best_g or err_best_g == -1:
+                        model = swarm[j].item                                   # in case the particle updated the model attributes
                         pos_best_g = list(swarm[j].position_i)
                         err_best_g = int(swarm[j].err_i)
                         inside_termination_ctr = 0
@@ -187,6 +187,7 @@ def optimize(models):
                 continue
                 
             # solution (attack)
+            models_inside.append(model)
             insertToBox(mainBox, model, pos_best_g, model.modelNum)
             mainBox.totalObjectVolume += volume
             models_position.append(pos_best_g)
