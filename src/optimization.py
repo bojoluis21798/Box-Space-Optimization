@@ -18,7 +18,7 @@ def isSpaceAvailable(item, position, box):
     posY = position[1]
     posZ = position[2]
     #check if not over the box dimensions
-    if posX + item.dimX < box.length) and posY + item.dimY < box.width  and posZ < box.height :
+    if posX + item.dimX < box.length and posY + item.dimY < box.width  and posZ < box.height :
         limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
@@ -193,8 +193,8 @@ def optimize(models):
             input("Press enter to work on the next model ... ")
 
         print(f"total object volume = {mainBox.totalObjectVolume} and box total volume = {mainBox.totalVolume}")
-        current_percentage = mainBox.totalObjectVolume/mainBox.totalVolume)*100
-        print(f"Current optimized space for box = {(current_percentage}%")
+        current_percentage = (mainBox.totalObjectVolume/mainBox.totalVolume)*100
+        print(f"Current optimized space for box = {(current_percentage)}%")
 
         if float(best_percentage) == float(current_percentage):
             termination_counter+=1
@@ -211,6 +211,6 @@ def optimize(models):
 
     print(f"Best box space optimization: {best_percentage}")
     print(f"Models position: {best_models_position}")
-    print(f"Models inserted: {best_models_inside.length - 1})
+    print(f"Models inserted: {best_models_inside.length - 1}")
     input("Press enter to go back to menu .... ")
     
