@@ -151,7 +151,7 @@ def optimize(models):
             subgen = 0
             while inside_termination_ctr < 10:
                 print("=====================================================")
-                print(f"Generation # {maingen}{subgen}")
+                print(f"Generation # {maingen}-{subgen}")
                 #insert locust work here on item
                 current_err_best = err_best_g
                 for j in range(0, numParticles):
@@ -180,6 +180,7 @@ def optimize(models):
                     swarm[j].updatePosition(bounds, problem_dimensions)
 
                 print(f"Current pos_best_g {pos_best_g}")
+                print(f"Current err_best: {err_best_g}")
                 subgen+=1
             
             if is_insertable == False:
@@ -192,11 +193,11 @@ def optimize(models):
             mainBox.totalObjectVolume += volume
             models_position.append(pos_best_g)
             print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
-            input("Press enter to work on the next model ... ")
 
         print(f"total object volume = {mainBox.totalObjectVolume} and box total volume = {mainBox.totalVolume}")
         current_percentage = (mainBox.totalObjectVolume/mainBox.totalVolume)*100
         print(f"Current optimized space for box = {(current_percentage)}%")
+        print(f"Number of loaded models over inserted: {len(models) -1} / {len(models_inside) -1}")
 
         if float(best_percentage) == float(current_percentage):
             termination_counter+=1
@@ -213,6 +214,6 @@ def optimize(models):
 
     print(f"Best box space optimization: {best_percentage}")
     print(f"Models position: {best_models_position}")
-    print(f"Models inserted: {best_models_inside.length - 1}")
+    print(f"Models inserted: {len(best_models_inside) - 1}")
     input("Press enter to go back to menu .... ")
     
