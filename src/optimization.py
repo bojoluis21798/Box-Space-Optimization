@@ -163,31 +163,37 @@ def getArrangementBasedFromState(item, baseX, baseY, baseZ):
     limitY = baseY + item.dimY
     limitZ = baseZ + item.dimZ
     #insert transformation here
+    item.rotation = [0,0,0]
     if item.pos_state[0] == "front2":
         limitX = baseX + item.dimZ
         limitY = baseY + item.dimY
         limitZ = baseZ + item.dimX
         #insert transformation here
+        item.rotation = [0,90,0]
     elif item.pos_state[0] == "side1":
         limitX = baseX + item.dimY
         limitY = baseY + item.dimX
         limitZ = baseZ + item.dimZ
         #insert transformation here
+        item.rotation = [0,0,90]
     elif item.pos_state[0] == "side2":
         limitX = baseX + item.dimZ
         limitY = baseY + item.dimX
         limitZ = baseZ + item.dimY
         #insert transformation here
+        item.rotation = [90,0,90]
     elif item.pos_state[0] == "up1":
         limitX = baseX + item.dimY
         limitY = baseY + item.dimZ
         limitZ = baseZ + item.dimX
         #insert transformation here
+        item.rotation = [90,90,0]
     elif item.pos_state[0] == "up2":
         limitX = baseX + item.dimX
         limitY = baseY + item.dimZ
         limitZ = baseZ + item.dimY
         #insert transformation here
+        item.rotation = [90,0,0]
         
     return limitX, limitY, limitZ
 
