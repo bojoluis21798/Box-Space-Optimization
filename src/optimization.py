@@ -12,17 +12,59 @@ from src.locustParticle import LocustParticle
 def isSpaceAvailable(item, position, box):
     #get item dimensions
     #compare with position if available in box
-    # add comparison to different object positions
     ret = False
     posX = position[0]
     posY = position[1]
     posZ = position[2]
     #check if not over the box dimensions
-    if posX + item.dimX < box.length and posY + item.dimY < box.width  and posZ < box.height :
+    # x,y,z position (front - 1)
+    if posX + item.dimX < box.length and posY + item.dimY < box.width and posZ + item.dimZ < box.height :
         limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
-            ret = True       
+            item.pos_state.append("front1")
+            ret = True
+    
+    # z,y,x position (front - 2)
+    if posX + item.dimZ < box.length and posY + item.dimY < box.width and posZ + item.dimX < box.height :
+        limit = box.boxgrid[posX:posX + item.dimZ, posY:posY + item.dimY, posZ:posZ + item.dimX]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("front2")
+            ret = True
+
+    # y,x,z position (side - 1)
+    if posX + item.dimY < box.length and posY + item.dimX < box.width and posZ + item.dimZ < box.height :
+        limit = box.boxgrid[posX:posX + item.dimY, posY:posY + item.dimX, posZ:posZ + item.dimZ]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("side1")
+            ret = True
+
+    # z,x,y position (side - 2)
+    if posX + item.dimZ < box.length and posY + item.dimX < box.width and posZ + item.dimY < box.height :
+        limit = box.boxgrid[posX:posX + item.dimZ, posY:posY + item.dimX, posZ:posZ + item.dimY]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("side2")
+            ret = True
+    
+    # y,z,x position (up - 1)
+    if posX + item.dimY < box.length and posY + item.dimZ < box.width and posZ + item.dimX < box.height :
+        limit = box.boxgrid[posX:posX + item.dimY, posY:posY + item.dimZ, posZ:posZ + item.dimX]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("up1")
+            ret = True
+    
+    # x,z,y position (up - 2)
+    if posX + item.dimX < box.length and posY + item.dimZ < box.width and posZ + item.dimY < box.height :
+        limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimZ, posZ:posZ + item.dimY]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("up2")
+            ret = True
+       
     return ret
 
 def isOverBound(item, position, box):
