@@ -21,6 +21,7 @@ class Model:
                 self.category = row[1]
                 self.up = row[4]
                 self.front = row[5]
+                self.rotation = [0,0,0]
 
                 if row[6] == "":
                     self.unit = 1
@@ -31,10 +32,11 @@ class Model:
                 self.dimY = int( float(str.split(row[7], ',')[1]) * 10)     # assuming dimY is cm and multiply it with 10 to mm
                 self.dimZ = int( float(str.split(row[7], ',')[2]) * 10)     # assuming dimZ is cm and multiply it with 10 to mm
                 self.isContainer = True if row[8] == "TRUE" else False
-                self.surfaceVolume = 0.0 if row[9] == "" else (float(self.dimX * self.dimY * self.dimZ)) #questionable
-                self.solidVolume = 0.0 if row[10] == "" else (float(self.dimX * self.dimY * self.dimZ))  #questionable
+                self.surfaceVolume = (float(self.dimX * self.dimY * self.dimZ)) #questionable
+                self.solidVolume = (float(self.dimX * self.dimY * self.dimZ))  #questionable
                 self.supportSurfaceArea = 0.0 if row[11] == "" else float(row[11])
                 self.weight = 0.0 if row[12] == "" else float(row[12])
                 self.staticFriction = 0.0 if row[13] == "" else float(row[13])
+                self.pos_state = []
 
                 break

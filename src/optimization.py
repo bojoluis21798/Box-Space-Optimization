@@ -12,17 +12,59 @@ from src.locustParticle import LocustParticle
 def isSpaceAvailable(item, position, box):
     #get item dimensions
     #compare with position if available in box
-    # add comparison to different object positions
     ret = False
     posX = position[0]
     posY = position[1]
     posZ = position[2]
     #check if not over the box dimensions
-    if posX + item.dimX < box.length and posY + item.dimY < box.width  and posZ < box.height :
+    # x,y,z position (front - 1)
+    if posX + item.dimX < box.length and posY + item.dimY < box.width and posZ + item.dimZ < box.height :
         limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
-            ret = True       
+            item.pos_state.append("front1")
+            ret = True
+    
+    # z,y,x position (front - 2)
+    if posX + item.dimZ < box.length and posY + item.dimY < box.width and posZ + item.dimX < box.height :
+        limit = box.boxgrid[posX:posX + item.dimZ, posY:posY + item.dimY, posZ:posZ + item.dimX]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("front2")
+            ret = True
+
+    # y,x,z position (side - 1)
+    if posX + item.dimY < box.length and posY + item.dimX < box.width and posZ + item.dimZ < box.height :
+        limit = box.boxgrid[posX:posX + item.dimY, posY:posY + item.dimX, posZ:posZ + item.dimZ]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("side1")
+            ret = True
+
+    # z,x,y position (side - 2)
+    if posX + item.dimZ < box.length and posY + item.dimX < box.width and posZ + item.dimY < box.height :
+        limit = box.boxgrid[posX:posX + item.dimZ, posY:posY + item.dimX, posZ:posZ + item.dimY]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("side2")
+            ret = True
+    
+    # y,z,x position (up - 1)
+    if posX + item.dimY < box.length and posY + item.dimZ < box.width and posZ + item.dimX < box.height :
+        limit = box.boxgrid[posX:posX + item.dimY, posY:posY + item.dimZ, posZ:posZ + item.dimX]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("up1")
+            ret = True
+    
+    # x,z,y position (up - 2)
+    if posX + item.dimX < box.length and posY + item.dimZ < box.width and posZ + item.dimY < box.height :
+        limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimZ, posZ:posZ + item.dimY]
+        #check if all in splice is 0, otherwise return false
+        if np.count_nonzero(limit) == 0:
+            item.pos_state.append("up2")
+            ret = True
+       
     return ret
 
 def isOverBound(item, position, box):
@@ -30,26 +72,56 @@ def isOverBound(item, position, box):
     posX = position[0]
     posY = position[1]
     posZ = position[2]
+    #can be made into one condition but is not very readable
+    # x,y,z position (front - 1)
     if (posX < box.length and posX + item.dimX < box.length) and (posY < box.width and posY + item.dimY < box.width) and (posZ < box.height and posZ + item.dimZ < box.height):
         ret = False
-    
+    # z,y,x position (front - 2)
+    elif (posX < box.length and posX + item.dimZ < box.length) and (posY < box.width and posY + item.dimY < box.width) and (posZ < box.height and posZ + item.dimX < box.height):
+        ret = False
+    # y,x,z position (side - 1)
+    elif (posX < box.length and posX + item.dimY < box.length) and (posY < box.width and posY + item.dimX < box.width) and (posZ < box.height and posZ + item.dimZ < box.height):
+        ret = False
+    # z,x,y position (side - 2)
+    elif (posX < box.length and posX + item.dimZ < box.length) and (posY < box.width and posY + item.dimX < box.width) and (posZ < box.height and posZ + item.dimY < box.height):
+        ret = False
+    # y,z,x position (up - 1)
+    elif (posX < box.length and posX + item.dimY < box.length) and (posY < box.width and posY + item.dimZ < box.width) and (posZ < box.height and posZ + item.dimX < box.height):
+        ret = False
+    # x,z,y position (up - 2)
+    elif (posX < box.length and posX + item.dimX < box.length) and (posY < box.width and posY + item.dimZ < box.width) and (posZ < box.height and posZ + item.dimY < box.height):
+        ret = False
+
     return ret
 
- # refer to fitness equation of document
- # stop the optimization if box is at 100% or near but cant add any more object
-def terminationCriteria(item, box):
+# counts the number of free space around a position
+def countFreeSpace(box, position, dimX, dimY, dimZ):
+    freeSpace = 0
+    x,y,z = position[0], position[1], position[2]
+    sideArea_1  = box.boxgrid[x + dimX : box.length, y : y + dimY, z : z + dimZ]
+    freeSpace   += (sideArea_1.size - np.count_nonzero(sideArea_1))
 
-    # checks if item is container-like or not and gets appropriate volume
-    addedVolume  = (item.surfaceVolume + box.totalObjectVolume) if item.isContainer == True else (item.solidVolume + box.totalObjectVolume)
-    
-    #maybe add insert operation here? or just do it to the calling function
+    sideArea_3  = box.boxgrid[x : 0, y : y + dimY, z : z + dimZ]                                    # opposite of 1
+    freeSpace   += (sideArea_3.size - np.count_nonzero(sideArea_3))
 
-    #check if addedVolume of objects inside box is less than volume of box
-    return (addedVolume/box.totalVolume) if addedVolume <= box.totalVolume else -1
+    sideArea_2  = box.boxgrid[x : x + dimX, y : y + dimY, z + dimZ : box.height]
+    freeSpace   += (sideArea_2.size - np.count_nonzero(sideArea_2))
+
+    sideArea_4  = box.boxgrid[x : x + dimX, y : y + dimY, z : 0]                                    # opposite of 2
+    freeSpace   += (sideArea_4.size - np.count_nonzero(sideArea_4))
+
+    bottomArea  = box.boxgrid[x : x + dimX, y + dimY : box.width, z: z + dimZ]
+    freeSpace   += (bottomArea.size - np.count_nonzero(bottomArea))
+
+    topArea     = box.boxgrid[x : x + dimX, y : 0, z : z + dimZ]
+    freeSpace   += (topArea.size - np.count_nonzero(topArea))
+
+    # return number of empty cells found (mm)
+    return freeSpace
 
 # this is the actual fitness equation for the optimization
 def objectiveFunctionSpace(item, pos, box):
-    freeSpace = 0
+    freeSpace = sys.maxsize
     x,y,z = pos[0], pos[1], pos[2]
     
     if isOverBound(item, pos, box):
@@ -57,33 +129,79 @@ def objectiveFunctionSpace(item, pos, box):
 
     if not isSpaceAvailable(item, pos, box):
         return sys.maxsize
+    
+    final_state = "front1"
+    # enter comparison of pos_state heree
+    for state in item.pos_state:
+        temp_spaceholder = 0
 
-    sideArea_1  = box.boxgrid[x + item.dimX : box.length, y : y + item.dimY, z : z + item.dimZ]
-    freeSpace   += (sideArea_1.size - np.count_nonzero(sideArea_1))
+        if state == "front1":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimX, item.dimY, item.dimZ)
+        elif state == "front2":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimZ, item.dimY, item.dimX)
+        elif state == "side1":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimY, item.dimX, item.dimZ)
+        elif state == "side2":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimZ, item.dimX, item.dimY)
+        elif state == "up1":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimY, item.dimZ, item.dimX)
+        elif state == "up2":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimX, item.dimZ, item.dimY)
+        
+        if temp_spaceholder < freeSpace:
+            freeSpace = temp_spaceholder
+            final_state = state
+            # put adjustment of up and front here
 
-    sideArea_3  = box.boxgrid[x : 0, y : y + item.dimY, z : z + item.dimZ]                                 # opposite of 1
-    freeSpace   += (sideArea_3.size - np.count_nonzero(sideArea_3))
+    item.pos_state.clear()
+    item.pos_state.append(final_state)
 
-    sideArea_2  = box.boxgrid[x : x + item.dimX, y : y + item.dimY, z + item.dimZ : box.height]
-    freeSpace   += (sideArea_2.size - np.count_nonzero(sideArea_2))
-
-    sideArea_4  = box.boxgrid[x : x + item.dimX, y : y + item.dimY, z : 0]                               # opposite of 2
-    freeSpace   += (sideArea_4.size - np.count_nonzero(sideArea_4))
-
-    bottomArea  = box.boxgrid[x : x + item.dimX, y + item.dimY : box.width, z: z + item.dimZ]
-    freeSpace   += (bottomArea.size - np.count_nonzero(bottomArea))
-
-    topArea     = box.boxgrid[x : x + item.dimX, y : 0, z : z + item.dimZ]
-    freeSpace   += (topArea.size - np.count_nonzero(topArea))
-
-    # return number of empty cells found (mm)
     return freeSpace
+
+def getArrangementBasedFromState(item, baseX, baseY, baseZ):
+    limitX = baseX + item.dimX
+    limitY = baseY + item.dimY
+    limitZ = baseZ + item.dimZ
+    #insert transformation here
+    item.rotation = [0,0,0]
+    if item.pos_state[0] == "front2":
+        limitX = baseX + item.dimZ
+        limitY = baseY + item.dimY
+        limitZ = baseZ + item.dimX
+        #insert transformation here
+        item.rotation = [0,90,0]
+    elif item.pos_state[0] == "side1":
+        limitX = baseX + item.dimY
+        limitY = baseY + item.dimX
+        limitZ = baseZ + item.dimZ
+        #insert transformation here
+        item.rotation = [0,0,90]
+    elif item.pos_state[0] == "side2":
+        limitX = baseX + item.dimZ
+        limitY = baseY + item.dimX
+        limitZ = baseZ + item.dimY
+        #insert transformation here
+        item.rotation = [90,0,90]
+    elif item.pos_state[0] == "up1":
+        limitX = baseX + item.dimY
+        limitY = baseY + item.dimZ
+        limitZ = baseZ + item.dimX
+        #insert transformation here
+        item.rotation = [90,90,0]
+    elif item.pos_state[0] == "up2":
+        limitX = baseX + item.dimX
+        limitY = baseY + item.dimZ
+        limitZ = baseZ + item.dimY
+        #insert transformation here
+        item.rotation = [90,0,0]
+        
+    return limitX, limitY, limitZ
 
 # insert an item inside the box
 # dont need to return anything since arrays are passed by reference
-def insertToBox(box, item, pos, itemNum):    
+def insertToBox(box, item, pos, itemNum):
     x,y,z = pos[0], pos[1], pos[2]
-    limitX, limitY, limitZ = x + item.dimX, y + item.dimY, z + item.dimZ
+    limitX, limitY, limitZ = getArrangementBasedFromState(item,x,y,z)
     while x < limitX:
         y = pos[1]
         while y < limitY:
@@ -214,6 +332,10 @@ def optimize(models):
 
     print(f"Best box space optimization: {best_percentage}")
     print(f"Models position: {best_models_position}")
-    print(f"Models inserted: {len(best_models_inside) - 1}")
-    input("Press enter to go back to menu .... ")
+    print(f"Number of loaded models over inserted: {len(models) -1} / {len(best_models_inside) -1}")
+    states = [best_models_inside[i].pos_state for i in range(1,len(best_models_inside))]
+    print(f" states: {states}")
+    input("Press enter to visualize results ")
+
+    #return best_mainBox, best_mdoels_inside, best_models_position
     
