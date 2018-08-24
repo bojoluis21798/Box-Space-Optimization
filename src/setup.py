@@ -167,6 +167,7 @@ def menu(models):
                 modelsList.append(chosenModels[i])
 
             # call optimize model here
+            optimize(modelsList)
             ###
 
             nonlocal length, width, height
