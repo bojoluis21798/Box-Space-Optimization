@@ -161,6 +161,7 @@ def menu(models):
 
         # For the actual displaying
         def optimizeDisplay():
+            modelsNode = render.attachNewNode("ModelSNode")
             # convert chosenModels to list
             modelsList = []
             modelsList.append(Model(""))
@@ -194,23 +195,25 @@ def menu(models):
             # load box to panda
             box = loader.loadModel('./data/box.x')
 
-            # box = loader.loadModel("data/box.x")
-            # box.setScale(length/2, width/2, height/2)
-            # box.setPos(0,2,0)
-            # box.reparentTo(render)
+            def exitToMainMenu():
+                exitButton.removeNode()
+                box.removeNode()
+                modelsNode.removeNode()
+                menu.show()
+                return
 
-            model = loader.loadModel(models[2].filename)
-            model.setPos(box.getX(), box.getY(), box.getZ())
+            # exit button
+            exitButton = DirectButton(text = "Exit to main menu",
+                pos = (0,0,-0.8), scale = 0.1, command = exitToMainMenu)
 
             # lights
             dlight = DirectionalLight('dlight')
             dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.3))
             dlnp = render.attachNewNode(dlight)
-            dlnp.lookAt(model)
+            dlnp.lookAt(box)
             render.setLight(dlnp)
 
             box.reparentTo(render)
-            model.reparentTo(render)
 
             boxParams.removeNode()
 
