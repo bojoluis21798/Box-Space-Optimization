@@ -169,7 +169,7 @@ def menu(models):
                 modelsList.append(chosenModels[i])
 
             # call optimize model here
-            optimize(modelsList)
+            # optimize(modelsList)
             ###
 
             nonlocal length, width, height
@@ -194,7 +194,7 @@ def menu(models):
 
             # load box to panda
             box = loader.loadModel('./data/box.x')
-
+            box.setPos(0,5,0)
             def exitToMainMenu():
                 exitButton.removeNode()
                 box.removeNode()
@@ -212,6 +212,8 @@ def menu(models):
             dlnp = render.attachNewNode(dlight)
             dlnp.lookAt(box)
             render.setLight(dlnp)
+
+            camera.setPos(0,-10,0)
 
             box.reparentTo(render)
 
