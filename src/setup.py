@@ -159,6 +159,7 @@ def menu(models):
         height = DirectEntry(scale=.05, command=setHeight, numLines = 1, focus=1,
         pos = (0,0,0.3), parent = boxParams)
 
+        # For the actual displaying
         def optimizeDisplay():
             # convert chosenModels to list
             modelsList = []
@@ -230,7 +231,7 @@ def menu(models):
 
     loadedModels = DirectButton(text = "View Loaded Models",
         pos=(0,0,0.3), parent=menu, scale=.05, command = displayModels)
-    optimize = DirectButton(text = "Optimize Loaded Models",
+    optimizeDirect = DirectButton(text = "Optimize Loaded Models",
         pos=(0,0,0.2), parent=menu, scale=.05, command = displayOptimize)
 
     def exitApp():
