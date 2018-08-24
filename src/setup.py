@@ -8,6 +8,7 @@ from direct.gui.OnscreenText import OnscreenText
 from direct.gui.DirectGui import *
 from panda3d.core import TextNode, DirectionalLight, VBase4, TransparencyAttrib
 from direct.task import Task
+import bpy
 
 def menu(models):
     """GUI Menu to display models and their attributes """
@@ -15,6 +16,7 @@ def menu(models):
     menu = aspect2d.attachNewNode("Menu")
     i = 1
     spin = None
+    chosenModels = {}
     def displayModels(idx = 1):
         # hide menu items
         menu.hide()
@@ -50,8 +52,10 @@ def menu(models):
 
             if inc == 1:
                 i = (i+inc)%len(models)
+                if i == 0:
+                    i = 1
             elif inc == -1:
-                i = i - 1 if (i-1) > -1 else len(models)-1
+                i = i - 1 if (i-1) > 0 else len(models)-1
 
             info.removeNode()
             currentModel.removeNode()
@@ -68,6 +72,17 @@ def menu(models):
         pos=(1.2,0,-0.9), parent=info, scale=.05, command = moveNext)
         backButton = DirectButton(text = "Back",
         pos=(-1.2,0,-0.9), parent=info, scale=.05, command = movePrevious)
+
+        chosenStatus = "Select model"
+        def chooseModel(status):
+            if(status):
+                chosenModels[idx] = models[idx]
+            else:
+                del chosenModels[idx]
+
+        selectButton = DirectCheckButton(text = chosenStatus, scale = 0.1,
+            command = chooseModel, pos = (0,0,-0.8), parent = info,
+            indicatorValue = idx in chosenModels)
 
         # define callback to go to main menu
         def goToMainMenu():
@@ -144,34 +159,62 @@ def menu(models):
         height = DirectEntry(scale=.05, command=setHeight, numLines = 1, focus=1,
         pos = (0,0,0.3), parent = boxParams)
 
-        def optimize():
+        def optimizeDisplay():
+            # convert chosenModels to list
+            modelsList = []
+            modelsList.append(Model(""))
+            for i in chosenModels:
+                modelsList.append(chosenModels[i])
+
+            # call optimize model here
+            optimize(modelsList)
+            ###
+
             nonlocal length, width, height
             length = float(length.get()) * 0.0254 # convert to meters
             width = float(width.get()) * 0.0254 # convert to meters
             height = float(height.get()) * 0.0254 # convert to meters
 
-            box = loader.loadModel("data/box.x")
-            box.setScale(length/2, width/2, height/2)
-            box.setPos(0,2,0)
+            # create box using blender
+            box = bpy.context.selected_objects[0]
+            print(box)
+            for mtl in bpy.data.materials:
+                mtl.use_transparency = True
+                mtl.alpha = 0.2
+            box.scale[0] = length/2
+            box.scale[1] = width/2
+            box.scale[2] = height/2
+            print([x for x in box.scale])
+            bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY")
+            box.location = 0,0,0
+            bpy.ops.wm.addon_enable(module = "io_scene_x")
+            bpy.ops.export_scene.x(filepath = './data/box')
+
+            # load box to panda
+            box = loader.loadModel('./data/box.x')
+
+            # box = loader.loadModel("data/box.x")
+            # box.setScale(length/2, width/2, height/2)
+            # box.setPos(0,2,0)
+            # box.reparentTo(render)
+
+            model = loader.loadModel(models[2].filename)
+            model.setPos(box.getX(), box.getY(), box.getZ())
+
+            # lights
+            dlight = DirectionalLight('dlight')
+            dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.3))
+            dlnp = render.attachNewNode(dlight)
+            dlnp.lookAt(model)
+            render.setLight(dlnp)
+
             box.reparentTo(render)
-
-            # model = loader.loadModel(models[0].filename)
-            # model.setScale(models[0].unit)
-            # model.setPos(box.getX()-2, box.getY(), box.getZ())
-
-            # # lights
-            # dlight = DirectionalLight('dlight')
-            # dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.7))
-            # dlnp = render.attachNewNode(dlight)
-            # dlnp.lookAt(model)
-            # render.setLight(dlnp)
-
             model.reparentTo(render)
 
             boxParams.removeNode()
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
-        parent = boxParams, scale = 0.05, command = optimize)
+        parent = boxParams, scale = 0.05, command = optimizeDisplay)
 
         def goToMainMenu():
             boxParams.hide()
