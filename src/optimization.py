@@ -326,6 +326,6 @@ def optimize(models):
 
     print(f"Best box space optimization: {best_percentage}")
     print(f"Models position: {best_models_position}")
-    print(f"Models inserted: {len(best_models_inside) - 1}")
+    print(f"Number of loaded models over inserted: {len(models) -1} / {len(best_models_inside) -1}")
     input("Press enter to visualize results ")
     

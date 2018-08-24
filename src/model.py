@@ -21,6 +21,7 @@ class Model:
                 self.category = row[1]
                 self.up = row[4]
                 self.front = row[5]
+                self.rotation = [0,0,0]
 
                 if row[6] == "":
                     self.unit = 1
