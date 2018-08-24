@@ -167,12 +167,12 @@ def menu(models):
             modelsList.append(Model(""))
             for i in chosenModels:
                 modelsList.append(chosenModels[i])
-            
+
             for i in range(1,len(modelsList)):
                 modelsList[i].modelNum = i
 
             # call optimize model here
-            # optimize(modelsList)
+            mainBox, modelsInside, modelsPosition = optimize(modelsList)
             ###
 
             nonlocal length, width, height
