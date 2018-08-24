@@ -121,7 +121,7 @@ def countFreeSpace(box, position, dimX, dimY, dimZ):
 
 # this is the actual fitness equation for the optimization
 def objectiveFunctionSpace(item, pos, box):
-    freeSpace = 0
+    freeSpace = sys.maxsize
     x,y,z = pos[0], pos[1], pos[2]
     
     if isOverBound(item, pos, box):
@@ -129,26 +129,33 @@ def objectiveFunctionSpace(item, pos, box):
 
     if not isSpaceAvailable(item, pos, box):
         return sys.maxsize
+    
+    final_state = "front1"
+    # enter comparison of pos_state heree
+    for state in item.pos_state:
+        temp_spaceholder = 0
 
-    sideArea_1  = box.boxgrid[x + item.dimX : box.length, y : y + item.dimY, z : z + item.dimZ]
-    freeSpace   += (sideArea_1.size - np.count_nonzero(sideArea_1))
+        if state == "front1":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimX, item.dimY, item.dimZ)
+        elif state == "front2":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimZ, item.dimY, item.dimX)
+        elif state == "side1":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimY, item.dimX, item.dimZ)
+        elif state == "side2":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimZ, item.dimX, item.dimY)
+        elif state == "up1":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimY, item.dimZ, item.dimX)
+        elif state == "up2":
+            temp_spaceholder = countFreeSpace(box,pos, item.dimX, item.dimZ, item.dimY)
+        
+        if temp_spaceholder < freeSpace:
+            freeSpace = temp_spaceholder
+            final_state = state
+            # put adjustment of up and front here
 
-    sideArea_3  = box.boxgrid[x : 0, y : y + item.dimY, z : z + item.dimZ]                                 # opposite of 1
-    freeSpace   += (sideArea_3.size - np.count_nonzero(sideArea_3))
+    item.pos_state.clear()
+    item.pos_state.append(final_state)
 
-    sideArea_2  = box.boxgrid[x : x + item.dimX, y : y + item.dimY, z + item.dimZ : box.height]
-    freeSpace   += (sideArea_2.size - np.count_nonzero(sideArea_2))
-
-    sideArea_4  = box.boxgrid[x : x + item.dimX, y : y + item.dimY, z : 0]                               # opposite of 2
-    freeSpace   += (sideArea_4.size - np.count_nonzero(sideArea_4))
-
-    bottomArea  = box.boxgrid[x : x + item.dimX, y + item.dimY : box.width, z: z + item.dimZ]
-    freeSpace   += (bottomArea.size - np.count_nonzero(bottomArea))
-
-    topArea     = box.boxgrid[x : x + item.dimX, y : 0, z : z + item.dimZ]
-    freeSpace   += (topArea.size - np.count_nonzero(topArea))
-
-    # return number of empty cells found (mm)
     return freeSpace
 
 # insert an item inside the box
