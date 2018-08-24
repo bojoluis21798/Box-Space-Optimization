@@ -158,6 +158,33 @@ def objectiveFunctionSpace(item, pos, box):
 
     return freeSpace
 
+def getArrangementBasedFromState(item, baseX, baseY, baseZ):
+    limitX = baseX + item.dimX
+    limitY = baseY + item.dimY
+    limitZ = baseZ + item.dimZ
+    if item.pos_state[0] == "front2":
+        limitX = baseX + item.dimZ
+        limitY = baseY + item.dimY
+        limitZ = baseZ + item.dimX
+    elif item.pos_state[0] == "side1":
+        limitX = baseX + item.dimY
+        limitY = baseY + item.dimX
+        limitZ = baseZ + item.dimZ
+    elif item.pos_state[0] == "side2":
+        limitX = baseX + item.dimZ
+        limitY = baseY + item.dimX
+        limitZ = baseZ + item.dimY
+    elif item.pos_state[0] == "up1":
+        limitX = baseX + item.dimY
+        limitY = baseY + item.dimZ
+        limitZ = baseZ + item.dimX
+    elif item.pos_state[0] == "up2":
+        limitX = baseX + item.dimX
+        limitY = baseY + item.dimZ
+        limitZ = baseZ + item.dimY
+        
+    return limitX, limitY, limitZ
+
 # insert an item inside the box
 # dont need to return anything since arrays are passed by reference
 def insertToBox(box, item, pos, itemNum):    
