@@ -36,5 +36,6 @@ class Model:
                 self.supportSurfaceArea = 0.0 if row[11] == "" else float(row[11])
                 self.weight = 0.0 if row[12] == "" else float(row[12])
                 self.staticFriction = 0.0 if row[13] == "" else float(row[13])
+                self.pos_state = []
 
                 break
