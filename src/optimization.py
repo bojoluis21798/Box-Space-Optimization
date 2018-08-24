@@ -94,6 +94,31 @@ def isOverBound(item, position, box):
 
     return ret
 
+# counts the number of free space around a position
+def countFreeSpace(box, position, dimX, dimY, dimZ):
+    freeSpace = 0
+    x,y,z = position[0], position[1], position[2]
+    sideArea_1  = box.boxgrid[x + dimX : box.length, y : y + dimY, z : z + dimZ]
+    freeSpace   += (sideArea_1.size - np.count_nonzero(sideArea_1))
+
+    sideArea_3  = box.boxgrid[x : 0, y : y + dimY, z : z + dimZ]                                    # opposite of 1
+    freeSpace   += (sideArea_3.size - np.count_nonzero(sideArea_3))
+
+    sideArea_2  = box.boxgrid[x : x + dimX, y : y + dimY, z + dimZ : box.height]
+    freeSpace   += (sideArea_2.size - np.count_nonzero(sideArea_2))
+
+    sideArea_4  = box.boxgrid[x : x + dimX, y : y + dimY, z : 0]                                    # opposite of 2
+    freeSpace   += (sideArea_4.size - np.count_nonzero(sideArea_4))
+
+    bottomArea  = box.boxgrid[x : x + dimX, y + dimY : box.width, z: z + dimZ]
+    freeSpace   += (bottomArea.size - np.count_nonzero(bottomArea))
+
+    topArea     = box.boxgrid[x : x + dimX, y : 0, z : z + dimZ]
+    freeSpace   += (topArea.size - np.count_nonzero(topArea))
+
+    # return number of empty cells found (mm)
+    return freeSpace
+
 # this is the actual fitness equation for the optimization
 def objectiveFunctionSpace(item, pos, box):
     freeSpace = 0
