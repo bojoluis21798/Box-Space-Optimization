@@ -94,18 +94,6 @@ def isOverBound(item, position, box):
 
     return ret
 
- # refer to fitness equation of document
- # stop the optimization if box is at 100% or near but cant add any more object
-def terminationCriteria(item, box):
-
-    # checks if item is container-like or not and gets appropriate volume
-    addedVolume  = (item.surfaceVolume + box.totalObjectVolume) if item.isContainer == True else (item.solidVolume + box.totalObjectVolume)
-    
-    #maybe add insert operation here? or just do it to the calling function
-
-    #check if addedVolume of objects inside box is less than volume of box
-    return (addedVolume/box.totalVolume) if addedVolume <= box.totalVolume else -1
-
 # this is the actual fitness equation for the optimization
 def objectiveFunctionSpace(item, pos, box):
     freeSpace = 0
