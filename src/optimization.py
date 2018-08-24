@@ -336,4 +336,6 @@ def optimize(models):
     states = [best_models_inside[i].pos_state for i in range(1,len(best_models_inside))]
     print(f" states: {states}")
     input("Press enter to visualize results ")
+
+    #return best_mainBox, best_mdoels_inside, best_models_position
     
