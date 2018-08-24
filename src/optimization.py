@@ -72,9 +72,26 @@ def isOverBound(item, position, box):
     posX = position[0]
     posY = position[1]
     posZ = position[2]
+    #can be made into one condition but is not very readable
+    # x,y,z position (front - 1)
     if (posX < box.length and posX + item.dimX < box.length) and (posY < box.width and posY + item.dimY < box.width) and (posZ < box.height and posZ + item.dimZ < box.height):
         ret = False
-    
+    # z,y,x position (front - 2)
+    elif (posX < box.length and posX + item.dimZ < box.length) and (posY < box.width and posY + item.dimY < box.width) and (posZ < box.height and posZ + item.dimX < box.height):
+        ret = False
+    # y,x,z position (side - 1)
+    elif (posX < box.length and posX + item.dimY < box.length) and (posY < box.width and posY + item.dimX < box.width) and (posZ < box.height and posZ + item.dimZ < box.height):
+        ret = False
+    # z,x,y position (side - 2)
+    elif (posX < box.length and posX + item.dimZ < box.length) and (posY < box.width and posY + item.dimX < box.width) and (posZ < box.height and posZ + item.dimY < box.height):
+        ret = False
+    # y,z,x position (up - 1)
+    elif (posX < box.length and posX + item.dimY < box.length) and (posY < box.width and posY + item.dimZ < box.width) and (posZ < box.height and posZ + item.dimX < box.height):
+        ret = False
+    # x,z,y position (up - 2)
+    elif (posX < box.length and posX + item.dimX < box.length) and (posY < box.width and posY + item.dimZ < box.width) and (posZ < box.height and posZ + item.dimY < box.height):
+        ret = False
+
     return ret
 
  # refer to fitness equation of document
