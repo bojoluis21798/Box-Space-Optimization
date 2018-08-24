@@ -187,9 +187,9 @@ def getArrangementBasedFromState(item, baseX, baseY, baseZ):
 
 # insert an item inside the box
 # dont need to return anything since arrays are passed by reference
-def insertToBox(box, item, pos, itemNum):    
+def insertToBox(box, item, pos, itemNum):
     x,y,z = pos[0], pos[1], pos[2]
-    limitX, limitY, limitZ = x + item.dimX, y + item.dimY, z + item.dimZ
+    limitX, limitY, limitZ = getArrangementBasedFromState(item,x,y,z)
     while x < limitX:
         y = pos[1]
         while y < limitY:
