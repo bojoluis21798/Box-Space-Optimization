@@ -159,6 +159,7 @@ def menu(models):
         height = DirectEntry(scale=.05, command=setHeight, numLines = 1, focus=1,
         pos = (0,0,0.3), parent = boxParams)
 
+        # For the actual displaying
         def optimizeDisplay():
             # convert chosenModels to list
             modelsList = []
