@@ -159,7 +159,7 @@ def menu(models):
         height = DirectEntry(scale=.05, command=setHeight, numLines = 1, focus=1,
         pos = (0,0,0.3), parent = boxParams)
 
-        def optimize():
+        def optimizeDisplay():
             # convert chosenModels to list
             modelsList = []
             modelsList.append(Model(""))
@@ -213,7 +213,7 @@ def menu(models):
             boxParams.removeNode()
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
-        parent = boxParams, scale = 0.05, command = optimize)
+        parent = boxParams, scale = 0.05, command = optimizeDisplay)
 
         def goToMainMenu():
             boxParams.hide()
