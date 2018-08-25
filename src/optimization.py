@@ -213,15 +213,19 @@ def insertToBox(box, item, pos, itemNum):
         x+=1
 
 #transforms positions to center of the box 
-def scaleToCenter(ary_pos, box):
+def scaleToCenter(ary_pos, items, box):
     newX = int(box.length / 2)
     newY = int(box.width / 2)
     newZ = int(box.height / 2)
 
     for i in range(1, len(ary_pos)):
-        ary_pos[i][0] = ary_pos[i][0] - newX
-        ary_pos[i][1] = ary_pos[i][1] - newY
-        ary_pos[i][2] = ary_pos[i][2] - newZ
+        localX = int((ary_pos[i][0] + items[i].dimX - 1) / 2)
+        localY = int((ary_pos[i][1] + items[i].dimY - 1) / 2)
+        localZ = int((ary_pos[i][2] + items[i].dimZ - 1) / 2)
+
+        ary_pos[i][0] = localX - newX
+        ary_pos[i][1] = localY - newY
+        ary_pos[i][2] = localZ - newZ
 
 
 # Do optimization here
@@ -342,7 +346,7 @@ def optimize(models):
         print(f">>>>>Generation {maingen} solution: {best_models_position}")
         maingen+=1
 
-    scaleToCenter(best_models_position, best_mainBox)
+    scaleToCenter(best_models_position,best_models_inside, best_mainBox)
     print(f"Best box space optimization: {best_percentage}")
     print(f"Models position: {best_models_position}")
     print(f"Number of loaded models over inserted: {len(models) -1} / {len(best_models_inside) -1}")
