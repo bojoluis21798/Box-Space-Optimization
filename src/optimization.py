@@ -284,7 +284,8 @@ def optimize(models):
                 continue
 
             print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
-            volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
+            #assume everything is filled and not a container //limitation
+            volume = model.solidVolume
 
             if volume > mainBox.totalVolume:
                 break
