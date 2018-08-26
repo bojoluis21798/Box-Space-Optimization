@@ -276,7 +276,7 @@ def optimize(models):
         bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
 
         problem_dimensions = len(sample_solution)
-        vel_limit = int(mainBox.height * 0.10)
+        vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
 
         for model in models:
             is_insertable = True
@@ -284,7 +284,8 @@ def optimize(models):
                 continue
 
             print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
-            volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
+            #assume everything is filled and not a container //limitation
+            volume = model.solidVolume
 
             if volume > mainBox.totalVolume:
                 break
