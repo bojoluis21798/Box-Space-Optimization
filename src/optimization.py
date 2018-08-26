@@ -212,6 +212,44 @@ def insertToBox(box, item, pos, itemNum):
             y+=1
         x+=1
 
+#transforms positions to center of the box 
+def scaleToCenter(ary_pos, items, box):
+    newX = int(box.length / 2)
+    newY = int(box.width / 2)
+    newZ = int(box.height / 2)
+
+    for i in range(1, len(ary_pos)):
+
+        if items[i].pos_state[0] == "front1":
+            localX = int((ary_pos[i][0] + items[i].dimX - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].dimY - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].dimZ - 1) / 2)
+        elif items[i].pos_state[0] == "front2":
+            localX = int((ary_pos[i][0] + items[i].dimZ - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].dimY - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].dimX - 1) / 2)
+        elif items[i].pos_state[0] == "side1":
+            localX = int((ary_pos[i][0] + items[i].dimY - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].dimX - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].dimZ - 1) / 2)
+        elif items[i].pos_state[0] == "side2":
+            localX = int((ary_pos[i][0] + items[i].dimZ - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].dimX - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].dimY - 1) / 2)
+        elif items[i].pos_state[0] == "up1":
+            localX = int((ary_pos[i][0] + items[i].dimY - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].dimZ - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].dimX - 1) / 2)
+        elif items[i].pos_state[0] == "up2":
+            localX = int((ary_pos[i][0] + items[i].dimX - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].dimZ - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].dimY - 1) / 2)
+
+        ary_pos[i][0] = localX - newX
+        ary_pos[i][1] = localY - newY
+        ary_pos[i][2] = localZ - newZ
+
+
 # Do optimization here
 def optimize(models):
     pass
@@ -238,7 +276,7 @@ def optimize(models):
         bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
 
         problem_dimensions = len(sample_solution)
-        vel_limit = int(mainBox.height * 0.10)
+        vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
 
         for model in models:
             is_insertable = True
@@ -246,7 +284,8 @@ def optimize(models):
                 continue
 
             print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
-            volume = model.surfaceVolume if model.isContainer == True else model.solidVolume
+            #assume everything is filled and not a container //limitation
+            volume = model.solidVolume
 
             if volume > mainBox.totalVolume:
                 break
@@ -332,6 +371,8 @@ def optimize(models):
 
     print(f"Best box space optimization: {best_percentage}")
     print(f"Models position: {best_models_position}")
+    scaleToCenter(best_models_position,best_models_inside, best_mainBox)
+    print(f"Models position scaled: {best_models_position}")
     print(f"Number of loaded models over inserted: {len(models) -1} / {len(best_models_inside) -1}")
     states = [best_models_inside[i].pos_state for i in range(1,len(best_models_inside))]
     print(f" states: {states}")

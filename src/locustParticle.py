@@ -16,8 +16,8 @@ class LocustParticle:
         self.item = item            # the item it currently is looking for an optimal space
 
         for i in range(0,num_dimensions):
-            self.velocity_i.append(random.uniform(-1 * vel_limit,vel_limit))              # questionnable
-            self.position_i.append(random.randint(bounds[i][0],bounds[i][1]))             # random?
+            self.velocity_i.append(random.uniform(-1 * vel_limit[i], vel_limit[i]))   # can be improved
+            self.position_i.append(random.randint(bounds[i][0], bounds[i][1]))             
 
     def addItem(self, item):
         self.item = item           # add item for particle to find space for
@@ -46,12 +46,11 @@ class LocustParticle:
         for i in range(0, num_dimensions):
             self.position_i[i] = int(self.position_i[i] + self.velocity_i[i])
 
-            # adjust maximum position if necessary
-            if self.position_i[i] > bounds[i][1]:
-                self.position_i[i] = bounds[i][1]
-
-            # adjust minimum position if neseccary
             if self.position_i[i] < bounds[i][0]:
                 self.position_i[i] = bounds[i][0]
+            
+            if self.position_i[i] > bounds[i][1]:
+                self.position_i[i] = bounds[i][1]
+        # no more adjustment since an overbound position gives a sys.maxsize error rate
         
 
