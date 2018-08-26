@@ -190,9 +190,7 @@ def menu(models):
             box.scale[1] = width/2
             box.scale[2] = height/2
             print([x for x in box.scale])
-            bpy.context.scene.cursor_location = (-(length/2),
-                -(width/2), -(height/2))
-            bpy.ops.object.origin_set(type = "ORIGIN_CURSOR")
+            bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
             bpy.ops.export_scene.x(filepath = './data/box')
