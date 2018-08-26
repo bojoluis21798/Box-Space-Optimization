@@ -161,17 +161,18 @@ def menu(models):
 
         # For the actual displaying
         def optimizeDisplay():
+            modelsNode = render.attachNewNode("ModelSNode")
             # convert chosenModels to list
             modelsList = []
             modelsList.append(Model(""))
             for i in chosenModels:
                 modelsList.append(chosenModels[i])
-            
+
             for i in range(1,len(modelsList)):
                 modelsList[i].modelNum = i
 
             # call optimize model here
-            optimize(modelsList)
+            mainBox, modelsInside, modelsPosition = optimize(modelsList)
             ###
 
             nonlocal length, width, height
@@ -189,31 +190,35 @@ def menu(models):
             box.scale[1] = width/2
             box.scale[2] = height/2
             print([x for x in box.scale])
-            bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY")
+            bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
             bpy.ops.export_scene.x(filepath = './data/box')
 
             # load box to panda
             box = loader.loadModel('./data/box.x')
+            box.setPos(0,5,0)
+            def exitToMainMenu():
+                exitButton.removeNode()
+                box.removeNode()
+                modelsNode.removeNode()
+                menu.show()
+                return
 
-            # box = loader.loadModel("data/box.x")
-            # box.setScale(length/2, width/2, height/2)
-            # box.setPos(0,2,0)
-            # box.reparentTo(render)
-
-            model = loader.loadModel(models[2].filename)
-            model.setPos(box.getX(), box.getY(), box.getZ())
+            # exit button
+            exitButton = DirectButton(text = "Exit to main menu",
+                pos = (0,0,-0.8), scale = 0.1, command = exitToMainMenu)
 
             # lights
             dlight = DirectionalLight('dlight')
             dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.3))
             dlnp = render.attachNewNode(dlight)
-            dlnp.lookAt(model)
+            dlnp.lookAt(box)
             render.setLight(dlnp)
 
+            camera.setPos(0,-10,0)
+
             box.reparentTo(render)
-            model.reparentTo(render)
 
             boxParams.removeNode()
 
@@ -239,6 +244,7 @@ def menu(models):
 
     def exitApp():
         menu.removeNode()
+        base.destroy()
         exit()
 
     exitButton = DirectButton(text = "Exit",
