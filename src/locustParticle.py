@@ -16,8 +16,8 @@ class LocustParticle:
         self.item = item            # the item it currently is looking for an optimal space
 
         for i in range(0,num_dimensions):
-            self.velocity_i.append(random.uniform(-1 * vel_limit,vel_limit))              # questionnable
-            self.position_i.append(random.randint(bounds[i][0],bounds[i][1]))             # random?
+            self.velocity_i.append(random.uniform(-1 * vel_limit[i], vel_limit[i]))   # can be improved
+            self.position_i.append(random.randint(bounds[i][0], bounds[i][1]))             
 
     def addItem(self, item):
         self.item = item           # add item for particle to find space for

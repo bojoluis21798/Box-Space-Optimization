@@ -276,7 +276,7 @@ def optimize(models):
         bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
 
         problem_dimensions = len(sample_solution)
-        vel_limit = int(mainBox.height * 0.10)
+        vel_limit = [int(bounds[0][1] * 0.10, bounds[1][1] * 0.10, bounds[2][1] * 0.10)]
 
         for model in models:
             is_insertable = True
