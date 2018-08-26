@@ -246,6 +246,7 @@ def menu(models):
 
     def exitApp():
         menu.removeNode()
+        base.destroy()
         exit()
 
     exitButton = DirectButton(text = "Exit",
