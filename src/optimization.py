@@ -363,5 +363,5 @@ def optimize(models, length, width, height):
     print(f" states: {states}")
     input("Press enter to visualize results ")
 
-    return best_mainBox, best_mdoels_inside, best_models_position
+    return best_mainBox, best_models_inside, best_models_position
 
