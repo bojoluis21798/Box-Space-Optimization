@@ -171,14 +171,14 @@ def menu(models):
             for i in range(1,len(modelsList)):
                 modelsList[i].modelNum = i
 
-            # call optimize model here
-            mainBox, modelsInside, modelsPosition = optimize(modelsList)
-            ###
-
             nonlocal length, width, height
-            length = float(length.get()) * 0.0254 # convert to meters
-            width = float(width.get()) * 0.0254 # convert to meters
-            height = float(height.get()) * 0.0254 # convert to meters
+            length = float(length.get()) # convert to meters
+            width = float(width.get()) # convert to meters
+            height = float(height.get()) # convert to meters
+
+            # call optimize model here
+            mainBox, modelsInside, modelsPosition = optimize(modelsList, length, width, height)
+            ###
 
             # create box using blender
             box = bpy.context.selected_objects[0]
