@@ -198,6 +198,16 @@ def menu(models):
             # load box to panda
             box = loader.loadModel('./data/box.x')
             box.setPos(0,5,0)
+
+            # load models
+            mdlsPanda = []
+            mdlsPanda.append(None)
+            for i in range(1, len(modelsInside)):
+                mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
+                mdlsPanda[i].reparentTo(modelsNode)
+                mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)
+                mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
+
             def exitToMainMenu():
                 exitButton.removeNode()
                 box.removeNode()
