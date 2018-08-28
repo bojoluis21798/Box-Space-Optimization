@@ -251,7 +251,7 @@ def scaleToCenter(ary_pos, items, box):
 
 
 # Do optimization here
-def optimize(models):
+def optimize(models, length, width, height):
     pass
     best_mainBox = None
     best_models_inside = []
@@ -269,7 +269,7 @@ def optimize(models):
         #initialization part one
         models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
         models_position = [None]
-        mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
+        mainBox = Box(length,width,height)                                                     # user input, but for now is not. box(length,width,height) in inches
 
         sample_solution = [0,0,0]
         numParticles = 30
