@@ -24,7 +24,7 @@ def isSpaceAvailable(item, position, box):
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("front1")
             ret = True
-    
+
     # z,y,x position (front - 2)
     if posX + item.dimZ < box.length and posY + item.dimY < box.width and posZ + item.dimX < box.height :
         limit = box.boxgrid[posX:posX + item.dimZ, posY:posY + item.dimY, posZ:posZ + item.dimX]
@@ -48,7 +48,7 @@ def isSpaceAvailable(item, position, box):
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("side2")
             ret = True
-    
+
     # y,z,x position (up - 1)
     if posX + item.dimY < box.length and posY + item.dimZ < box.width and posZ + item.dimX < box.height :
         limit = box.boxgrid[posX:posX + item.dimY, posY:posY + item.dimZ, posZ:posZ + item.dimX]
@@ -56,7 +56,7 @@ def isSpaceAvailable(item, position, box):
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("up1")
             ret = True
-    
+
     # x,z,y position (up - 2)
     if posX + item.dimX < box.length and posY + item.dimZ < box.width and posZ + item.dimY < box.height :
         limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimZ, posZ:posZ + item.dimY]
@@ -64,7 +64,7 @@ def isSpaceAvailable(item, position, box):
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("up2")
             ret = True
-       
+
     return ret
 
 def isOverBound(item, position, box):
@@ -123,13 +123,13 @@ def countFreeSpace(box, position, dimX, dimY, dimZ):
 def objectiveFunctionSpace(item, pos, box):
     freeSpace = sys.maxsize
     x,y,z = pos[0], pos[1], pos[2]
-    
+
     if isOverBound(item, pos, box):
         return sys.maxsize
 
     if not isSpaceAvailable(item, pos, box):
         return sys.maxsize
-    
+
     final_state = "front1"
     # enter comparison of pos_state heree
     for state in item.pos_state:
@@ -147,7 +147,7 @@ def objectiveFunctionSpace(item, pos, box):
             temp_spaceholder = countFreeSpace(box,pos, item.dimY, item.dimZ, item.dimX)
         elif state == "up2":
             temp_spaceholder = countFreeSpace(box,pos, item.dimX, item.dimZ, item.dimY)
-        
+
         if temp_spaceholder < freeSpace:
             freeSpace = temp_spaceholder
             final_state = state
@@ -194,7 +194,7 @@ def getArrangementBasedFromState(item, baseX, baseY, baseZ):
         limitZ = baseZ + item.dimY
         #insert transformation here
         item.rotation = [90,0,0]
-        
+
     return limitX, limitY, limitZ
 
 # insert an item inside the box
@@ -212,7 +212,7 @@ def insertToBox(box, item, pos, itemNum):
             y+=1
         x+=1
 
-#transforms positions to center of the box 
+#transforms positions to center of the box
 def scaleToCenter(ary_pos, items, box):
     newX = int(box.length / 2)
     newY = int(box.width / 2)
@@ -265,12 +265,12 @@ def optimize(models):
         # start of solitary phase
             # initialization (identification)
             # updating       (verification)
-            
+
         #initialization part one
         models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
         models_position = [None]
         mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
-        
+
         sample_solution = [0,0,0]
         numParticles = 30
         bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
@@ -293,7 +293,7 @@ def optimize(models):
             if volume > mainBox.totalVolume - mainBox.totalObjectVolume:
                 print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
                 continue
-            
+
             print(f"Optimizing on {model.name} with Model Num = {model.modelNum}")
             # identification (initialization part two)
             err_best_g = -1                                                         #global best error
@@ -302,7 +302,7 @@ def optimize(models):
             swarm = []                                                              #locust swarm
             for i in range(0,numParticles):
                 swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
-            
+
             #verification
             inside_termination_ctr = 0
             subgen = 0
@@ -314,7 +314,7 @@ def optimize(models):
                 for j in range(0, numParticles):
                     swarm[j].addItem(model)
                     swarm[j].evaluate(objectiveFunctionSpace, mainBox)
-                    
+
                     # update global bests
                     # gregarious phase - analysis part 1
                     if swarm[j].err_i < err_best_g or err_best_g == -1:
@@ -322,10 +322,10 @@ def optimize(models):
                         pos_best_g = list(swarm[j].position_i)
                         err_best_g = int(swarm[j].err_i)
                         inside_termination_ctr = 0
-                    
+
                 if current_err_best == err_best_g:
                     inside_termination_ctr+=1
-                
+
                 if err_best_g == sys.maxsize:
                     is_insertable = False
                     break
@@ -333,17 +333,17 @@ def optimize(models):
                 # cycle through swarm and update velocities and position
                 # gregarious phase - analysis part 2
                 for j in range(0,numParticles):
-                    swarm[j].updateVelocity(pos_best_g, problem_dimensions)    
+                    swarm[j].updateVelocity(pos_best_g, problem_dimensions)
                     swarm[j].updatePosition(bounds, problem_dimensions)
 
                 print(f"Current pos_best_g {pos_best_g}")
                 print(f"Current err_best: {err_best_g}")
                 subgen+=1
-            
+
             if is_insertable == False:
                 print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
                 continue
-                
+
             # solution (attack)
             models_inside.append(model)
             insertToBox(mainBox, model, pos_best_g, model.modelNum)
@@ -365,7 +365,7 @@ def optimize(models):
             best_models_position = models_position
             best_percentage = current_percentage
             termination_counter = 0
-        
+
         print(f">>>>>Generation {maingen} solution: {best_models_position}")
         maingen+=1
 
@@ -378,5 +378,5 @@ def optimize(models):
     print(f" states: {states}")
     input("Press enter to visualize results ")
 
-    #return best_mainBox, best_mdoels_inside, best_models_position
-    
+    return best_mainBox, best_mdoels_inside, best_models_position
+
