@@ -257,6 +257,7 @@ def optimize(models):
     best_models_inside = []
     best_models_position = []
     best_percentage = 0
+    best_error = sys.maxsize
 
     termination_counter = 0                         # counts the number of convergence of optimization
     maingen = 0
@@ -270,7 +271,8 @@ def optimize(models):
         models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
         models_position = [None]
         mainBox = Box(18,18,24)                                                     # user input, but for now is not. box(length,width,height) in inches
-        
+        models_local_error = sys.maxsize
+
         sample_solution = [0,0,0]
         numParticles = 30
         bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
@@ -349,6 +351,7 @@ def optimize(models):
             insertToBox(mainBox, model, pos_best_g, model.modelNum)
             mainBox.totalObjectVolume += volume
             models_position.append(pos_best_g)
+            models_local_error = err_best_g
             print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
 
         print(f"total object volume = {mainBox.totalObjectVolume} and box total volume = {mainBox.totalVolume}")
@@ -358,15 +361,23 @@ def optimize(models):
 
         if float(best_percentage) == float(current_percentage):
             termination_counter+=1
+            if best_error > models_local_error:
+                best_mainBox = mainBox
+                best_models_inside = models_inside
+                best_models_position = models_position
+                best_percentage = current_percentage
+                best_error = models_local_error
 
         if current_percentage > best_percentage:
             best_mainBox = mainBox
             best_models_inside = models_inside
             best_models_position = models_position
             best_percentage = current_percentage
+            best_error = models_local_error
             termination_counter = 0
         
         print(f">>>>>Generation {maingen} solution: {best_models_position}")
+        print(f"current best_error = {best_error}")
         maingen+=1
 
     print(f"Best box space optimization: {best_percentage}")
