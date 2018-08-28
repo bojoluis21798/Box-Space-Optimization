@@ -261,7 +261,6 @@ def optimize(models, length, width, height):
     termination_counter = 0                         # counts the number of convergence of optimization
     maingen = 0
     while termination_counter < 10:
-        print(f">>>>>>>>>>>Generation {maingen}")
         # start of solitary phase
             # initialization (identification)
             # updating       (verification)
@@ -283,7 +282,6 @@ def optimize(models, length, width, height):
             if model.id == sys.maxsize:
                 continue
 
-            print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
             #assume everything is filled and not a container //limitation
             volume = model.solidVolume
 
@@ -291,10 +289,8 @@ def optimize(models, length, width, height):
                 break
 
             if volume > mainBox.totalVolume - mainBox.totalObjectVolume:
-                print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
                 continue
 
-            print(f"Optimizing on {model.name} with Model Num = {model.modelNum}")
             # identification (initialization part two)
             err_best_g = -1                                                         #global best error
             pos_best_g = []                                                         #global best position
@@ -307,8 +303,6 @@ def optimize(models, length, width, height):
             inside_termination_ctr = 0
             subgen = 0
             while inside_termination_ctr < 10:
-                print("=====================================================")
-                print(f"Generation # {maingen}-{subgen}")
                 #insert locust work here on item
                 current_err_best = err_best_g
                 for j in range(0, numParticles):
@@ -336,12 +330,9 @@ def optimize(models, length, width, height):
                     swarm[j].updateVelocity(pos_best_g, problem_dimensions)
                     swarm[j].updatePosition(bounds, problem_dimensions)
 
-                print(f"Current pos_best_g {pos_best_g}")
-                print(f"Current err_best: {err_best_g}")
                 subgen+=1
 
             if is_insertable == False:
-                print(f"Skipped Model with ID = {model.id} and Model Num = {model.modelNum} due to space unavailability")
                 continue
 
             # solution (attack)
@@ -349,13 +340,8 @@ def optimize(models, length, width, height):
             insertToBox(mainBox, model, pos_best_g, model.modelNum)
             mainBox.totalObjectVolume += volume
             models_position.append(pos_best_g)
-            print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
 
-        print(f"total object volume = {mainBox.totalObjectVolume} and box total volume = {mainBox.totalVolume}")
         current_percentage = (mainBox.totalObjectVolume/mainBox.totalVolume)*100
-        print(f"Current optimized space for box = {(current_percentage)}%")
-        print(f"Number of loaded models over inserted: {len(models) -1} / {len(models_inside) -1}")
-
         if float(best_percentage) == float(current_percentage):
             termination_counter+=1
 
@@ -366,7 +352,6 @@ def optimize(models, length, width, height):
             best_percentage = current_percentage
             termination_counter = 0
 
-        print(f">>>>>Generation {maingen} solution: {best_models_position}")
         maingen+=1
 
     print(f"Best box space optimization: {best_percentage}")
