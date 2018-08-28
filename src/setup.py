@@ -171,14 +171,14 @@ def menu(models):
             for i in range(1,len(modelsList)):
                 modelsList[i].modelNum = i
 
-            # call optimize model here
-            mainBox, modelsInside, modelsPosition = optimize(modelsList)
-            ###
-
             nonlocal length, width, height
-            length = float(length.get()) * 0.0254 # convert to meters
-            width = float(width.get()) * 0.0254 # convert to meters
-            height = float(height.get()) * 0.0254 # convert to meters
+            length = float(length.get()) # convert to meters
+            width = float(width.get()) # convert to meters
+            height = float(height.get()) # convert to meters
+
+            # call optimize model here
+            mainBox, modelsInside, modelsPosition = optimize(modelsList, length, width, height)
+            ###
 
             # create box using blender
             box = bpy.context.selected_objects[0]
@@ -198,6 +198,16 @@ def menu(models):
             # load box to panda
             box = loader.loadModel('./data/box.x')
             box.setPos(0,5,0)
+
+            # load models
+            mdlsPanda = []
+            mdlsPanda.append(None)
+            for i in range(1, len(modelsInside)):
+                mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
+                mdlsPanda[i].reparentTo(modelsNode)
+                mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)
+                mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
+
             def exitToMainMenu():
                 exitButton.removeNode()
                 box.removeNode()
