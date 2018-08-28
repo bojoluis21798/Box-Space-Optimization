@@ -264,7 +264,6 @@ def optimize(models):
     
     print(f"Optimizing {len(models)} number of models ... please do not close")
     while termination_counter < 10:
-        print(f">>>>>>>>>>>Generation {maingen}")
         # start of solitary phase
             # initialization (identification)
             # updating       (verification)
@@ -287,7 +286,6 @@ def optimize(models):
             if model.id == sys.maxsize:
                 continue
 
-            print(f"Working on {model.name} with ID = {model.id} and Model Num ={model.modelNum}")
             #assume everything is filled and not a container //limitation
             volume = model.solidVolume
 
