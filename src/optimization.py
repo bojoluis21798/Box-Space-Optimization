@@ -262,7 +262,7 @@ def optimize(models):
     termination_counter = 0                         # counts the number of convergence of optimization
     maingen = 0
     
-    print(f"Optimizing {len(models)} number of models ... please do not close")
+    print(f"Optimizing {len(models) - 1} number of models ... please do not close")
     while termination_counter < 10:
         # start of solitary phase
             # initialization (identification)
@@ -372,6 +372,6 @@ def optimize(models):
     scaleToCenter(best_models_position,best_models_inside, best_mainBox)
     states = [best_models_inside[i].pos_state for i in range(1,len(best_models_inside))]
 
-    print("done ...")
+    input("done ...")
     #return best_mainBox, best_mdoels_inside, best_models_position
     
