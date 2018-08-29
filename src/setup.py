@@ -97,7 +97,7 @@ def menu(models):
         pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
 
         # set model position and scale
-        currentModel.setPos(0,2,0)
+        currentModel.setPos(0,3,0)
 
         # lights
         dlight = DirectionalLight('dlight')
@@ -182,14 +182,12 @@ def menu(models):
 
             # create box using blender
             box = bpy.context.selected_objects[0]
-            print(box)
             for mtl in bpy.data.materials:
                 mtl.use_transparency = True
                 mtl.alpha = 0.2
-            box.scale[0] = length/2
-            box.scale[1] = width/2
-            box.scale[2] = height/2
-            print([x for x in box.scale])
+            box.scale[0] = (length*0.0254)/2
+            box.scale[1] = (width*0.0254)/2
+            box.scale[2] = (height*0.0254)/2
             bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
@@ -206,6 +204,10 @@ def menu(models):
                 mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
                 mdlsPanda[i].reparentTo(modelsNode)
                 mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)
+                print("=====================\n"+modelsInside[i].id)
+                print("Rotation: "+str(modelsInside[i].rotation))
+                print("Box Position: "+str((box.getX(), box.getY(), box.getZ())))
+                print("Position: "+str(((modelsPosition[i][0]*0.001),(modelsPosition[i][1]*0.001),(modelsPosition[i][2]*0.001))))
                 mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
 
             def exitToMainMenu():
@@ -227,10 +229,9 @@ def menu(models):
             render.setLight(dlnp)
 
             camera.setPos(0,-10,0)
-
-            box.reparentTo(render)
-
+            base.enableMouse()
             boxParams.removeNode()
+            box.reparentTo(render)
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
         parent = boxParams, scale = 0.05, command = optimizeDisplay)
