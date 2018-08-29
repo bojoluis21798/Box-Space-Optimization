@@ -186,9 +186,9 @@ def menu(models):
             for mtl in bpy.data.materials:
                 mtl.use_transparency = True
                 mtl.alpha = 0.2
-            box.scale[0] = length/2
-            box.scale[1] = width/2
-            box.scale[2] = height/2
+            box.scale[0] = (length*0.0254)/2
+            box.scale[1] = (width*0.0254)/2
+            box.scale[2] = (height*0.0254)/2
             print([x for x in box.scale])
             bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
