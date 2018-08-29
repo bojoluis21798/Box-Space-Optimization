@@ -97,7 +97,7 @@ def menu(models):
         pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
 
         # set model position and scale
-        currentModel.setPos(0,2,0)
+        currentModel.setPos(0,3,0)
 
         # lights
         dlight = DirectionalLight('dlight')
@@ -204,6 +204,10 @@ def menu(models):
                 mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
                 mdlsPanda[i].reparentTo(modelsNode)
                 mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)
+                print("=====================\n"+modelsInside[i].id)
+                print("Rotation: "+str(modelsInside[i].rotation))
+                print("Box Position: "+str((box.getX(), box.getY(), box.getZ())))
+                print("Position: "+str(((modelsPosition[i][0]*0.001),(modelsPosition[i][1]*0.001),(modelsPosition[i][2]*0.001))))
                 mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
 
             def exitToMainMenu():
