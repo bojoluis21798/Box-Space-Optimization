@@ -182,14 +182,12 @@ def menu(models):
 
             # create box using blender
             box = bpy.context.selected_objects[0]
-            print(box)
             for mtl in bpy.data.materials:
                 mtl.use_transparency = True
                 mtl.alpha = 0.2
             box.scale[0] = (length*0.0254)/2
             box.scale[1] = (width*0.0254)/2
             box.scale[2] = (height*0.0254)/2
-            print([x for x in box.scale])
             bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
