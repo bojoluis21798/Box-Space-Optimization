@@ -227,10 +227,9 @@ def menu(models):
             render.setLight(dlnp)
 
             camera.setPos(0,-10,0)
-
-            box.reparentTo(render)
-
+            base.enableMouse()
             boxParams.removeNode()
+            box.reparentTo(render)
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
         parent = boxParams, scale = 0.05, command = optimizeDisplay)
