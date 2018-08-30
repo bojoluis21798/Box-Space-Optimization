@@ -31,9 +31,9 @@ class Model:
                 self.dimX = int( float(str.split(row[7], ',')[0]) * 10)     # assuming dimX is cm and multiply it with 10 to mm
                 self.dimY = int( float(str.split(row[7], ',')[1]) * 10)     # assuming dimY is cm and multiply it with 10 to mm
                 self.dimZ = int( float(str.split(row[7], ',')[2]) * 10)     # assuming dimZ is cm and multiply it with 10 to mm
-                self.scaledX = int(dimX/2)
-                self.scaledY = int(dimY/2)
-                self.scaledZ = int(dimZ/2)
+                self.scaledX = int(self.dimX/2)
+                self.scaledY = int(self.dimY/2)
+                self.scaledZ = int(self.dimZ/2)
                 self.isContainer = True if row[8] == "TRUE" else False
                 self.surfaceVolume = (float(self.dimX * self.dimY * self.dimZ)) #questionable
                 self.solidVolume = (float(self.dimX * self.dimY * self.dimZ))  #questionable
