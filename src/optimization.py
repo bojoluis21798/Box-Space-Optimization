@@ -341,6 +341,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             models_inside.append(model)
             insertToBox(mainBox, model, pos_best_g, model.modelNum)
             mainBox.scaledTotalObjectVolume += volume
+            mainBox.totalObjectVolume += model.solidVolume
             models_position.append(pos_best_g)
             models_local_error = err_best_g
             print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
