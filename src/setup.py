@@ -33,6 +33,12 @@ def menu(models):
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "z-dimension: "+str(models[idx].dimZ), pos = (-1.2,0.6),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
+        textObject = OnscreenText(text = "x-dimension (scaled): "+str(models[idx].scaledX), pos = (-1.2,0.5),
+        scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
+        textObject = OnscreenText(text = "y-dimension (scaled): "+str(models[idx].scaledY), pos = (-1.2,0.4),
+        scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
+        textObject = OnscreenText(text = "z-dimension (scaled): "+str(models[idx].scaledZ), pos = (-1.2,0.3),
+        scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "Surface Volume: "+str(models[idx].surfaceVolume), pos = (1.2,0.9),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ARight,mayChange=0)
         textObject = OnscreenText(text = "Solid Volume: "+str(models[idx].solidVolume), pos = (1.2,0.8),
@@ -97,7 +103,7 @@ def menu(models):
         pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
 
         # set model position and scale
-        currentModel.setPos(0,2,0)
+        currentModel.setPos(0,3,0)
 
         # lights
         dlight = DirectionalLight('dlight')
@@ -171,25 +177,23 @@ def menu(models):
             for i in range(1,len(modelsList)):
                 modelsList[i].modelNum = i
 
-            # call optimize model here
-            mainBox, modelsInside, modelsPosition = optimize(modelsList)
-            ###
-
             nonlocal length, width, height
-            length = float(length.get()) * 0.0254 # convert to meters
-            width = float(width.get()) * 0.0254 # convert to meters
-            height = float(height.get()) * 0.0254 # convert to meters
+            length = float(length.get()) # convert to meters
+            width = float(width.get()) # convert to meters
+            height = float(height.get()) # convert to meters
+
+            # call optimize model here
+            mainBox, modelsInside, modelsPosition = optimize(modelsList, length, width, height)
+            ###
 
             # create box using blender
             box = bpy.context.selected_objects[0]
-            print(box)
             for mtl in bpy.data.materials:
                 mtl.use_transparency = True
                 mtl.alpha = 0.2
-            box.scale[0] = length/2
-            box.scale[1] = width/2
-            box.scale[2] = height/2
-            print([x for x in box.scale])
+            box.scale[0] = (length*0.0254)/2
+            box.scale[1] = (width*0.0254)/2
+            box.scale[2] = (height*0.0254)/2
             bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
@@ -198,6 +202,20 @@ def menu(models):
             # load box to panda
             box = loader.loadModel('./data/box.x')
             box.setPos(0,5,0)
+
+            # load models
+            mdlsPanda = []
+            mdlsPanda.append(None)
+            for i in range(1, len(modelsInside)):
+                mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
+                mdlsPanda[i].reparentTo(modelsNode)
+                mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)
+                print("=====================\n"+modelsInside[i].id)
+                print("Rotation: "+str(modelsInside[i].rotation))
+                print("Box Position: "+str((box.getX(), box.getY(), box.getZ())))
+                print("Position: "+str(((modelsPosition[i][0]*0.001),(modelsPosition[i][1]*0.001),(modelsPosition[i][2]*0.001))))
+                mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
+
             def exitToMainMenu():
                 exitButton.removeNode()
                 box.removeNode()
@@ -217,10 +235,9 @@ def menu(models):
             render.setLight(dlnp)
 
             camera.setPos(0,-10,0)
-
-            box.reparentTo(render)
-
+            base.enableMouse()
             boxParams.removeNode()
+            box.reparentTo(render)
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
         parent = boxParams, scale = 0.05, command = optimizeDisplay)
