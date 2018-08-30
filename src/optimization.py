@@ -290,7 +290,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             if volume > mainBox.scaledTotalVolume:
                 break
 
-            if volume > mainBox.scaledTotalVolume - mainBox.totalObjectVolume:
+            if volume > mainBox.scaledTotalVolume - mainBox.scaledTotalObjectVolume:
                 continue
 
             # identification (initialization part two)
@@ -340,12 +340,12 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             # solution (attack)
             models_inside.append(model)
             insertToBox(mainBox, model, pos_best_g, model.modelNum)
-            mainBox.totalObjectVolume += volume
+            mainBox.scaledTotalObjectVolume += volume
             models_position.append(pos_best_g)
             models_local_error = err_best_g
             print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
 
-        current_percentage = (mainBox.totalObjectVolume/mainBox.scaledTotalVolume)*100
+        current_percentage = (mainBox.scaledTotalObjectVolume/mainBox.scaledTotalVolume)*100
         if float(best_percentage) == float(current_percentage):
             termination_counter+=1
             if best_error > models_local_error:

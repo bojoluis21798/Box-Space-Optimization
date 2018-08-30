@@ -21,7 +21,7 @@ class Box:
         
         self.numObjects = 0                                 # number of objects inserted in box
         self.totalObjectVolume = 0                          # gives the total occupied volume of the objects inside box
-
+        self.scaledTotalObjectVolume = 0
         #3dbox with l x w x h mm dimension with datatype 'u1' = 8bit unsigned int (0 to 160)
         self.boxgrid = np.zeros( ( int(length * self.convertionFactor), int(width * self.convertionFactor), int(height * self.convertionFactor) ), dtype = 'u1')
     
