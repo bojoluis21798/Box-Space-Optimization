@@ -28,9 +28,9 @@ class Model:
                 else:
                     self.unit = float(row[6])
 
-                self.dimX = int( (float(str.split(row[7], ',')[0]) * 10) / 2)     # assuming dimX is cm and multiply it with 10 to mm
-                self.dimY = int( (float(str.split(row[7], ',')[1]) * 10) / 2)     # assuming dimY is cm and multiply it with 10 to mm
-                self.dimZ = int( (float(str.split(row[7], ',')[2]) * 10) / 2)     # assuming dimZ is cm and multiply it with 10 to mm
+                self.dimX = int( float(str.split(row[7], ',')[0]) * 10)     # assuming dimX is cm and multiply it with 10 to mm
+                self.dimY = int( float(str.split(row[7], ',')[1]) * 10)     # assuming dimY is cm and multiply it with 10 to mm
+                self.dimZ = int( float(str.split(row[7], ',')[2]) * 10)     # assuming dimZ is cm and multiply it with 10 to mm
                 self.isContainer = True if row[8] == "TRUE" else False
                 self.surfaceVolume = (float(self.dimX * self.dimY * self.dimZ)) #questionable
                 self.solidVolume = (float(self.dimX * self.dimY * self.dimZ))  #questionable
