@@ -18,48 +18,48 @@ def isSpaceAvailable(item, position, box):
     posZ = position[2]
     #check if not over the box dimensions
     # x,y,z position (front - 1)
-    if posX + item.dimX < box.length and posY + item.dimY < box.width and posZ + item.dimZ < box.height :
-        limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimY, posZ:posZ + item.dimZ]
+    if posX + item.scaledX < box.scaledLength and posY + item.scaledY < box.scaledWidth and posZ + item.scaledZ < box.scaledHeight :
+        limit = box.boxgrid[posX:posX + item.scaledX, posY:posY + item.scaledY, posZ:posZ + item.scaledZ]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("front1")
             ret = True
 
     # z,y,x position (front - 2)
-    if posX + item.dimZ < box.length and posY + item.dimY < box.width and posZ + item.dimX < box.height :
-        limit = box.boxgrid[posX:posX + item.dimZ, posY:posY + item.dimY, posZ:posZ + item.dimX]
+    if posX + item.scaledZ < box.scaledLength and posY + item.scaledY < box.scaledWidth and posZ + item.scaledX < box.scaledHeight :
+        limit = box.boxgrid[posX:posX + item.scaledZ, posY:posY + item.scaledY, posZ:posZ + item.scaledX]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("front2")
             ret = True
 
     # y,x,z position (side - 1)
-    if posX + item.dimY < box.length and posY + item.dimX < box.width and posZ + item.dimZ < box.height :
-        limit = box.boxgrid[posX:posX + item.dimY, posY:posY + item.dimX, posZ:posZ + item.dimZ]
+    if posX + item.scaledY < box.scaledLength and posY + item.scaledX < box.scaledWidth and posZ + item.scaledZ < box.scaledHeight :
+        limit = box.boxgrid[posX:posX + item.scaledY, posY:posY + item.scaledX, posZ:posZ + item.scaledZ]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("side1")
             ret = True
 
     # z,x,y position (side - 2)
-    if posX + item.dimZ < box.length and posY + item.dimX < box.width and posZ + item.dimY < box.height :
-        limit = box.boxgrid[posX:posX + item.dimZ, posY:posY + item.dimX, posZ:posZ + item.dimY]
+    if posX + item.scaledZ < box.scaledLength and posY + item.scaledX < box.scaledWidth and posZ + item.scaledY < box.scaledHeight :
+        limit = box.boxgrid[posX:posX + item.scaledZ, posY:posY + item.scaledX, posZ:posZ + item.scaledY]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("side2")
             ret = True
 
     # y,z,x position (up - 1)
-    if posX + item.dimY < box.length and posY + item.dimZ < box.width and posZ + item.dimX < box.height :
-        limit = box.boxgrid[posX:posX + item.dimY, posY:posY + item.dimZ, posZ:posZ + item.dimX]
+    if posX + item.scaledY < box.scaledLength and posY + item.scaledZ < box.scaledWidth and posZ + item.scaledX < box.scaledHeight :
+        limit = box.boxgrid[posX:posX + item.scaledY, posY:posY + item.scaledZ, posZ:posZ + item.scaledX]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("up1")
             ret = True
 
     # x,z,y position (up - 2)
-    if posX + item.dimX < box.length and posY + item.dimZ < box.width and posZ + item.dimY < box.height :
-        limit = box.boxgrid[posX:posX + item.dimX, posY:posY + item.dimZ, posZ:posZ + item.dimY]
+    if posX + item.scaledX < box.scaledLength and posY + item.scaledZ < box.scaledWidth and posZ + item.scaledY < box.scaledHeight :
+        limit = box.boxgrid[posX:posX + item.scaledX, posY:posY + item.scaledZ, posZ:posZ + item.scaledY]
         #check if all in splice is 0, otherwise return false
         if np.count_nonzero(limit) == 0:
             item.pos_state.append("up2")
@@ -74,46 +74,46 @@ def isOverBound(item, position, box):
     posZ = position[2]
     #can be made into one condition but is not very readable
     # x,y,z position (front - 1)
-    if (posX < box.length and posX + item.dimX < box.length) and (posY < box.width and posY + item.dimY < box.width) and (posZ < box.height and posZ + item.dimZ < box.height):
+    if (posX < box.scaledLength and posX + item.scaledX < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledY < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledZ < box.scaledHeight):
         ret = False
     # z,y,x position (front - 2)
-    elif (posX < box.length and posX + item.dimZ < box.length) and (posY < box.width and posY + item.dimY < box.width) and (posZ < box.height and posZ + item.dimX < box.height):
+    elif (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledY < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
         ret = False
     # y,x,z position (side - 1)
-    elif (posX < box.length and posX + item.dimY < box.length) and (posY < box.width and posY + item.dimX < box.width) and (posZ < box.height and posZ + item.dimZ < box.height):
+    elif (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledZ < box.scaledHeight):
         ret = False
     # z,x,y position (side - 2)
-    elif (posX < box.length and posX + item.dimZ < box.length) and (posY < box.width and posY + item.dimX < box.width) and (posZ < box.height and posZ + item.dimY < box.height):
+    elif (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
         ret = False
     # y,z,x position (up - 1)
-    elif (posX < box.length and posX + item.dimY < box.length) and (posY < box.width and posY + item.dimZ < box.width) and (posZ < box.height and posZ + item.dimX < box.height):
+    elif (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
         ret = False
     # x,z,y position (up - 2)
-    elif (posX < box.length and posX + item.dimX < box.length) and (posY < box.width and posY + item.dimZ < box.width) and (posZ < box.height and posZ + item.dimY < box.height):
+    elif (posX < box.scaledLength and posX + item.scaledX < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
         ret = False
 
     return ret
 
 # counts the number of free space around a position
-def countFreeSpace(box, position, dimX, dimY, dimZ):
+def countFreeSpace(box, position, scaledX, scaledY, scaledZ):
     freeSpace = 0
     x,y,z = position[0], position[1], position[2]
-    sideArea_1  = box.boxgrid[x + dimX : box.length, y : y + dimY, z : z + dimZ]
+    sideArea_1  = box.boxgrid[x + scaledX : box.scaledLength, y : y + scaledY, z : z + scaledZ]
     freeSpace   += (sideArea_1.size - np.count_nonzero(sideArea_1))
 
-    sideArea_3  = box.boxgrid[x : 0, y : y + dimY, z : z + dimZ]                                    # opposite of 1
+    sideArea_3  = box.boxgrid[x : 0, y : y + scaledY, z : z + scaledZ]                                    # opposite of 1
     freeSpace   += (sideArea_3.size - np.count_nonzero(sideArea_3))
 
-    sideArea_2  = box.boxgrid[x : x + dimX, y : y + dimY, z + dimZ : box.height]
+    sideArea_2  = box.boxgrid[x : x + scaledX, y : y + scaledY, z + scaledZ : box.scaledHeight]
     freeSpace   += (sideArea_2.size - np.count_nonzero(sideArea_2))
 
-    sideArea_4  = box.boxgrid[x : x + dimX, y : y + dimY, z : 0]                                    # opposite of 2
+    sideArea_4  = box.boxgrid[x : x + scaledX, y : y + scaledY, z : 0]                                    # opposite of 2
     freeSpace   += (sideArea_4.size - np.count_nonzero(sideArea_4))
 
-    bottomArea  = box.boxgrid[x : x + dimX, y + dimY : box.width, z: z + dimZ]
+    bottomArea  = box.boxgrid[x : x + scaledX, y + scaledY : box.scaledWidth, z: z + scaledZ]
     freeSpace   += (bottomArea.size - np.count_nonzero(bottomArea))
 
-    topArea     = box.boxgrid[x : x + dimX, y : 0, z : z + dimZ]
+    topArea     = box.boxgrid[x : x + scaledX, y : 0, z : z + scaledZ]
     freeSpace   += (topArea.size - np.count_nonzero(topArea))
 
     # return number of empty cells found (mm)
@@ -136,17 +136,17 @@ def objectiveFunctionSpace(item, pos, box):
         temp_spaceholder = 0
 
         if state == "front1":
-            temp_spaceholder = countFreeSpace(box,pos, item.dimX, item.dimY, item.dimZ)
+            temp_spaceholder = countFreeSpace(box,pos, item.scaledX, item.scaledY, item.scaledZ)
         elif state == "front2":
-            temp_spaceholder = countFreeSpace(box,pos, item.dimZ, item.dimY, item.dimX)
+            temp_spaceholder = countFreeSpace(box,pos, item.scaledZ, item.scaledY, item.scaledX)
         elif state == "side1":
-            temp_spaceholder = countFreeSpace(box,pos, item.dimY, item.dimX, item.dimZ)
+            temp_spaceholder = countFreeSpace(box,pos, item.scaledY, item.scaledX, item.scaledZ)
         elif state == "side2":
-            temp_spaceholder = countFreeSpace(box,pos, item.dimZ, item.dimX, item.dimY)
+            temp_spaceholder = countFreeSpace(box,pos, item.scaledZ, item.scaledX, item.scaledY)
         elif state == "up1":
-            temp_spaceholder = countFreeSpace(box,pos, item.dimY, item.dimZ, item.dimX)
+            temp_spaceholder = countFreeSpace(box,pos, item.scaledY, item.scaledZ, item.scaledX)
         elif state == "up2":
-            temp_spaceholder = countFreeSpace(box,pos, item.dimX, item.dimZ, item.dimY)
+            temp_spaceholder = countFreeSpace(box,pos, item.scaledX, item.scaledZ, item.scaledY)
 
         if temp_spaceholder < freeSpace:
             freeSpace = temp_spaceholder
@@ -159,39 +159,39 @@ def objectiveFunctionSpace(item, pos, box):
     return freeSpace
 
 def getArrangementBasedFromState(item, baseX, baseY, baseZ):
-    limitX = baseX + item.dimX
-    limitY = baseY + item.dimY
-    limitZ = baseZ + item.dimZ
+    limitX = baseX + item.scaledX
+    limitY = baseY + item.scaledY
+    limitZ = baseZ + item.scaledZ
     #insert transformation here
     item.rotation = [0,0,0]
     if item.pos_state[0] == "front2":
-        limitX = baseX + item.dimZ
-        limitY = baseY + item.dimY
-        limitZ = baseZ + item.dimX
+        limitX = baseX + item.scaledZ
+        limitY = baseY + item.scaledY
+        limitZ = baseZ + item.scaledX
         #insert transformation here
         item.rotation = [0,90,0]
     elif item.pos_state[0] == "side1":
-        limitX = baseX + item.dimY
-        limitY = baseY + item.dimX
-        limitZ = baseZ + item.dimZ
+        limitX = baseX + item.scaledY
+        limitY = baseY + item.scaledX
+        limitZ = baseZ + item.scaledZ
         #insert transformation here
         item.rotation = [0,0,90]
     elif item.pos_state[0] == "side2":
-        limitX = baseX + item.dimZ
-        limitY = baseY + item.dimX
-        limitZ = baseZ + item.dimY
+        limitX = baseX + item.scaledZ
+        limitY = baseY + item.scaledX
+        limitZ = baseZ + item.scaledY
         #insert transformation here
         item.rotation = [90,0,90]
     elif item.pos_state[0] == "up1":
-        limitX = baseX + item.dimY
-        limitY = baseY + item.dimZ
-        limitZ = baseZ + item.dimX
+        limitX = baseX + item.scaledY
+        limitY = baseY + item.scaledZ
+        limitZ = baseZ + item.scaledX
         #insert transformation here
         item.rotation = [90,90,0]
     elif item.pos_state[0] == "up2":
-        limitX = baseX + item.dimX
-        limitY = baseY + item.dimZ
-        limitZ = baseZ + item.dimY
+        limitX = baseX + item.scaledX
+        limitY = baseY + item.scaledZ
+        limitZ = baseZ + item.scaledY
         #insert transformation here
         item.rotation = [90,0,0]
 
@@ -214,36 +214,36 @@ def insertToBox(box, item, pos, itemNum):
 
 #transforms positions to center of the box
 def scaleToCenter(ary_pos, items, box):
-    newX = int(box.length / 2)
-    newY = int(box.width / 2)
-    newZ = int(box.height / 2)
+    newX = int(box.scaledLength / 2)
+    newY = int(box.scaledWidth / 2)
+    newZ = int(box.scaledHeight / 2)
 
     for i in range(1, len(ary_pos)):
 
         if items[i].pos_state[0] == "front1":
-            localX = int((ary_pos[i][0] + items[i].dimX - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].dimY - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].dimZ - 1) / 2)
+            localX = int((ary_pos[i][0] + items[i].scaledX - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].scaledY - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].scaledZ - 1) / 2)
         elif items[i].pos_state[0] == "front2":
-            localX = int((ary_pos[i][0] + items[i].dimZ - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].dimY - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].dimX - 1) / 2)
+            localX = int((ary_pos[i][0] + items[i].scaledZ - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].scaledY - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].scaledX - 1) / 2)
         elif items[i].pos_state[0] == "side1":
-            localX = int((ary_pos[i][0] + items[i].dimY - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].dimX - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].dimZ - 1) / 2)
+            localX = int((ary_pos[i][0] + items[i].scaledY - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].scaledX - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].scaledZ - 1) / 2)
         elif items[i].pos_state[0] == "side2":
-            localX = int((ary_pos[i][0] + items[i].dimZ - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].dimX - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].dimY - 1) / 2)
+            localX = int((ary_pos[i][0] + items[i].scaledZ - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].scaledX - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].scaledY - 1) / 2)
         elif items[i].pos_state[0] == "up1":
-            localX = int((ary_pos[i][0] + items[i].dimY - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].dimZ - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].dimX - 1) / 2)
+            localX = int((ary_pos[i][0] + items[i].scaledY - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].scaledZ - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].scaledX - 1) / 2)
         elif items[i].pos_state[0] == "up2":
-            localX = int((ary_pos[i][0] + items[i].dimX - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].dimZ - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].dimY - 1) / 2)
+            localX = int((ary_pos[i][0] + items[i].scaledX - 1) / 2)
+            localY = int((ary_pos[i][1] + items[i].scaledZ - 1) / 2)
+            localZ = int((ary_pos[i][2] + items[i].scaledY - 1) / 2)
 
         ary_pos[i][0] = localX - newX
         ary_pos[i][1] = localY - newY
@@ -251,7 +251,7 @@ def scaleToCenter(ary_pos, items, box):
 
 
 # Do optimization here
-def optimize(models, length, width, height):
+def optimize(models, scaledLength, scaledWidth, scaledHeight):
     pass
     best_mainBox = None
     best_models_inside = []
@@ -269,12 +269,12 @@ def optimize(models, length, width, height):
         #initialization part one
         models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
         models_position = [None]
-        mainBox = Box(length,width,height)                                                  # user input, but for now is not. box(length,width,height) in inches
+        mainBox = Box(scaledLength,scaledWidth,scaledHeight)                                                  # user input, but for now is not. box(scaledLength,scaledWidth,scaledHeight) in inches
         models_local_error = sys.maxsize
 
         sample_solution = [0,0,0]
         numParticles = 30
-        bounds = [(0,mainBox.length-1), (0,mainBox.width-1), (0,mainBox.height-1)]            #bounds for search space (min,max)
+        bounds = [(0,mainBox.scaledLength-1), (0,mainBox.scaledWidth-1), (0,mainBox.scaledHeight-1)]            #bounds for search space (min,max)
 
         problem_dimensions = len(sample_solution)
         vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
@@ -285,12 +285,12 @@ def optimize(models, length, width, height):
                 continue
 
             #assume everything is filled and not a container //limitation
-            volume = model.solidVolume
+            volume = model.scaledSolidVolume
 
-            if volume > mainBox.totalVolume:
+            if volume > mainBox.scaledTotalVolume:
                 break
 
-            if volume > mainBox.totalVolume - mainBox.totalObjectVolume:
+            if volume > mainBox.scaledTotalVolume - mainBox.scaledTotalObjectVolume:
                 continue
 
             # identification (initialization part two)
@@ -340,12 +340,13 @@ def optimize(models, length, width, height):
             # solution (attack)
             models_inside.append(model)
             insertToBox(mainBox, model, pos_best_g, model.modelNum)
-            mainBox.totalObjectVolume += volume
+            mainBox.scaledTotalObjectVolume += volume
+            mainBox.totalObjectVolume += model.solidVolume
             models_position.append(pos_best_g)
             models_local_error = err_best_g
             print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
 
-        current_percentage = (mainBox.totalObjectVolume/mainBox.totalVolume)*100
+        current_percentage = (mainBox.scaledTotalObjectVolume/mainBox.scaledTotalVolume)*100
         if float(best_percentage) == float(current_percentage):
             termination_counter+=1
             if best_error > models_local_error:

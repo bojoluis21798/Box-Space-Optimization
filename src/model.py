@@ -35,8 +35,12 @@ class Model:
                 self.scaledY = int(self.dimY/2)
                 self.scaledZ = int(self.dimZ/2)
                 self.isContainer = True if row[8] == "TRUE" else False
-                self.surfaceVolume = (float(self.dimX * self.dimY * self.dimZ)) #questionable
-                self.solidVolume = (float(self.dimX * self.dimY * self.dimZ))  #questionable
+
+                self.surfaceVolume = (float(self.dimX * self.dimY * self.dimZ))
+                self.solidVolume = (float(self.dimX * self.dimY * self.dimZ)) 
+                self.scaledSurfaceVolume = float(self.scaledX * self.scaledY * self.scaledZ)
+                self.scaledSolidVolume = float(self.scaledX * self.scaledY * self.scaledZ)
+
                 self.supportSurfaceArea = 0.0 if row[11] == "" else float(row[11])
                 self.weight = 0.0 if row[12] == "" else float(row[12])
                 self.staticFriction = 0.0 if row[13] == "" else float(row[13])
