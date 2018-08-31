@@ -273,7 +273,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         models_local_error = sys.maxsize
 
         sample_solution = [0,0,0]
-        numParticles = 30
+        numParticles = 100
         bounds = [(0,mainBox.scaledLength-1), (0,mainBox.scaledWidth-1), (0,mainBox.scaledHeight-1)]            #bounds for search space (min,max)
 
         problem_dimensions = len(sample_solution)
@@ -304,7 +304,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             #verification
             inside_termination_ctr = 0
             subgen = 0
-            while inside_termination_ctr < 10:
+            maxIter = 0
+            while maxIter < 500 and inside_termination_ctr < 10:
                 #insert locust work here on item
                 current_err_best = err_best_g
                 for j in range(0, numParticles):
@@ -319,10 +320,10 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                         err_best_g = int(swarm[j].err_i)
                         inside_termination_ctr = 0
 
-                if current_err_best == err_best_g:
+                if current_err_best >= err_best_g:
                     inside_termination_ctr+=1
 
-                if err_best_g == sys.maxsize:
+                if current_err_best == sys.maxsize:
                     is_insertable = False
                     continue
                 else:
@@ -335,6 +336,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     swarm[j].updatePosition(bounds, problem_dimensions)
 
                 subgen+=1
+                maxIter+=1
 
             if is_insertable == False:
                 continue
@@ -349,11 +351,12 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
 
         if len(models_inside) == 1:
-            input("cant fit anything side the box")
-            break
+            print("cant fit anything side the box during this gen"+str(maingen))
+            maingen+=1
+            continue
 
         current_percentage = (mainBox.scaledTotalObjectVolume/mainBox.scaledTotalVolume)*100
-        if float(best_percentage) == float(current_percentage):
+        if float(best_percentage) >= float(current_percentage):
             termination_counter+=1
             if best_error > models_local_error:
                 best_mainBox = mainBox
