@@ -7,14 +7,14 @@ Frame Root {
      0.000000, 1.000000, 0.000000, 0.000000,
      0.000000, 0.000000, 0.000000, 1.000000;;
   }
-  Frame vase {
+  Frame vase_008 {
     FrameTransformMatrix {
        0.007506, 0.000000, 0.000000, 0.000000,
        0.000000,-0.000000, 0.007506, 0.000000,
        0.000000,-0.007506,-0.000000, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
-    Mesh { // vase mesh
+    Mesh { // vase_008 mesh
       18120;
        6.111630;22.838200;31.673248;,
       -0.007576;23.641800;31.673248;,
@@ -24177,7 +24177,7 @@ Frame Root {
       3;18113,18112,18111;,
       3;18116,18115,18114;,
       3;18119,18118,18117;;
-      MeshNormals { // vase normals
+      MeshNormals { // vase_008 normals
         18032;
          0.129093; 0.983123; 0.129460;,
          0.129093; 0.983123; 0.129460;,
@@ -48252,8 +48252,8 @@ Frame Root {
         3;18025,18024,18023;,
         3;18028,18027,18026;,
         3;18031,18030,18029;;
-      } // End of vase normals
-      MeshTextureCoords { // vase UV coordinates
+      } // End of vase_008 normals
+      MeshTextureCoords { // vase_008 UV coordinates
         18120;
          0.064289;-0.279980;,
         -0.064289;-0.279980;,
@@ -66375,8 +66375,8 @@ Frame Root {
          0.442120; 0.881686;,
          0.442044; 1.118597;,
          0.457677; 1.000147;;
-      } // End of vase UV coordinates
-      MeshMaterialList { // vase material list
+      } // End of vase_008 UV coordinates
+      MeshMaterialList { // vase_008 material list
         1;
         6040;
         0,
@@ -72419,13 +72419,13 @@ Frame Root {
         0,
         0,
         0;
-        Material m0_008 {
+        Material m0_030 {
            0.640000; 0.640000; 0.640000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-      } // End of vase material list
-    } // End of vase mesh
-  } // End of vase
+      } // End of vase_008 material list
+    } // End of vase_008 mesh
+  } // End of vase_008
 } // End of Root
