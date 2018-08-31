@@ -18,6 +18,9 @@ if not os.path.exists(exportdir):
 # convert files using blender
 # define function for converting
 def convert(fn):
+    modelId = fn.split('.')[0]
+    if os.path.isfile(exportdir+"/"+modelId+".x"):
+        return
     model = Model(fn)
     # clear scene
     bpy.ops.object.delete(use_global = True)
@@ -37,7 +40,6 @@ def convert(fn):
     for mtl in bpy.data.materials:
         mtl.translucency = 1
         mtl.use_transparency = False
-    modelId = fn.split('.')[0]
     # save collada
     bpy.ops.wm.collada_export(filepath = exportdir+"/tmp/"+modelId)
     # delete from scene
