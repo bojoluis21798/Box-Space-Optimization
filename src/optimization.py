@@ -261,7 +261,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
     termination_counter = 0                         # counts the number of convergence of optimization
     maingen = 0
-    while termination_counter < 10:
+    maxrun = 0
+    while maingen < 50 and termination_counter < 5:
         # start of solitary phase
             # initialization (identification)
             # updating       (verification)
@@ -304,8 +305,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             #verification
             inside_termination_ctr = 0
             subgen = 0
-            maxIter = 0
-            while maxIter < 500 and inside_termination_ctr < 10:
+            while subgen < 500 and inside_termination_ctr < 10:
                 #insert locust work here on item
                 current_err_best = err_best_g
                 for j in range(0, numParticles):
@@ -336,7 +336,6 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     swarm[j].updatePosition(bounds, problem_dimensions)
 
                 subgen+=1
-                maxIter+=1
 
             if is_insertable == False:
                 continue
