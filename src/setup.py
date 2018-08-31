@@ -14,7 +14,6 @@ def menu(models):
     """GUI Menu to display models and their attributes """
 
     menu = aspect2d.attachNewNode("Menu")
-    i = 1
     spin = None
     chosenModels = {}
     def displayModels(idx = 1):
@@ -53,19 +52,17 @@ def menu(models):
          # function to modve to next model loaded in memory: (1 to move to next, -1 to move to previous)
         def moveModel(inc):
             taskMgr.remove(spin)
-            nonlocal i
-            nonlocal models
-
+            nonlocal idx
             if inc == 1:
-                i = (i+inc)%len(models)
-                if i == 0:
-                    i = 1
+                idx = (idx+inc)%len(models)
+                if idx == 0:
+                    idx = 1
             elif inc == -1:
-                i = i - 1 if (i-1) > 0 else len(models)-1
+                idx = idx - 1 if (idx-1) > 0 else len(models)-1
 
             info.removeNode()
             currentModel.removeNode()
-            return displayModels(i)
+            return displayModels(idx)
 
         def moveNext():
             moveModel(1)
