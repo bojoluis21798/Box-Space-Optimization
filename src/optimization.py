@@ -324,7 +324,9 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
                 if err_best_g == sys.maxsize:
                     is_insertable = False
-                    break
+                    continue
+                else:
+                    is_insertable = True
 
                 # cycle through swarm and update velocities and position
                 # gregarious phase - analysis part 2
