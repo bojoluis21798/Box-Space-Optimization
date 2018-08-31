@@ -346,6 +346,10 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             models_local_error = err_best_g
             print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
 
+        if len(models_inside) == 1:
+            input("cant fit anything side the box")
+            break
+
         current_percentage = (mainBox.scaledTotalObjectVolume/mainBox.scaledTotalVolume)*100
         if float(best_percentage) == float(current_percentage):
             termination_counter+=1
@@ -368,14 +372,20 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         print(f"current best_error = {best_error}")
         maingen+=1
 
-    print(f"Best box space optimization: {best_percentage}")
-    print(f"Models position: {best_models_position}")
-    scaleToCenter(best_models_position,best_models_inside, best_mainBox)
-    print(f"Models position scaled: {best_models_position}")
-    print(f"Number of loaded models over inserted: {len(models) -1} / {len(best_models_inside) -1}")
-    states = [best_models_inside[i].pos_state for i in range(1,len(best_models_inside))]
-    print(f" states: {states}")
-    input("Press enter to visualize results ")
+    if len(best_models_inside) != 0:
+        print(f"Best box space optimization: {best_percentage}")
+        print(f"Models position: {best_models_position}")
+        scaleToCenter(best_models_position,best_models_inside, best_mainBox)
+        print(f"Models position scaled: {best_models_position}")
+        print(f"Number of loaded models over inserted: {len(models) -1} / {len(best_models_inside) -1}")
+        states = [best_models_inside[i].pos_state for i in range(1,len(best_models_inside))]
+        print(f" states: {states}")
+        input("Press enter to visualize results ")
+
+    else:
+        input("use a bigger box ..")
 
     return best_mainBox, best_models_inside, best_models_position
+    
+    
 
