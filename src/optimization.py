@@ -303,14 +303,17 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
                     # update global bests
                     # gregarious phase - analysis part 1
-                    if swarm[j].err_i < err_best_g or err_best_g == -1:
+                    if swarm[j].err_i <= err_best_g or err_best_g == -1:
                         model = swarm[j].item                                   # in case the particle updated the model attributes
                         pos_best_g = list(swarm[j].position_i)
                         err_best_g = int(swarm[j].err_i)
-                        inside_convergence = 0
+
+                if current_err_best < err_best_g:
+                    inside_convergence = 0
 
                 if current_err_best >= err_best_g:
                     inside_convergence+=1
+
 
                 if current_err_best == sys.maxsize:
                     is_insertable = False
@@ -336,7 +339,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             mainBox.totalObjectVolume += model.solidVolume
             models_position.append(pos_best_g)
             models_local_error = err_best_g
-            print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g}")
+            print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g} with error {err_best_g}")
 
         if len(models_inside) == 1:
             print("cant fit anything inside the box during this run # "+str(maxrun))
