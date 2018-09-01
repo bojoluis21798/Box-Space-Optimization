@@ -266,7 +266,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         models_local_error = sys.maxsize
 
         sample_solution = [0,0,0]
-        numParticles = 100
+        numParticles = 50
         bounds = [(0,mainBox.scaledLength-1), (0,mainBox.scaledWidth-1), (0,mainBox.scaledHeight-1)]            #bounds for search space (min,max)
 
         problem_dimensions = len(sample_solution)
