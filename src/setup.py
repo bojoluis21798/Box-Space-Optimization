@@ -104,7 +104,7 @@ def menu(models):
 
         # lights
         dlight = DirectionalLight('dlight')
-        dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.3))
+        dlight.setColor(VBase4(0.1, 0.1, 0.1, 0.1  ))
         dlnp = render.attachNewNode(dlight)
         dlnp.lookAt(currentModel)
         render.setLight(dlnp)
@@ -199,6 +199,7 @@ def menu(models):
             # load box to panda
             box = loader.loadModel('./data/box.x')
             box.setPos(0,5,0)
+            box.setScale(0.5)
 
             # load models
             mdlsPanda = []
@@ -207,6 +208,7 @@ def menu(models):
                 mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
                 mdlsPanda[i].reparentTo(modelsNode)
                 mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)
+                mdlsPanda[i].setScale(0.5)
                 print("=====================\n"+modelsInside[i].id)
                 print("Rotation: "+str(modelsInside[i].rotation))
                 print("Box Position: "+str((box.getX(), box.getY(), box.getZ())))
