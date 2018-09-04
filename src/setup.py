@@ -100,11 +100,11 @@ def menu(models):
         pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
 
         # set model position and scale
-        currentModel.setPos(0,3,0)
+        currentModel.setPos(0,2,0)
 
         # lights
         dlight = DirectionalLight('dlight')
-        dlight.setColor(VBase4(0.1, 0.1, 0.1, 0.1  ))
+        dlight.setColor(VBase4(0.2, 0.2, 0.2, 0.2))
         dlnp = render.attachNewNode(dlight)
         dlnp.lookAt(currentModel)
         render.setLight(dlnp)
@@ -188,9 +188,9 @@ def menu(models):
             for mtl in bpy.data.materials:
                 mtl.use_transparency = True
                 mtl.alpha = 0.2
-            box.dimensions[0] = (length*0.0254)
-            box.dimensions[1] = (width*0.0254)
-            box.dimensions[2] = (height*0.0254)
+            box.scale[0] = (length*0.0254)/2
+            box.scale[1] = (width*0.0254)/2
+            box.scale[2] = (height*0.0254)/2
             bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
