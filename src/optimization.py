@@ -243,148 +243,109 @@ def scaleToCenter(ary_pos, items, box):
         ary_pos[i][1] = localY - newY
         ary_pos[i][2] = localZ - newZ
 
-def initializeSwarm(swarm, numParticles, problem_dimensions, bounds, vel_limit):
-    for i in range(0,numParticles):
-        swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
+def reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit):
+    for i in range(0, len(swarm)):
+        swarm[i].reset(problem_dimensions, bounds, vel_limit)
 
 # Do optimization here
 def optimize(models, scaledLength, scaledWidth, scaledHeight):
-    best_mainBox = None
-    best_models_inside = []
-    best_models_position = []
-    best_percentage = 0
-    best_error = sys.maxsize
-
-    outside_convergence = 0                         
-    maxrun = 0
-    while maxrun < 50 and outside_convergence < 5:
-        # start of solitary phase
+    # start of solitary phase
             # initialization (identification)
             # updating       (verification)
 
-        #initialization part one
-        models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
-        models_position = [None]
-        mainBox = Box(scaledLength,scaledWidth,scaledHeight)                                                  # user input, but for now is not. box(scaledLength,scaledWidth,scaledHeight) in inches
-        models_local_error = sys.maxsize
+    #initialization part one
+    models_inside = [None]                                                      # None becuase modelid 0 is equivalent to empty in box
+    models_position = [None]
+    mainBox = Box(scaledLength,scaledWidth,scaledHeight)                                                  # user input, but for now is not. box(scaledLength,scaledWidth,scaledHeight) in inches
+    models_local_error = sys.maxsize
 
-        sample_solution = [0,0,0]
-        numParticles = 246
-        bounds = [(0,mainBox.scaledLength-1), (0,mainBox.scaledWidth-1), (0,mainBox.scaledHeight-1)]            #bounds for search space (min,max)
+    sample_solution = [0,0,0]
+    numParticles = 246
+    bounds = [(0,mainBox.scaledLength-1), (0,mainBox.scaledWidth-1), (0,mainBox.scaledHeight-1)]            #bounds for search space (min,max)
 
-        problem_dimensions = len(sample_solution)
-        vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
+    problem_dimensions = len(sample_solution)
+    vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
 
-        for model in models:
-            if model.id == sys.maxsize:
-                continue
-
-            if model.scaledSolidVolume > mainBox.scaledTotalVolume:
-                break
-
-            if model.scaledSolidVolume > mainBox.scaledTotalVolume - mainBox.scaledTotalObjectVolume:
-                continue
-
-            # identification (initialization part two)
-            is_insertable = True
-            err_best_g = -1                                                         # global best error
-            pos_best_g = []                                                         # global best position
-
-            swarm = []                                                              # locust swarm
-            initializeSwarm(swarm,numParticles,problem_dimensions,bounds,vel_limit)
-
-            #verification
-            inside_convergence = 0
-            generation = 0
-            while generation < 500 and inside_convergence < 10:
-                # insert locust work here on item
-                current_err_best = err_best_g
-                for j in range(0, numParticles):
-                    swarm[j].addItem(model)
-                    swarm[j].evaluate(objectiveFunctionSpace, mainBox)
-
-                    # update global bests
-                    # gregarious phase - analysis part 1
-                    if swarm[j].err_i <= err_best_g or err_best_g == -1:
-                        model = swarm[j].item                                   # in case the particle updated the model attributes
-                        pos_best_g = list(swarm[j].position_i)
-                        err_best_g = int(swarm[j].err_i)
-
-                if current_err_best < err_best_g:
-                    inside_convergence = 0
-
-                if current_err_best >= err_best_g:
-                    inside_convergence+=1
-
-
-                if current_err_best == sys.maxsize:
-                    is_insertable = False
-                    continue
-                else:
-                    is_insertable = True
-
-                # cycle through swarm and update velocities and position
-                # gregarious phase - analysis part 2
-                for j in range(0,numParticles):
-                    swarm[j].updateVelocity(pos_best_g, problem_dimensions)
-                    swarm[j].updatePosition(bounds, problem_dimensions)
-
-                generation+=1
-
-            if is_insertable == False:
-                continue
-
-            # solution (attack)
-            models_inside.append(model)
-            insertToBox(mainBox, model, pos_best_g, model.modelNum)
-            mainBox.scaledTotalObjectVolume += model.scaledSolidVolume
-            mainBox.totalObjectVolume += model.solidVolume
-            models_position.append(pos_best_g)
-            models_local_error = err_best_g
-            print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g} with error {err_best_g}")
-
-        if len(models_inside) == 1:
-            print("cant fit anything inside the box during this run # "+str(maxrun))
-            maxrun+=1
+    for model in models:
+        if model.id == sys.maxsize:
             continue
 
-        current_percentage = (mainBox.scaledTotalObjectVolume/mainBox.scaledTotalVolume)*100
-        if float(best_percentage) >= float(current_percentage):
-            outside_convergence+=1
-            if best_error > models_local_error:
-                best_mainBox = mainBox
-                best_models_inside = models_inside
-                best_models_position = models_position
-                best_percentage = current_percentage
-                best_error = models_local_error
-                outside_convergence = 0
+        if model.scaledSolidVolume > mainBox.scaledTotalVolume:
+            break
 
-        if current_percentage > best_percentage:
-            best_mainBox = mainBox
-            best_models_inside = models_inside
-            best_models_position = models_position
-            best_percentage = current_percentage
-            best_error = models_local_error
-            outside_convergence = 0
+        if model.scaledSolidVolume > mainBox.scaledTotalVolume - mainBox.scaledTotalObjectVolume:
+            continue
+
+        # identification (initialization part two)
+        is_insertable = True
+        err_best_g = -1                                                         # global best error
+        pos_best_g = []                                                         # global best position
+        current_err_best = sys.maxsize
         
-        print(f">>>>>Generation {maxrun} solution: {best_models_position}")
-        print(f"current best_error = {best_error}")
-        maxrun+=1
+        swarm = []                                                              # locust swarm
+        for i in range(0,numParticles):
+            swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
 
-    if len(best_models_inside) != 0:
-        print(f"Best box space optimization: {best_percentage}")
-        print(f"Models position: {best_models_position}")
-        scaleToCenter(best_models_position,best_models_inside, best_mainBox)
-        print(f"Models position scaled: {best_models_position}")
-        print(f"Number of loaded models over inserted: {len(models) -1} / {len(best_models_inside) -1}")
-        states = [best_models_inside[i].pos_state for i in range(1,len(best_models_inside))]
-        print(f" states: {states}")
-        input("Press enter to visualize results ")
+        #verification
+        inside_convergence = 0
+        generation = 0
+        while generation < 500:
+            # insert locust work here on item
+            for j in range(0, numParticles):
+                swarm[j].addItem(model)
+                swarm[j].evaluate(objectiveFunctionSpace, mainBox)
 
-    else:
-        input("use a bigger box ..")
+                # update global bests
+                # gregarious phase - analysis part 1
+                if swarm[j].err_i <= err_best_g or err_best_g == -1:
+                    model = swarm[j].item                                   # in case the particle updated the model attributes
+                    pos_best_g = list(swarm[j].position_i)
+                    err_best_g = int(swarm[j].err_i)
 
-    return best_mainBox, best_models_inside, best_models_position
+            print(err_best_g)
+            if current_err_best > err_best_g:
+                current_err_best = err_best_g
+                inside_convergence = 0
+            elif current_err_best <= err_best_g:
+                inside_convergence+=1
+                if inside_convergence == 10 and current_err_best == sys.maxsize:
+                    reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit)
+                    inside_convergence = 0
+                    generation+=1
+                    print("restarting swarm due to stagnation of solution ...")
+                    continue
+                elif inside_convergence == 15 and current_err_best != sys.maxsize:
+                    break
+
+            # cycle through swarm and update velocities and position
+            # gregarious phase - analysis part 2
+            for j in range(0,numParticles):
+                swarm[j].updateVelocity(pos_best_g, problem_dimensions)
+                swarm[j].updatePosition(bounds, problem_dimensions)
+
+            generation+=1
+
+        if current_err_best == sys.maxsize:
+            # proceed to another item since this item cannot be inserted
+            continue
+
+        # solution (attack)
+        models_inside.append(model)
+        insertToBox(mainBox, model, pos_best_g, model.modelNum)
+        mainBox.scaledTotalObjectVolume += model.scaledSolidVolume
+        mainBox.totalObjectVolume += model.solidVolume
+        models_position.append(pos_best_g)
+        models_local_error = err_best_g
+        print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g} with error {err_best_g}")
+
+    if len(models_inside) == 1:
+        print("cant fit anything inside the box. we suggest to use a bigger box ")
+        input("boj please check do argument check where if it is not empty display, else display an error message ..")
+
+    box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
+    print(f"box percentage maximized: {box_percentage}")
+    input("proceed to visualizing")
+    return mainBox, models_inside, models_position
     
     
 
