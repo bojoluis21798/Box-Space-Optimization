@@ -19,6 +19,21 @@ class LocustParticle:
             self.velocity_i.append(random.uniform(-1 * vel_limit[i], vel_limit[i]))   # can be improved
             self.position_i.append(random.randint(bounds[i][0], bounds[i][1]))             
 
+    def reset(self,num_dimensions, bounds, vel_limit):
+        self.state = 0              # 0 - solitary, 1 - gregarious
+        self.position_i = []        # particle position, contains array of positions [x,y,z] per element
+        self.velocity_i = []        # particle current velocity
+        self.pos_best_i = []        # best position (self, not group)
+        self.err_best_i=-1          # best error individual
+        self.err_i=-1               # error individual
+        self.c1 = 0.701503                 # cognitive parameter constant
+        self.c2 = 0.246448                 # social parameter constant
+        self.w = 0.687378                # inertia constant
+
+        for i in range(0,num_dimensions):
+            self.velocity_i.append(random.uniform(-1 * vel_limit[i], vel_limit[i]))   # can be improved
+            self.position_i.append(random.randint(bounds[i][0], bounds[i][1]))
+
     def addItem(self, item):
         self.item = item           # add item for particle to find space for
     

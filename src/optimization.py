@@ -243,9 +243,9 @@ def scaleToCenter(ary_pos, items, box):
         ary_pos[i][1] = localY - newY
         ary_pos[i][2] = localZ - newZ
 
-def initializeSwarm(swarm, numParticles, problem_dimensions, bounds, vel_limit):
-    for i in range(0,numParticles):
-        swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
+def reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit):
+    for i in range(0, len(swarm)):
+        swarm[i].reset(problem_dimensions, bounds, vel_limit)
 
 # Do optimization here
 def optimize(models, scaledLength, scaledWidth, scaledHeight):
@@ -254,10 +254,9 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     best_models_position = []
     best_percentage = 0
     best_error = sys.maxsize
-
-    outside_convergence = 0                         
+                      
     maxrun = 0
-    while maxrun < 50 and outside_convergence < 5:
+    while maxrun < 5:
         # start of solitary phase
             # initialization (identification)
             # updating       (verification)
@@ -289,16 +288,16 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             is_insertable = True
             err_best_g = -1                                                         # global best error
             pos_best_g = []                                                         # global best position
-
+            current_err_best = sys.maxsize
             swarm = []                                                              # locust swarm
-            initializeSwarm(swarm,numParticles,problem_dimensions,bounds,vel_limit)
+            for i in range(0,numParticles):
+                swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
 
             #verification
             inside_convergence = 0
             generation = 0
-            while generation < 500 and inside_convergence < 10:
+            while generation < 500:
                 # insert locust work here on item
-                current_err_best = err_best_g
                 for j in range(0, numParticles):
                     swarm[j].addItem(model)
                     swarm[j].evaluate(objectiveFunctionSpace, mainBox)
@@ -310,18 +309,18 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                         pos_best_g = list(swarm[j].position_i)
                         err_best_g = int(swarm[j].err_i)
 
-                if current_err_best < err_best_g:
+                if current_err_best > err_best_g:
+                    current_err_best = err_best_g
                     inside_convergence = 0
-
-                if current_err_best >= err_best_g:
+                elif current_err_best <= err_best_g:
                     inside_convergence+=1
-
-
-                if current_err_best == sys.maxsize:
-                    is_insertable = False
-                    continue
-                else:
-                    is_insertable = True
+                    if inside_convergence == 10 and current_err_best == sys.maxsize:
+                        reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit)
+                        inside_convergence = 0
+                        generation+=1
+                        continue
+                    elif inside_convergence == 10 and current_err_best != sys.maxsize:
+                        break
 
                 # cycle through swarm and update velocities and position
                 # gregarious phase - analysis part 2
@@ -331,7 +330,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
                 generation+=1
 
-            if is_insertable == False:
+            if current_err_best == sys.maxsize:
                 continue
 
             # solution (attack)
@@ -349,23 +348,21 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             continue
 
         current_percentage = (mainBox.scaledTotalObjectVolume/mainBox.scaledTotalVolume)*100
-        if float(best_percentage) >= float(current_percentage):
-            outside_convergence+=1
+        if current_percentage == best_percentage:
             if best_error > models_local_error:
                 best_mainBox = mainBox
                 best_models_inside = models_inside
                 best_models_position = models_position
                 best_percentage = current_percentage
                 best_error = models_local_error
-                outside_convergence = 0
-
-        if current_percentage > best_percentage:
+            elif best_error == models_local_error:
+                break
+        elif current_percentage > best_percentage:
             best_mainBox = mainBox
             best_models_inside = models_inside
             best_models_position = models_position
             best_percentage = current_percentage
             best_error = models_local_error
-            outside_convergence = 0
         
         print(f">>>>>Generation {maxrun} solution: {best_models_position}")
         print(f"current best_error = {best_error}")
