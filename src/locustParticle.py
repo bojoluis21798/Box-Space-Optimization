@@ -10,9 +10,9 @@ class LocustParticle:
         self.pos_best_i = []        # best position (self, not group)
         self.err_best_i=-1          # best error individual
         self.err_i=-1               # error individual
-        self.c1 = 1                 # cognitive parameter constant
-        self.c2 = 2                 # social parameter constant
-        self.w = 0.5                # inertia constant
+        self.c1 = 0.701503                 # cognitive parameter constant
+        self.c2 = 0.246448                 # social parameter constant
+        self.w = 0.687378                # inertia constant
         self.item = item            # the item it currently is looking for an optimal space
 
         for i in range(0,num_dimensions):
