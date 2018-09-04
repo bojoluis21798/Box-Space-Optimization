@@ -7,14 +7,14 @@ Frame Root {
      0.000000, 1.000000, 0.000000, 0.000000,
      0.000000, 0.000000, 0.000000, 1.000000;;
   }
-  Frame macbook_002 {
+  Frame macbook {
     FrameTransformMatrix {
-       0.002075, 0.000000, 0.000000, 0.000000,
-       0.000000,-0.000000, 0.002075, 0.000000,
-       0.000000,-0.002075,-0.000000, 0.000000,
+       0.002073, 0.000000, 0.000000, 0.000000,
+       0.000000,-0.000000, 0.002073, 0.000000,
+       0.000000,-0.002073,-0.000000, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
-    Mesh { // macbook_002 mesh
+    Mesh { // macbook mesh
       2376;
       -116.000000;-75.500000;68.250000;,
       116.000000;-68.500000;68.250000;,
@@ -3185,7 +3185,7 @@ Frame Root {
       3;2369,2368,2367;,
       3;2372,2371,2370;,
       3;2375,2374,2373;;
-      MeshNormals { // macbook_002 normals
+      MeshNormals { // macbook normals
         792;
         -0.000000; 0.000000;-1.000000;,
          0.000000; 0.000000;-1.000000;,
@@ -4772,8 +4772,8 @@ Frame Root {
         3;789,789,789;,
         3;790,790,790;,
         3;791,791,791;;
-      } // End of macbook_002 normals
-      MeshTextureCoords { // macbook_002 UV coordinates
+      } // End of macbook normals
+      MeshTextureCoords { // macbook UV coordinates
         2376;
          0.000000; 1.000000;,
          1.000000; 1.000000;,
@@ -7151,8 +7151,8 @@ Frame Root {
          0.000000; 1.000000;,
          1.000000; 1.000000;,
          1.000000; 0.000000;;
-      } // End of macbook_002 UV coordinates
-      MeshMaterialList { // macbook_002 material list
+      } // End of macbook UV coordinates
+      MeshMaterialList { // macbook material list
         3;
         792;
         0,
@@ -7947,25 +7947,25 @@ Frame Root {
         2,
         2,
         2;
-        Material m0_048 {
+        Material m0_109 {
            1.000000; 1.000000; 1.000000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m1_043 {
+        Material m1_096 {
            0.000000; 0.000000; 0.000000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m2_037 {
+        Material m2_078 {
            1.000000; 0.980392; 0.980392; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-      } // End of macbook_002 material list
-    } // End of macbook_002 mesh
-  } // End of macbook_002
+      } // End of macbook material list
+    } // End of macbook mesh
+  } // End of macbook
 } // End of Root
