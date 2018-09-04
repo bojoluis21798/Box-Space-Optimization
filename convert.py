@@ -29,9 +29,9 @@ def convert(fn):
     # get selected object
     obj = bpy.context.selected_objects[0]
     # scale object
-    obj.scale[0] = model.unit
-    obj.scale[1] = model.unit
-    obj.scale[2] = model.unit
+    obj.scale[0] = (model.dimX/1000)/(obj.dimensions[0])
+    obj.scale[1] = (model.dimZ/1000)/(obj.dimensions[1])
+    obj.scale[2] = (model.dimY/1000)/(obj.dimensions[2])
     # set origin
     bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = 'BOUNDS')
     # change location to (0,0,0)

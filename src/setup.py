@@ -100,11 +100,11 @@ def menu(models):
         pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
 
         # set model position and scale
-        currentModel.setPos(0,3,0)
+        currentModel.setPos(0,2,0)
 
         # lights
         dlight = DirectionalLight('dlight')
-        dlight.setColor(VBase4(0.3, 0.3, 0.3, 0.3))
+        dlight.setColor(VBase4(0.2, 0.2, 0.2, 0.2))
         dlnp = render.attachNewNode(dlight)
         dlnp.lookAt(currentModel)
         render.setLight(dlnp)
@@ -135,7 +135,7 @@ def menu(models):
         width = 0
         height = 0
 
-        lengthLabel = OnscreenText(text = "Enter Length of Box (in)",
+        lengthLabel = OnscreenText(text = "Enter Width (x) of Box (in)",
         pos = (-0.6,0.5), parent = boxParams, scale = 0.05, align = TextNode.ALeft)
 
         def setLength(textEntered):
@@ -144,7 +144,7 @@ def menu(models):
         length = DirectEntry(scale=.05, command=setLength, numLines = 1, focus=1,
         pos = (0,0,0.5), parent = boxParams)
 
-        widthLabel = OnscreenText(text = "Enter Width of Box (in)",
+        widthLabel = OnscreenText(text = "Enter Height (y) of Box (in)",
         pos = (-0.6,0.4), parent = boxParams, scale = 0.05, align = TextNode.ALeft)
 
         def setWidth(textEntered):
@@ -153,7 +153,7 @@ def menu(models):
         width = DirectEntry(scale=.05, command=setWidth, numLines = 1, focus=1,
         pos = (0,0,0.4), parent = boxParams)
 
-        heightLabel = OnscreenText(text = "Enter Height of Box (in)",
+        heightLabel = OnscreenText(text = "Enter Length (z) of Box (in)",
         pos = (-0.6,0.3), parent = boxParams, scale = 0.05, align = TextNode.ALeft)
 
         def setHeight(textEntered):
@@ -199,6 +199,7 @@ def menu(models):
             # load box to panda
             box = loader.loadModel('./data/box.x')
             box.setPos(0,5,0)
+            box.setScale(0.5)
 
             # load models
             mdlsPanda = []
@@ -206,11 +207,13 @@ def menu(models):
             for i in range(1, len(modelsInside)):
                 mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
                 mdlsPanda[i].reparentTo(modelsNode)
-                mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)
+                mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]), box.getY()+(modelsPosition[i][1]), box.getZ()+(modelsPosition[i][2]))
+                mdlsPanda[i].setScale(0.5)
                 print("=====================\n"+modelsInside[i].id)
                 print("Rotation: "+str(modelsInside[i].rotation))
                 print("Box Position: "+str((box.getX(), box.getY(), box.getZ())))
-                print("Position: "+str(((modelsPosition[i][0]*0.001),(modelsPosition[i][1]*0.001),(modelsPosition[i][2]*0.001))))
+                print("Position: "+str((box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)))
+                print("Box Dimensions: "+str((length*0.0254, width*0.0254, height*0.0254)))
                 mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
 
             def exitToMainMenu():
@@ -277,9 +280,10 @@ def modelsLoad():
     models = []
 
     #initialize index 0 as a null object
-    models.append(Model(""))
-
     for fn in filenames:
         models.append(Model(fn))
+
+    models.sort(key = lambda x: x.surfaceVolume)
+    models.insert(0, Model(""))
 
     return models
