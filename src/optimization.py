@@ -243,6 +243,9 @@ def scaleToCenter(ary_pos, items, box):
         ary_pos[i][1] = localY - newY
         ary_pos[i][2] = localZ - newZ
 
+def initializeSwarm(swarm, numParticles, problem_dimensions, bounds, vel_limit):
+    for i in range(0,numParticles):
+        swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
 
 # Do optimization here
 def optimize(models, scaledLength, scaledWidth, scaledHeight):
@@ -288,8 +291,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             pos_best_g = []                                                         # global best position
 
             swarm = []                                                              # locust swarm
-            for i in range(0,numParticles):
-                swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
+            initializeSwarm(swarm,numParticles,problem_dimensions,bounds,vel_limit)
 
             #verification
             inside_convergence = 0
@@ -355,6 +357,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                 best_models_position = models_position
                 best_percentage = current_percentage
                 best_error = models_local_error
+                outside_convergence = 0
 
         if current_percentage > best_percentage:
             best_mainBox = mainBox
