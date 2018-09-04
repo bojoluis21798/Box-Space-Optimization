@@ -28,15 +28,15 @@ def menu(models):
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "x-dimension: "+str(models[idx].dimX), pos = (-1.2,0.8),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
-        textObject = OnscreenText(text = "y-dimension: "+str(models[idx].dimY), pos = (-1.2,0.7),
+        textObject = OnscreenText(text = "z-dimension: "+str(models[idx].dimY), pos = (-1.2,0.7),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
-        textObject = OnscreenText(text = "z-dimension: "+str(models[idx].dimZ), pos = (-1.2,0.6),
+        textObject = OnscreenText(text = "y-dimension: "+str(models[idx].dimZ), pos = (-1.2,0.6),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "x-dimension (scaled): "+str(models[idx].scaledX), pos = (-1.2,0.5),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
-        textObject = OnscreenText(text = "y-dimension (scaled): "+str(models[idx].scaledY), pos = (-1.2,0.4),
+        textObject = OnscreenText(text = "z-dimension (scaled): "+str(models[idx].scaledY), pos = (-1.2,0.4),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
-        textObject = OnscreenText(text = "z-dimension (scaled): "+str(models[idx].scaledZ), pos = (-1.2,0.3),
+        textObject = OnscreenText(text = "y-dimension (scaled): "+str(models[idx].scaledZ), pos = (-1.2,0.3),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "Surface Volume: "+str(models[idx].surfaceVolume), pos = (1.2,0.9),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ARight,mayChange=0)
@@ -280,9 +280,10 @@ def modelsLoad():
     models = []
 
     #initialize index 0 as a null object
-    models.append(Model(""))
-
     for fn in filenames:
         models.append(Model(fn))
+
+    models.sort(key = lambda x: x.surfaceVolume)
+    models.insert(0, Model(""))
 
     return models
