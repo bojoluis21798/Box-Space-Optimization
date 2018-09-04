@@ -243,6 +243,13 @@ def scaleToCenter(ary_pos, items, box):
         ary_pos[i][1] = localY - newY
         ary_pos[i][2] = localZ - newZ
 
+def scaleToMeter(models_position):
+    meterConstant = 1000
+    for i in range(1, len(models_position)):
+        models_position[i][0] = models_position[i][0] / meterConstant
+        models_position[i][1] = models_position[i][1] / meterConstant
+        models_position[i][2] = models_position[i][2] / meterConstant
+
 def reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit):
     for i in range(0, len(swarm)):
         swarm[i].reset(problem_dimensions, bounds, vel_limit)
@@ -345,6 +352,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
     print(f"box percentage maximized: {box_percentage}")
     input("proceed to visualizing")
+    scaleToCenter(models_position, models_inside, mainBox)
+    scaleToMeter(models_position)
     return mainBox, models_inside, models_position
     
     
