@@ -28,15 +28,15 @@ def menu(models):
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "x-dimension: "+str(models[idx].dimX), pos = (-1.2,0.8),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
-        textObject = OnscreenText(text = "z-dimension: "+str(models[idx].dimY), pos = (-1.2,0.7),
+        textObject = OnscreenText(text = "y-dimension: "+str(models[idx].dimY), pos = (-1.2,0.7),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
-        textObject = OnscreenText(text = "y-dimension: "+str(models[idx].dimZ), pos = (-1.2,0.6),
+        textObject = OnscreenText(text = "z-dimension: "+str(models[idx].dimZ), pos = (-1.2,0.6),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "x-dimension (scaled): "+str(models[idx].scaledX), pos = (-1.2,0.5),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
-        textObject = OnscreenText(text = "z-dimension (scaled): "+str(models[idx].scaledY), pos = (-1.2,0.4),
+        textObject = OnscreenText(text = "y-dimension (scaled): "+str(models[idx].scaledY), pos = (-1.2,0.4),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
-        textObject = OnscreenText(text = "y-dimension (scaled): "+str(models[idx].scaledZ), pos = (-1.2,0.3),
+        textObject = OnscreenText(text = "z-dimension (scaled): "+str(models[idx].scaledZ), pos = (-1.2,0.3),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ALeft,mayChange=0)
         textObject = OnscreenText(text = "Surface Volume: "+str(models[idx].surfaceVolume), pos = (1.2,0.9),
         scale = 0.06,fg=(1,0.5,0.5,1), parent = info, align=TextNode.ARight,mayChange=0)
@@ -144,7 +144,7 @@ def menu(models):
         length = DirectEntry(scale=.05, command=setLength, numLines = 1, focus=1,
         pos = (0,0,0.5), parent = boxParams)
 
-        widthLabel = OnscreenText(text = "Enter Height (z) of Box (in)",
+        widthLabel = OnscreenText(text = "Enter Height (y) of Box (in)",
         pos = (-0.6,0.4), parent = boxParams, scale = 0.05, align = TextNode.ALeft)
 
         def setWidth(textEntered):
@@ -153,7 +153,7 @@ def menu(models):
         width = DirectEntry(scale=.05, command=setWidth, numLines = 1, focus=1,
         pos = (0,0,0.4), parent = boxParams)
 
-        heightLabel = OnscreenText(text = "Enter Length (y) of Box (in)",
+        heightLabel = OnscreenText(text = "Enter Length (z) of Box (in)",
         pos = (-0.6,0.3), parent = boxParams, scale = 0.05, align = TextNode.ALeft)
 
         def setHeight(textEntered):
@@ -188,9 +188,9 @@ def menu(models):
             for mtl in bpy.data.materials:
                 mtl.use_transparency = True
                 mtl.alpha = 0.2
-            box.scale[0] = (width*0.0254)/2
-            box.scale[1] = (height*0.0254)/2
-            box.scale[2] = (length*0.0254)/2
+            box.scale[0] = (length*0.0254)/2
+            box.scale[1] = (width*0.0254)/2
+            box.scale[2] = (height*0.0254)/2
             bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
@@ -198,7 +198,7 @@ def menu(models):
 
             # load box to panda
             box = loader.loadModel('./data/box.x')
-            camera.setPos(0,-5,0)
+            box.setPos(0,5,0)
             box.setScale(0.5)
 
             # load models
@@ -207,7 +207,7 @@ def menu(models):
             for i in range(1, len(modelsInside)):
                 mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
                 mdlsPanda[i].reparentTo(modelsNode)
-                mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)
+                mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]), box.getY()+(modelsPosition[i][1]), box.getZ()+(modelsPosition[i][2]))
                 mdlsPanda[i].setScale(0.5)
                 print("=====================\n"+modelsInside[i].id)
                 print("Rotation: "+str(modelsInside[i].rotation))
