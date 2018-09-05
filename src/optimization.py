@@ -289,7 +289,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
     problem_dimensions = len(sample_solution)
     vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
-
+    print(f"box total volume unscaled: {mainBox.totalVolume}")
     for model in models:
         if model.id == sys.maxsize:
             continue
@@ -332,7 +332,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     model = swarm[j].item                                   # in case the particle updated the model attributes
                     pos_best_g = list(swarm[j].position_i)
                     err_best_g = int(swarm[j].err_i)
-
+            # uncomment this to see if algo is running
+            #print(current_err_best)
             if current_err_best > err_best_g:
                 current_err_best = err_best_g
                 inside_convergence = 0
