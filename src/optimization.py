@@ -12,7 +12,6 @@ from src.locustParticle import LocustParticle
 def isSpaceAvailable(item, position, box):
     #get item dimensions
     #compare with position if available in box
-    item.pos_state.clear()
     ret = False
     posX = position[0]
     posY = position[1]
@@ -123,7 +122,6 @@ def countFreeSpace(box, position, scaledX, scaledY, scaledZ):
 def objectiveFunctionSpace(item, pos, box):
     freeSpace = sys.maxsize
     x,y,z = pos[0], pos[1], pos[2]
-
     if isOverBound(item, pos, box):
         return sys.maxsize
 
@@ -207,36 +205,36 @@ def insertToBox(box, item, pos, itemNum):
 
 # transforms positions to center of the box
 def scaleToCenter(ary_pos, items, box):
-    newX = int(box.scaledLength / 2)
-    newY = int(box.scaledWidth / 2)
-    newZ = int(box.scaledHeight / 2)
+    newX = float(box.scaledLength / 2)
+    newY = float(box.scaledWidth / 2)
+    newZ = float(box.scaledHeight / 2)
 
     for i in range(1, len(ary_pos)):
 
         if items[i].pos_state[0] == "front1":
-            localX = int((ary_pos[i][0] + items[i].scaledX - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].scaledY - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].scaledZ - 1) / 2)
+            localX = float((ary_pos[i][0] + items[i].scaledX - 1) / 2)
+            localY = float((ary_pos[i][1] + items[i].scaledY - 1) / 2)
+            localZ = float((ary_pos[i][2] + items[i].scaledZ - 1) / 2)
         elif items[i].pos_state[0] == "front2":
-            localX = int((ary_pos[i][0] + items[i].scaledZ - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].scaledY - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].scaledX - 1) / 2)
+            localX = float((ary_pos[i][0] + items[i].scaledZ - 1) / 2)
+            localY = float((ary_pos[i][1] + items[i].scaledY - 1) / 2)
+            localZ = float((ary_pos[i][2] + items[i].scaledX - 1) / 2)
         elif items[i].pos_state[0] == "side1":
-            localX = int((ary_pos[i][0] + items[i].scaledY - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].scaledX - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].scaledZ - 1) / 2)
+            localX = float((ary_pos[i][0] + items[i].scaledY - 1) / 2)
+            localY = float((ary_pos[i][1] + items[i].scaledX - 1) / 2)
+            localZ = float((ary_pos[i][2] + items[i].scaledZ - 1) / 2)
         elif items[i].pos_state[0] == "side2":
-            localX = int((ary_pos[i][0] + items[i].scaledZ - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].scaledX - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].scaledY - 1) / 2)
+            localX = float((ary_pos[i][0] + items[i].scaledZ - 1) / 2)
+            localY = float((ary_pos[i][1] + items[i].scaledX - 1) / 2)
+            localZ = float((ary_pos[i][2] + items[i].scaledY - 1) / 2)
         elif items[i].pos_state[0] == "up1":
-            localX = int((ary_pos[i][0] + items[i].scaledY - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].scaledZ - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].scaledX - 1) / 2)
+            localX = float((ary_pos[i][0] + items[i].scaledY - 1) / 2)
+            localY = float((ary_pos[i][1] + items[i].scaledZ - 1) / 2)
+            localZ = float((ary_pos[i][2] + items[i].scaledX - 1) / 2)
         elif items[i].pos_state[0] == "up2":
-            localX = int((ary_pos[i][0] + items[i].scaledX - 1) / 2)
-            localY = int((ary_pos[i][1] + items[i].scaledZ - 1) / 2)
-            localZ = int((ary_pos[i][2] + items[i].scaledY - 1) / 2)
+            localX = float((ary_pos[i][0] + items[i].scaledX - 1) / 2)
+            localY = float((ary_pos[i][1] + items[i].scaledZ - 1) / 2)
+            localZ = float((ary_pos[i][2] + items[i].scaledY - 1) / 2)
 
         ary_pos[i][0] = localX - newX
         ary_pos[i][1] = localY - newY
@@ -245,9 +243,9 @@ def scaleToCenter(ary_pos, items, box):
 def scaleToMeter(models_position):
     meterConstant = 1000
     for i in range(1, len(models_position)):
-        models_position[i][0] = models_position[i][0] / meterConstant
-        models_position[i][1] = models_position[i][1] / meterConstant
-        models_position[i][2] = models_position[i][2] / meterConstant
+        models_position[i][0] = float(models_position[i][0] / meterConstant)
+        models_position[i][1] = float(models_position[i][1] / meterConstant)
+        models_position[i][2] = float(models_position[i][2] / meterConstant)
 
 def reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit):
     for i in range(0, len(swarm)):
@@ -280,9 +278,11 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         print(f"model dimensions: {model.scaledX}, {model.scaledY}, {model.scaledZ}")
         print(f"box dimensions: {mainBox.scaledLength}, {mainBox.scaledWidth}, {mainBox.scaledHeight}")
         if model.scaledSolidVolume > mainBox.scaledTotalVolume:
-            break
+            print("item toobig")
+            continue
 
         if model.scaledSolidVolume > mainBox.scaledTotalVolume - mainBox.scaledTotalObjectVolume:
+            print("box cannot accomodate another object of this size")
             continue
 
         print(model.scaledSolidVolume, mainBox.scaledTotalVolume)
@@ -342,12 +342,15 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
         # solution (attack)
         models_inside.append(model)
+        print(model.pos_state)
         insertToBox(mainBox, model, pos_best_g, model.modelNum)
         mainBox.scaledTotalObjectVolume += model.scaledSolidVolume
         mainBox.totalObjectVolume += model.solidVolume
         models_position.append(pos_best_g)
         models_local_error = err_best_g
+        used = np.count_nonzero(mainBox.boxgrid)
         print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g} with error {err_best_g}")
+        print(f"used up number of cells of all items: {used}, remaining: {mainBox.scaledTotalVolume - used}")
 
     if len(models_inside) == 1:
         print("cant fit anything inside the box. we suggest to use a bigger box ")

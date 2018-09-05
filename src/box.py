@@ -23,7 +23,7 @@ class Box:
         self.totalObjectVolume = 0                          # gives the total occupied volume of the objects inside box
         self.scaledTotalObjectVolume = 0
         #3dbox with l x w x h mm dimension with datatype 'u1' = 8bit unsigned int (0 to 160)
-        self.boxgrid = np.zeros( ( int(length * self.convertionFactor), int(width * self.convertionFactor), int(height * self.convertionFactor) ), dtype = 'u1')
+        self.boxgrid = np.zeros((self.scaledLength, self.scaledWidth, self.scaledHeight ), dtype = 'u1')
     
     #for attribute conversion
     def convertMilliToInch(self,milli):
