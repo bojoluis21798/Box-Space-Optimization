@@ -36,6 +36,8 @@ def convert(fn):
     bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = 'BOUNDS')
     # change location to (0,0,0)
     obj.location = 0,0,0
+    # change rotation
+    obj.rotation_euler = 0,0,0
     # modify material
     for mtl in bpy.data.materials:
         mtl.translucency = 1
