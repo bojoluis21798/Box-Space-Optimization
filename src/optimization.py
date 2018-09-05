@@ -301,7 +301,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         #verification
         inside_convergence = 0
         generation = 0
-        while generation < 500:
+        while generation < 500 and stagnation_counter < 15:
             # insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
@@ -362,7 +362,13 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     print(models_position)
     scaleToMeter(models_position)
     print(models_position)
+<<<<<<< HEAD
     return mainBox, models_inside, models_position
+=======
+    print(models_inside[1].pos_state)
+    input("proceed to visualizing")
+    return mainBox, models_inside, models_position, best_percentage
+>>>>>>> fixing
     
     
 
