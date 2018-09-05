@@ -362,13 +362,9 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     print(models_position)
     scaleToMeter(models_position)
     print(models_position)
-<<<<<<< HEAD
-    return mainBox, models_inside, models_position
-=======
     print(models_inside[1].pos_state)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, best_percentage
->>>>>>> fixing
     
     
 
