@@ -9,9 +9,9 @@ Frame Root {
   }
   Frame safety_first_series_gloves_leather_palm_work_gloves {
     FrameTransformMatrix {
-       0.025351, 0.000000, 0.000000, 0.000000,
-       0.000000,-0.000000, 0.025365, 0.000000,
-       0.000000,-0.025340,-0.000000, 0.000000,
+       0.012676, 0.000000, 0.000000, 0.000000,
+       0.000000, 0.012625, 0.000000, 0.000000,
+       0.000000, 0.000000, 0.012613, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
     Mesh { // safety_first_series_gloves_leather_palm_work_gloves mesh

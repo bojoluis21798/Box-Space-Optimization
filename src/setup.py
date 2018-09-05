@@ -100,7 +100,7 @@ def menu(models):
         pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
 
         # set model position and scale
-        currentModel.setPos(0,2,0)
+        currentModel.setPos(0,4,0)
 
         # lights
         dlight = DirectionalLight('dlight')
@@ -188,9 +188,9 @@ def menu(models):
             for mtl in bpy.data.materials:
                 mtl.use_transparency = True
                 mtl.alpha = 0.2
-            box.scale[0] = (length*0.0254)/2
-            box.scale[1] = (width*0.0254)/2
-            box.scale[2] = (height*0.0254)/2
+            box.scale[0] = (int((length/2)*25.4)/1000)/2
+            box.scale[1] = (int((width/2)*25.4)/1000)/2
+            box.scale[2] = (int((height/2)*25.4)/1000)/2
             bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
@@ -214,7 +214,7 @@ def menu(models):
                 mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
 
             modelsNode.reparentTo(box)
-            box.setScale(0.5)
+            box.setPos(0,2,0)
 
             def exitToMainMenu():
                 exitButton.removeNode()

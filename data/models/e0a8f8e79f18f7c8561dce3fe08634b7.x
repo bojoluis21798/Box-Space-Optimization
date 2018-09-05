@@ -7,14 +7,14 @@ Frame Root {
      0.000000, 1.000000, 0.000000, 0.000000,
      0.000000, 0.000000, 0.000000, 1.000000;;
   }
-  Frame pot {
+  Frame pot_002 {
     FrameTransformMatrix {
-       0.006817, 0.000000, 0.000000, 0.000000,
-       0.000000,-0.000000, 0.006817, 0.000000,
-       0.000000,-0.006808,-0.000000, 0.000000,
+       0.003402, 0.000000, 0.000000, 0.000000,
+       0.000000, 0.003402, 0.000000, 0.000000,
+       0.000000, 0.000000, 0.003395, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
-    Mesh { // pot mesh
+    Mesh { // pot_002 mesh
       2628;
       -13.387310; 0.395096;-25.167149;,
       -12.828810; 3.846495;-25.167149;,
@@ -3521,7 +3521,7 @@ Frame Root {
       3;2621,2620,2619;,
       3;2624,2623,2622;,
       3;2627,2626,2625;;
-      MeshNormals { // pot normals
+      MeshNormals { // pot_002 normals
         2628;
          0.000000; 0.000000;-1.000000;,
          0.000000; 0.000000;-1.000000;,
@@ -7028,8 +7028,8 @@ Frame Root {
         3;2621,2620,2619;,
         3;2624,2623,2622;,
         3;2627,2626,2625;;
-      } // End of pot normals
-      MeshTextureCoords { // pot UV coordinates
+      } // End of pot_002 normals
+      MeshTextureCoords { // pot_002 UV coordinates
         2628;
          0.000000; 1.000000;,
          1.000000; 1.000000;,
@@ -9659,8 +9659,8 @@ Frame Root {
          0.000000; 1.000000;,
          1.000000; 1.000000;,
          1.000000; 0.000000;;
-      } // End of pot UV coordinates
-      MeshMaterialList { // pot material list
+      } // End of pot_002 UV coordinates
+      MeshMaterialList { // pot_002 material list
         1;
         876;
         0,
@@ -10539,13 +10539,13 @@ Frame Root {
         0,
         0,
         0;
-        Material m0_005 {
+        Material m0_253 {
            0.600000; 0.239216; 0.117647; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-      } // End of pot material list
-    } // End of pot mesh
-  } // End of pot
+      } // End of pot_002 material list
+    } // End of pot_002 mesh
+  } // End of pot_002
 } // End of Root

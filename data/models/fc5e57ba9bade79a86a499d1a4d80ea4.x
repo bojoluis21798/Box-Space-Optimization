@@ -7,14 +7,14 @@ Frame Root {
      0.000000, 1.000000, 0.000000, 0.000000,
      0.000000, 0.000000, 0.000000, 1.000000;;
   }
-  Frame alarm_clock {
+  Frame alarm_clock_002 {
     FrameTransformMatrix {
-       0.053376, 0.000000, 0.000000, 0.000000,
-       0.000000,-0.000000, 0.053220, 0.000000,
-       0.000000,-0.053342,-0.000000, 0.000000,
+       0.026688, 0.000000, 0.000000, 0.000000,
+       0.000000, 0.026610, 0.000000, 0.000000,
+       0.000000, 0.000000, 0.026671, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
-    Mesh { // alarm_clock mesh
+    Mesh { // alarm_clock_002 mesh
       1158;
       -1.554993;-1.574493;-1.481020;,
       -1.475983;-1.495499;-1.481020;,
@@ -1561,7 +1561,7 @@ Frame Root {
       3;1151,1150,1149;,
       3;1154,1153,1152;,
       3;1157,1156,1155;;
-      MeshNormals { // alarm_clock normals
+      MeshNormals { // alarm_clock_002 normals
         390;
         -0.000000; 0.000000;-1.000000;,
          0.000000; 0.000000;-1.000000;,
@@ -2340,8 +2340,8 @@ Frame Root {
         3;387,387,387;,
         3;388,388,388;,
         3;389,389,389;;
-      } // End of alarm_clock normals
-      MeshTextureCoords { // alarm_clock UV coordinates
+      } // End of alarm_clock_002 normals
+      MeshTextureCoords { // alarm_clock_002 UV coordinates
         1158;
          0.000000; 1.000000;,
          1.000000; 1.000000;,
@@ -3501,8 +3501,8 @@ Frame Root {
          0.000000; 1.000000;,
          1.000000; 1.000000;,
          1.000000; 0.000000;;
-      } // End of alarm_clock UV coordinates
-      MeshMaterialList { // alarm_clock material list
+      } // End of alarm_clock_002 UV coordinates
+      MeshMaterialList { // alarm_clock_002 material list
         4;
         386;
         0,
@@ -3891,31 +3891,31 @@ Frame Root {
         3,
         3,
         3;
-        Material m2_024 {
+        Material m2_208 {
            0.000000; 0.000000; 0.000000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m0_032 {
+        Material m0_280 {
            0.447059; 0.447059; 0.447059; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m1_028 {
+        Material m1_246 {
            1.000000; 1.000000; 1.000000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m3_024 {
+        Material m3_177 {
            0.501961; 0.501961; 0.501961; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-      } // End of alarm_clock material list
-    } // End of alarm_clock mesh
-  } // End of alarm_clock
+      } // End of alarm_clock_002 material list
+    } // End of alarm_clock_002 mesh
+  } // End of alarm_clock_002
 } // End of Root
