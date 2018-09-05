@@ -116,7 +116,6 @@ def countFreeSpace(box, position, scaledX, scaledY, scaledZ):
 
     topArea     = box.boxgrid[x : x + scaledX, y : 0, z : z + scaledZ]
     freeSpace   += (topArea.size - np.count_nonzero(topArea))
-
     # return number of empty cells found (mm)
     return freeSpace
 
@@ -134,7 +133,7 @@ def objectiveFunctionSpace(item, pos, box):
     final_state = "front1"
     # enter comparison of pos_state heree
     for state in item.pos_state:
-        temp_spaceholder = 0
+        temp_spaceholder = -1
 
         if state == "front1":
             temp_spaceholder = countFreeSpace(box,pos, item.scaledX, item.scaledY, item.scaledZ)
@@ -155,7 +154,6 @@ def objectiveFunctionSpace(item, pos, box):
 
     item.pos_state.clear()
     item.pos_state.append(final_state)
-
     return freeSpace
 
 def getArrangementBasedFromState(item, baseX, baseY, baseZ):
