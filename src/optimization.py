@@ -255,8 +255,7 @@ def reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit):
 
 # Do optimization here
 def optimize(models, scaledLength, scaledWidth, scaledHeight):
-    print(scaledLength, scaledWidth, scaledHeight)
-    input("...")
+    print(f"passed inches for box : {scaledLength}, {scaledWidth}, {scaledHeight}")
     # start of solitary phase
             # initialization (identification)
             # updating       (verification)
@@ -278,9 +277,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         if model.id == sys.maxsize:
             continue
 
-        print(model.scaledX, model.scaledY, model.scaledZ)
-        print(mainBox.scaledLength, mainBox.scaledWidth, mainBox.scaledHeight)
-        input("proceed")
+        print(f"model dimensions: {model.scaledX}, {model.scaledY}, {model.scaledZ}")
+        print(f"box dimensions: {mainBox.scaledLength}, {mainBox.scaledWidth}, {mainBox.scaledHeight}")
         if model.scaledSolidVolume > mainBox.scaledTotalVolume:
             break
 
@@ -288,6 +286,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             continue
 
         print(model.scaledSolidVolume, mainBox.scaledTotalVolume)
+        print("processing ... please dont close")
         # identification (initialization part two)
         is_insertable = True
         err_best_g = -1                                                         # global best error
@@ -302,7 +301,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         inside_convergence = 0
         stagnation_counter = 0
         generation = 0
-        while generation < 500 and stagnation_counter < 15:
+        while generation < 500 and stagnation_counter < 10:
             # insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
@@ -315,7 +314,6 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     pos_best_g = list(swarm[j].position_i)
                     err_best_g = int(swarm[j].err_i)
 
-            print(err_best_g)
             if current_err_best > err_best_g:
                 current_err_best = err_best_g
                 inside_convergence = 0
@@ -327,7 +325,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit)
                     inside_convergence = 0
                     generation+=1
-                    print("restarting swarm due to stagnation of solution ...")
+                    #print("restarting swarm due to stagnation of solution ...")
                     continue
 
             # cycle through swarm and update velocities and position
