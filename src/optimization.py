@@ -236,9 +236,9 @@ def findCenterCoordinate(pos, relX, relY, relZ):
 
 # transforms positions to center of the box
 def scaleToCenter(ary_pos, items, box):
-    centeredOriginX = float(box.scaledLength / 2)
-    centeredOriginY = float(box.scaledWidth / 2)
-    centeredOriginZ = float(box.scaledHeight / 2)
+    centeredOriginX = int(box.scaledLength / 2)
+    centeredOriginY = int(box.scaledWidth / 2)
+    centeredOriginZ = int(box.scaledHeight / 2)
 
     for i in range(1, len(ary_pos)):
         if items[i].pos_state[0] == "front1":
