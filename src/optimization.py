@@ -299,8 +299,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
 
         #verification
-        stagnation_counter = 0
         inside_convergence = 0
+        stagnation_counter = 0
         generation = 0
         while generation < 500 and stagnation_counter < 15:
             # insert locust work here on item
@@ -315,20 +315,20 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     pos_best_g = list(swarm[j].position_i)
                     err_best_g = int(swarm[j].err_i)
 
-            print(err_best_g, pos_best_g)
+            print(err_best_g)
             if current_err_best > err_best_g:
                 current_err_best = err_best_g
                 inside_convergence = 0
+                stagnation_counter = 0
             elif current_err_best <= err_best_g:
                 inside_convergence+=1
-                if inside_convergence == 10 and current_err_best == sys.maxsize:
+                if inside_convergence == 10:
+                    stagnation_counter+=1
                     reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit)
                     inside_convergence = 0
                     generation+=1
                     print("restarting swarm due to stagnation of solution ...")
                     continue
-                elif inside_convergence == 15 and current_err_best != sys.maxsize:
-                    break
 
             # cycle through swarm and update velocities and position
             # gregarious phase - analysis part 2
