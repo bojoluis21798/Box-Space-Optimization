@@ -190,7 +190,7 @@ def menu(models):
                 mtl.alpha = 0.2
             box.scale[0] = (int((length/2)*25.4)/1000)/2
             box.scale[1] = (int((width/2)*25.4)/1000)/2
-            box.scale[2] = (int((height/2*25.4)/1000)/2
+            box.scale[2] = (int((height/2)*25.4)/1000)/2
             bpy.ops.object.origin_set(type = "ORIGIN_GEOMETRY", center = "BOUNDS")
             box.location = 0,0,0
             bpy.ops.wm.addon_enable(module = "io_scene_x")
