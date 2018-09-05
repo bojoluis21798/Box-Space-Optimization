@@ -12,6 +12,7 @@ from src.locustParticle import LocustParticle
 def isSpaceAvailable(item, position, box):
     #get item dimensions
     #compare with position if available in box
+    item.pos_state.clear()
     ret = False
     posX = position[0]
     posY = position[1]
@@ -256,6 +257,8 @@ def reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit):
 
 # Do optimization here
 def optimize(models, scaledLength, scaledWidth, scaledHeight):
+    print(scaledLength, scaledWidth, scaledHeight)
+    input("...")
     # start of solitary phase
             # initialization (identification)
             # updating       (verification)
@@ -277,12 +280,16 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         if model.id == sys.maxsize:
             continue
 
+        print(model.scaledX, model.scaledY, model.scaledZ)
+        print(mainBox.scaledLength, mainBox.scaledWidth, mainBox.scaledHeight)
+        input("proceed")
         if model.scaledSolidVolume > mainBox.scaledTotalVolume:
             break
 
         if model.scaledSolidVolume > mainBox.scaledTotalVolume - mainBox.scaledTotalObjectVolume:
             continue
 
+        print(model.scaledSolidVolume, mainBox.scaledTotalVolume)
         # identification (initialization part two)
         is_insertable = True
         err_best_g = -1                                                         # global best error
@@ -309,7 +316,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     pos_best_g = list(swarm[j].position_i)
                     err_best_g = int(swarm[j].err_i)
 
-            print(err_best_g)
+            print(err_best_g, pos_best_g)
             if current_err_best > err_best_g:
                 current_err_best = err_best_g
                 inside_convergence = 0
@@ -352,8 +359,11 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
     print(f"box percentage maximized: {box_percentage}")
     input("proceed to visualizing")
+    print(models_position)
     scaleToCenter(models_position, models_inside, mainBox)
+    print(models_position)
     scaleToMeter(models_position)
+    print(models_position)
     return mainBox, models_inside, models_position
     
     
