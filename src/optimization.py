@@ -299,6 +299,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
 
         #verification
+        stagnation_counter = 0
         inside_convergence = 0
         generation = 0
         while generation < 500 and stagnation_counter < 15:
@@ -356,7 +357,6 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
     print(f"box percentage maximized: {box_percentage}")
-    input("proceed to visualizing")
     print(models_position)
     scaleToCenter(models_position, models_inside, mainBox)
     print(models_position)
@@ -364,7 +364,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     print(models_position)
     print(models_inside[1].pos_state)
     input("proceed to visualizing")
-    return mainBox, models_inside, models_position, best_percentage
+    return mainBox, models_inside, models_position, box_percentage
     
     
 
