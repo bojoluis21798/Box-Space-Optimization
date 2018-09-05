@@ -6,3 +6,5 @@ from src.box import Box
 from src.locustParticle import LocustParticle
 
 def getOptimalModelCombination(models, box):
+    def objFunction(model):
+        return model.scaledSolidVolume/box.scaledTotalVolume
