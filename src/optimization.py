@@ -204,35 +204,9 @@ def insertToBox(box, item, pos, itemNum):
         x+=1
 
 def findCenterCoordinate(pos, relX, relY, relZ):
-    x,y,z = pos[0], pos[1], pos[2]
-    #bottom square
-    bottom = []
-    bottom.append(pos)
-    temp = [x, y + relY, z]
-    bottom.append(temp)
-    temp = [x + relX, y, z]
-    bottom.append(temp)
-    temp = [x + relX, y + relY, z]
-    bottom.append(temp)
-    midpoint_bottom_x = float( (bottom[0][0] + bottom[2][0]) /2)
-    midpoint_bottom_y = float( (bottom[0][1] + bottom[1][1]) /2)
-    midpoint_bottom_z = z
-    #up
-    up = []
-    temp = [x + relX, y, z + relZ]
-    up.append(temp)
-    temp = [x,y,z + relZ]
-    up.append(temp)
-    temp = [x + relX, y + relY, z + relZ]
-    up.append(temp)
-    temp = [x, y + relY, z + relZ]
-    up.append(temp)
-    midpoint_up_x = float( (up[1][0] + up[2][0]) /2)
-    midpoint_up_y = float( (up[0][1] + up[2][1]) /2)
-    midpoint_up_z = z + relZ
-
-    midpoint = [(midpoint_bottom_x + midpoint_up_x)/2 , (midpoint_bottom_y + midpoint_up_y)/2, (midpoint_bottom_z + midpoint_up_z)/2]
-    return midpoint[0], midpoint[1], midpoint[2]
+    corner = [ pos[0] + relX, pos[1] + relY, pos[2] + relZ]
+    midpoint = [(pos[0] + corner[0])/2, (pos[1] + corner[1])/2, (pos[2] + corner[2])/2]
+    return midpoin[0], midpoint[1], midpoint[2]
 
 # transforms positions to center of the box
 def scaleToCenter(ary_pos, items, box):
