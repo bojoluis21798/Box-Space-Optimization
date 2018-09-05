@@ -12,6 +12,7 @@ from src.locustParticle import LocustParticle
 def isSpaceAvailable(item, position, box):
     #get item dimensions
     #compare with position if available in box
+    item.pos_state.clear()
     ret = False
     posX = position[0]
     posY = position[1]
@@ -133,7 +134,7 @@ def objectiveFunctionSpace(item, pos, box):
     final_state = "front1"
     # enter comparison of pos_state heree
     for state in item.pos_state:
-        temp_spaceholder = 0
+        temp_spaceholder = -1
 
         if state == "front1":
             temp_spaceholder = countFreeSpace(box,pos, item.scaledX, item.scaledY, item.scaledZ)
@@ -298,7 +299,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         inside_convergence = 0
         stagnation_counter = 0
         generation = 0
-        while generation < 500 and stagnation_counter:
+        while generation < 500 and stagnation_counter < 15:
             # insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
@@ -359,6 +360,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     print(models_position)
     scaleToMeter(models_position)
     print(models_position)
+    print(models_inside[1].pos_state)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, best_percentage
     
