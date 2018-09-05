@@ -104,17 +104,17 @@ def countFreeSpace(box, position, scaledX, scaledY, scaledZ):
     sideArea_3  = box.boxgrid[x : 0, y : y + scaledY, z : z + scaledZ]                                    # opposite of 1
     freeSpace   += (sideArea_3.size - np.count_nonzero(sideArea_3))
 
-    sideArea_2  = box.boxgrid[x : x + scaledX, y : y + scaledY, z + scaledZ : box.scaledHeight]
-    freeSpace   += (sideArea_2.size - np.count_nonzero(sideArea_2))
+    topArea     = box.boxgrid[x : x + scaledX, y : y + scaledY, z + scaledZ : box.scaledHeight]
+    freeSpace   += (topArea.size - np.count_nonzero(topArea))
 
-    sideArea_4  = box.boxgrid[x : x + scaledX, y : y + scaledY, z : 0]                                    # opposite of 2
-    freeSpace   += (sideArea_4.size - np.count_nonzero(sideArea_4))
-
-    bottomArea  = box.boxgrid[x : x + scaledX, y + scaledY : box.scaledWidth, z: z + scaledZ]
+    bottomArea  = box.boxgrid[x : x + scaledX, y : y + scaledY, z : 0]                                    # opposite of 2
     freeSpace   += (bottomArea.size - np.count_nonzero(bottomArea))
 
-    topArea     = box.boxgrid[x : x + scaledX, y : 0, z : z + scaledZ]
-    freeSpace   += (topArea.size - np.count_nonzero(topArea))
+    sideArea_2  = box.boxgrid[x : x + scaledX, y + scaledY : box.scaledWidth, z: z + scaledZ]
+    freeSpace   += (sideArea_2.size - np.count_nonzero(sideArea_2))
+
+    sideArea_4  = box.boxgrid[x : x + scaledX, y : 0, z : z + scaledZ]
+    freeSpace   += (sideArea_4.size - np.count_nonzero(sideArea_4))
     # return number of empty cells found (mm)
     return freeSpace
 
