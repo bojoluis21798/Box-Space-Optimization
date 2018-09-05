@@ -256,6 +256,7 @@ def reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit):
 
 # Do optimization here
 def optimize(models, scaledLength, scaledWidth, scaledHeight):
+    # insert model optimization here ...
     # start of solitary phase
             # initialization (identification)
             # updating       (verification)
@@ -295,8 +296,9 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
         #verification
         inside_convergence = 0
+        stagnation_counter = 0
         generation = 0
-        while generation < 500:
+        while generation < 500 and stagnation_counter:
             # insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
@@ -313,16 +315,16 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             if current_err_best > err_best_g:
                 current_err_best = err_best_g
                 inside_convergence = 0
+                stagnation_counter = 0
             elif current_err_best <= err_best_g:
                 inside_convergence+=1
-                if inside_convergence == 10 and current_err_best == sys.maxsize:
+                if inside_convergence == 10:
+                    stagnation_counter+=1
                     reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit)
                     inside_convergence = 0
                     generation+=1
                     print("restarting swarm due to stagnation of solution ...")
                     continue
-                elif inside_convergence == 15 and current_err_best != sys.maxsize:
-                    break
 
             # cycle through swarm and update velocities and position
             # gregarious phase - analysis part 2
@@ -334,6 +336,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
         if current_err_best == sys.maxsize:
             # proceed to another item since this item cannot be inserted
+            print(model.scaledSolidVolume, mainBox.scaledTotalVolume)
             continue
 
         # solution (attack)
@@ -351,10 +354,13 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
     print(f"box percentage maximized: {box_percentage}")
-    input("proceed to visualizing")
+    print(models_position)
     scaleToCenter(models_position, models_inside, mainBox)
+    print(models_position)
     scaleToMeter(models_position)
-    return mainBox, models_inside, models_position
+    print(models_position)
+    input("proceed to visualizing")
+    return mainBox, models_inside, models_position, best_percentage
     
     
 
