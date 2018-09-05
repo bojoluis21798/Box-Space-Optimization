@@ -6,8 +6,11 @@ from src.box import Box
 from src.particle import Particle
 
 def getOptimalModelCombination(models, box):
-    def objFunction(model):
-        return model.scaledSolidVolume/box.scaledTotalVolume
+    def objFunction(ndxs, models, box):
+        for i in range(0, len(ndxs)):
+            total += models[i].scaledSolidVolume
+        
+        return total/box.scaledTotalVolume
 
 
     num_dimensions = 1
@@ -37,3 +40,4 @@ def getOptimalModelCombination(models, box):
         generation+=1
     
     print(pos_best_g)
+    input("....")
