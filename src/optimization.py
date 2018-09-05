@@ -236,6 +236,10 @@ def findCenterCoordinate(pos, relX, relY, relZ):
 
 # transforms positions to center of the box
 def scaleToCenter(ary_pos, items, box):
+    centeredOriginX = float(box.scaledLength / 2)
+    centeredOriginY = float(box.scaledWidth / 2)
+    centeredOriginZ = float(box.scaledHeight / 2)
+
     for i in range(1, len(ary_pos)):
         if items[i].pos_state[0] == "front1":
             newX, newY, newZ = findCenterCoordinate(ary_pos[i], items[i].scaledX - 1, items[i].scaledY - 1, items[i].scaledZ - 1)
@@ -250,9 +254,9 @@ def scaleToCenter(ary_pos, items, box):
         elif items[i].pos_state[0] == "up2":
             newX, newY, newZ = findCenterCoordinate(ary_pos[i], items[i].scaledX - 1, items[i].scaledZ - 1, items[i].scaledY - 1)
 
-        ary_pos[i][0] = newX
-        ary_pos[i][1] = newY
-        ary_pos[i][2] = newZ
+        ary_pos[i][0] = newX - centeredOriginX
+        ary_pos[i][1] = newY - centeredOriginY
+        ary_pos[i][2] = newZ - centeredOriginZ
 
 
 def scaleToMeter(models_position):
@@ -363,9 +367,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         mainBox.totalObjectVolume += model.solidVolume
         models_position.append(pos_best_g)
         models_local_error = err_best_g
-        used = np.count_nonzero(mainBox.boxgrid)
         print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g} with error {err_best_g}")
-        print(f"used up number of cells of all items: {used}, remaining: {mainBox.scaledTotalVolume - used}")
 
     if len(models_inside) == 1:
         print("cant fit anything inside the box. we suggest to use a bigger box ")
