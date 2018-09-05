@@ -198,23 +198,23 @@ def menu(models):
 
             # load box to panda
             box = loader.loadModel('./data/box.x')
-            box.setPos(0,5,0)
-            box.setScale(0.5)
-
+            box.reparentTo(render)
             # load models
             mdlsPanda = []
             mdlsPanda.append(None)
             for i in range(1, len(modelsInside)):
                 mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
                 mdlsPanda[i].reparentTo(modelsNode)
-                mdlsPanda[i].setPos(box.getX()+(modelsPosition[i][0]), box.getY()+(modelsPosition[i][1]), box.getZ()+(modelsPosition[i][2]))
-                mdlsPanda[i].setScale(0.5)
+                mdlsPanda[i].setPos((modelsPosition[i][0]), (modelsPosition[i][1]), (modelsPosition[i][2]))
                 print("=====================\n"+modelsInside[i].id)
                 print("Rotation: "+str(modelsInside[i].rotation))
                 print("Box Position: "+str((box.getX(), box.getY(), box.getZ())))
-                print("Position: "+str((box.getX()+(modelsPosition[i][0]*0.001), box.getY()+(modelsPosition[i][1]*0.001), box.getZ()+(modelsPosition[i][2])*0.001)))
+                print("Position: "+str(((modelsPosition[i][0]), (modelsPosition[i][1]), (modelsPosition[i][2]))))
                 print("Box Dimensions: "+str((length*0.0254, width*0.0254, height*0.0254)))
                 mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
+
+            modelsNode.reparentTo(box)
+            box.setScale(0.5)
 
             def exitToMainMenu():
                 exitButton.removeNode()
@@ -237,7 +237,6 @@ def menu(models):
             camera.setPos(0,-10,0)
             base.enableMouse()
             boxParams.removeNode()
-            box.reparentTo(render)
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
         parent = boxParams, scale = 0.05, command = optimizeDisplay)
