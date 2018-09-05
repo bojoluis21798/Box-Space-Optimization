@@ -236,40 +236,24 @@ def findCenterCoordinate(pos, relX, relY, relZ):
 
 # transforms positions to center of the box
 def scaleToCenter(ary_pos, items, box):
-    newX = float(box.scaledLength / 2)
-    newY = float(box.scaledWidth / 2)
-    newZ = float(box.scaledHeight / 2)
-
     for i in range(1, len(ary_pos)):
-
         if items[i].pos_state[0] == "front1":
-            localX = float((ary_pos[i][0] + items[i].scaledX - 1) / 2)
-            localY = float((ary_pos[i][1] + items[i].scaledY - 1) / 2)
-            localZ = float((ary_pos[i][2] + items[i].scaledZ - 1) / 2)
+            newX, newY, newZ = findCenterCoordinate(ary_pos[i], items[i].scaledX - 1, items[i].scaledY - 1, items[i].scaledZ - 1)
         elif items[i].pos_state[0] == "front2":
-            localX = float((ary_pos[i][0] + items[i].scaledZ - 1) / 2)
-            localY = float((ary_pos[i][1] + items[i].scaledY - 1) / 2)
-            localZ = float((ary_pos[i][2] + items[i].scaledX - 1) / 2)
+            newX, newY, newZ = findCenterCoordinate(ary_pos[i], items[i].scaledZ - 1, items[i].scaledY - 1, items[i].scaledX - 1)
         elif items[i].pos_state[0] == "side1":
-            localX = float((ary_pos[i][0] + items[i].scaledY - 1) / 2)
-            localY = float((ary_pos[i][1] + items[i].scaledX - 1) / 2)
-            localZ = float((ary_pos[i][2] + items[i].scaledZ - 1) / 2)
+            newX, newY, newZ = findCenterCoordinate(ary_pos[i], items[i].scaledY - 1, items[i].scaledX - 1, items[i].scaledZ - 1)
         elif items[i].pos_state[0] == "side2":
-            localX = float((ary_pos[i][0] + items[i].scaledZ - 1) / 2)
-            localY = float((ary_pos[i][1] + items[i].scaledX - 1) / 2)
-            localZ = float((ary_pos[i][2] + items[i].scaledY - 1) / 2)
+            newX, newY, newZ = findCenterCoordinate(ary_pos[i], items[i].scaledZ - 1, items[i].scaledX - 1, items[i].scaledY - 1)
         elif items[i].pos_state[0] == "up1":
-            localX = float((ary_pos[i][0] + items[i].scaledY - 1) / 2)
-            localY = float((ary_pos[i][1] + items[i].scaledZ - 1) / 2)
-            localZ = float((ary_pos[i][2] + items[i].scaledX - 1) / 2)
+            newX, newY, newZ = findCenterCoordinate(ary_pos[i], items[i].scaledY - 1, items[i].scaledZ - 1, items[i].scaledX - 1)
         elif items[i].pos_state[0] == "up2":
-            localX = float((ary_pos[i][0] + items[i].scaledX - 1) / 2)
-            localY = float((ary_pos[i][1] + items[i].scaledZ - 1) / 2)
-            localZ = float((ary_pos[i][2] + items[i].scaledY - 1) / 2)
+            newX, newY, newZ = findCenterCoordinate(ary_pos[i], items[i].scaledX - 1, items[i].scaledZ - 1, items[i].scaledY - 1)
 
-        ary_pos[i][0] = localX - newX
-        ary_pos[i][1] = localY - newY
-        ary_pos[i][2] = localZ - newZ
+        ary_pos[i][0] = newX
+        ary_pos[i][1] = newY
+        ary_pos[i][2] = newZ
+
 
 def scaleToMeter(models_position):
     meterConstant = 1000
