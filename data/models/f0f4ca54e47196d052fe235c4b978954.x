@@ -7,14 +7,14 @@ Frame Root {
      0.000000, 1.000000, 0.000000, 0.000000,
      0.000000, 0.000000, 0.000000, 1.000000;;
   }
-  Frame nintendo_wii {
+  Frame nintendo_wii_002 {
     FrameTransformMatrix {
-       0.000557, 0.000000, 0.000000, 0.000000,
-       0.000000,-0.000000, 0.000566, 0.000000,
-       0.000000,-0.000564,-0.000000, 0.000000,
+       0.000274, 0.000000, 0.000000, 0.000000,
+       0.000000, 0.000282, 0.000000, 0.000000,
+       0.000000, 0.000000, 0.000282, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
-    Mesh { // nintendo_wii mesh
+    Mesh { // nintendo_wii_002 mesh
       588;
       -49.330700;-205.891495;-191.653488;,
       49.330700;205.891495;-191.653488;,
@@ -801,7 +801,7 @@ Frame Root {
       3;581,580,579;,
       3;584,583,582;,
       3;587,586,585;;
-      MeshNormals { // nintendo_wii normals
+      MeshNormals { // nintendo_wii_002 normals
         292;
         -0.000000; 0.000000;-1.000000;,
          0.000000; 0.000000;-1.000000;,
@@ -1292,8 +1292,8 @@ Frame Root {
         3;289,289,289;,
         3;290,290,290;,
         3;291,291,291;;
-      } // End of nintendo_wii normals
-      MeshTextureCoords { // nintendo_wii UV coordinates
+      } // End of nintendo_wii_002 normals
+      MeshTextureCoords { // nintendo_wii_002 UV coordinates
         588;
          0.000000; 1.000000;,
          1.000000; 1.000000;,
@@ -1883,8 +1883,8 @@ Frame Root {
          0.000000; 1.000000;,
          1.000000; 1.000000;,
          1.000000; 0.000000;;
-      } // End of nintendo_wii UV coordinates
-      MeshMaterialList { // nintendo_wii material list
+      } // End of nintendo_wii_002 UV coordinates
+      MeshMaterialList { // nintendo_wii_002 material list
         5;
         196;
         0,
@@ -2083,37 +2083,37 @@ Frame Root {
         4,
         4,
         4;
-        Material m0_018 {
+        Material m0_266 {
            1.000000; 1.000000; 1.000000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m1_016 {
+        Material m1_234 {
            0.752941; 0.752941; 0.752941; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m2_013 {
+        Material m2_197 {
            0.862745; 0.862745; 0.862745; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m4_012 {
+        Material m4_136 {
            0.000000; 0.749020; 1.000000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m3_013 {
+        Material m3_166 {
            0.960784; 0.960784; 0.960784; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-      } // End of nintendo_wii material list
-    } // End of nintendo_wii mesh
-  } // End of nintendo_wii
+      } // End of nintendo_wii_002 material list
+    } // End of nintendo_wii_002 mesh
+  } // End of nintendo_wii_002
 } // End of Root

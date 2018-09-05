@@ -9,9 +9,9 @@ Frame Root {
   }
   Frame gigaenergy_reg_sugar_free_energy_drink_supplement {
     FrameTransformMatrix {
-       0.022548, 0.000000, 0.000000, 0.000000,
-       0.000000,-0.000000, 0.022548, 0.000000,
-       0.000000,-0.022749,-0.000000, 0.000000,
+       0.011076, 0.000000, 0.000000, 0.000000,
+       0.000000, 0.011076, 0.000000, 0.000000,
+       0.000000, 0.000000, 0.011374, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
     Mesh { // gigaenergy_reg_sugar_free_energy_drink_supplement mesh

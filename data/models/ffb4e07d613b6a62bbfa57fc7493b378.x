@@ -7,14 +7,14 @@ Frame Root {
      0.000000, 1.000000, 0.000000, 0.000000,
      0.000000, 0.000000, 0.000000, 1.000000;;
   }
-  Frame tissue_box {
+  Frame tissue_box_002 {
     FrameTransformMatrix {
-       0.000492, 0.000000, 0.000000, 0.000000,
-       0.000000,-0.000000, 0.000491, 0.000000,
-       0.000000,-0.000490,-0.000000, 0.000000,
+       0.000245, 0.000000, 0.000000, 0.000000,
+       0.000000, 0.000245, 0.000000, 0.000000,
+       0.000000, 0.000000, 0.000244, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
-    Mesh { // tissue_box mesh
+    Mesh { // tissue_box_002 mesh
       1416;
       -462.618011;-271.889984;-249.950500;,
       462.618011;271.889984;-249.950500;,
@@ -1905,7 +1905,7 @@ Frame Root {
       3;1409,1408,1407;,
       3;1412,1411,1410;,
       3;1415,1414,1413;;
-      MeshNormals { // tissue_box normals
+      MeshNormals { // tissue_box_002 normals
         680;
         -0.000000; 0.000000;-1.000000;,
          0.000000; 0.000000;-1.000000;,
@@ -3060,8 +3060,8 @@ Frame Root {
         3;677,677,677;,
         3;678,678,678;,
         3;679,679,679;;
-      } // End of tissue_box normals
-      MeshTextureCoords { // tissue_box UV coordinates
+      } // End of tissue_box_002 normals
+      MeshTextureCoords { // tissue_box_002 UV coordinates
         1416;
          0.000000; 1.000000;,
          1.000000; 1.000000;,
@@ -4479,8 +4479,8 @@ Frame Root {
          0.000000; 1.000000;,
          1.000000; 1.000000;,
          1.000000; 0.000000;;
-      } // End of tissue_box UV coordinates
-      MeshMaterialList { // tissue_box material list
+      } // End of tissue_box_002 UV coordinates
+      MeshMaterialList { // tissue_box_002 material list
         3;
         472;
         0,
@@ -4955,25 +4955,25 @@ Frame Root {
         2,
         2,
         2;
-        Material m0_038 {
+        Material m0_286 {
            1.000000; 1.000000; 1.000000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m1_034 {
+        Material m1_252 {
            1.000000; 0.819608; 0.952941; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-        Material m2_030 {
+        Material m2_214 {
            1.000000; 1.000000; 1.000000; 1.000000;;
             0.000000;
            0.000000; 0.000000; 0.000000;;
            0.000000; 0.000000; 0.000000;;
         }
-      } // End of tissue_box material list
-    } // End of tissue_box mesh
-  } // End of tissue_box
+      } // End of tissue_box_002 material list
+    } // End of tissue_box_002 mesh
+  } // End of tissue_box_002
 } // End of Root

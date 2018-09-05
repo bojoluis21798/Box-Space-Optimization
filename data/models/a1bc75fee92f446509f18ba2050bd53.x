@@ -9,9 +9,9 @@ Frame Root {
   }
   Frame kiseru_and_tabakobon_tobacco_pipe_and_tobacco_tray {
     FrameTransformMatrix {
-       0.025390, 0.000000, 0.000000, 0.000000,
-       0.000000,-0.000000, 0.025400, 0.000000,
-       0.000000,-0.025262,-0.000000, 0.000000,
+       0.012648, 0.000000, 0.000000, 0.000000,
+       0.000000, 0.012700, 0.000000, 0.000000,
+       0.000000, 0.000000, 0.012562, 0.000000,
        0.000000, 0.000000, 0.000000, 1.000000;;
     }
     Mesh { // kiseru_and_tabakobon_tobacco_pipe_and_tobacco_tray mesh
