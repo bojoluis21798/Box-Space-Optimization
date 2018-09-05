@@ -3,8 +3,7 @@ import random
 # doesnt conform to a 3D box yet, just 1d array pa
 class Particle:
 
-    def __init__(self, num_dimensions, bounds, vel_limit, item = None):
-        self.state = 0              # 0 - solitary, 1 - gregarious
+    def __init__(self, num_dimensions, bounds, vel_limit):
         self.position_i = []        # particle position, contains array of positions [x,y,z] per element
         self.velocity_i = []        # particle current velocity
         self.pos_best_i = []        # best position (self, not group)
@@ -19,7 +18,6 @@ class Particle:
             self.position_i.append(random.randint(bounds[i][0], bounds[i][1]))             
 
     def reset(self,num_dimensions, bounds, vel_limit):
-        self.state = 0              # 0 - solitary, 1 - gregarious
         self.position_i = []        # particle position, contains array of positions [x,y,z] per element
         self.velocity_i = []        # particle current velocity
         self.pos_best_i = []        # best position (self, not group)
