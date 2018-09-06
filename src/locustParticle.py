@@ -1,5 +1,5 @@
 import random
-
+from copy import deepcopy
 # doesnt conform to a 3D box yet, just 1d array pa
 class LocustParticle:
 
@@ -35,7 +35,7 @@ class LocustParticle:
             self.position_i.append(random.randint(bounds[i][0], bounds[i][1]))
 
     def addItem(self, item):
-        self.item = item           # add item for particle to find space for
+        self.item = deepcopy(item)           # add item for particle to find space for
     
     # evaluate this particle's current fitness
     def evaluate(self, costFunc, box):
