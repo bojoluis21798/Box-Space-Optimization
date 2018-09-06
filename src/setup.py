@@ -180,7 +180,7 @@ def menu(models):
             height = float(height.get()) # convert to meters
 
             # call optimize model here
-            mainBox, modelsInside, modelsPosition = optimize(modelsList, length, width, height)
+            mainBox, modelsInside, modelsPosition, boxPercentage = optimize(modelsList, length, width, height)
             ###
 
             # create box using blender
@@ -213,12 +213,15 @@ def menu(models):
                 print("Box Dimensions: "+str((length*0.0254, width*0.0254, height*0.0254)))
                 mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
 
+            percentageDisp = OnscreenText(text = "Volume: "+str(boxPercentage), scale = 0.05,
+                pos = (0,-0.9), align = TextNode.ACenter)
             modelsNode.reparentTo(box)
             box.setPos(0,2,0)
 
             def exitToMainMenu():
                 exitButton.removeNode()
                 box.removeNode()
+                percentageDisp.removeNode()
                 modelsNode.removeNode()
                 menu.show()
                 return
