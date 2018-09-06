@@ -161,29 +161,29 @@ def getArrangementBasedFromState(item, baseX, baseY, baseZ):
 
     item.rotation = [0,0,0]
     if item.pos_state[0] == "front2":
-        limitX = baseX + item.scaledZ - 1
-        limitY = baseY + item.scaledY - 1
-        limitZ = baseZ + item.scaledX - 1
+        limitX = baseX + item.scaledZ
+        limitY = baseY + item.scaledY
+        limitZ = baseZ + item.scaledX
         item.rotation = [0,90,0]
     elif item.pos_state[0] == "side1":
-        limitX = baseX + item.scaledY - 1
-        limitY = baseY + item.scaledX - 1
-        limitZ = baseZ + item.scaledZ - 1
+        limitX = baseX + item.scaledY
+        limitY = baseY + item.scaledX
+        limitZ = baseZ + item.scaledZ
         item.rotation = [0,0,90]
     elif item.pos_state[0] == "side2":
-        limitX = baseX + item.scaledZ - 1
-        limitY = baseY + item.scaledX - 1
-        limitZ = baseZ + item.scaledY - 1
+        limitX = baseX + item.scaledZ
+        limitY = baseY + item.scaledX
+        limitZ = baseZ + item.scaledY
         item.rotation = [90,0,90]
     elif item.pos_state[0] == "up1":
-        limitX = baseX + item.scaledY - 1
-        limitY = baseY + item.scaledZ - 1
-        limitZ = baseZ + item.scaledX - 1
+        limitX = baseX + item.scaledY
+        limitY = baseY + item.scaledZ
+        limitZ = baseZ + item.scaledX
         item.rotation = [90,90,0]
     elif item.pos_state[0] == "up2":
-        limitX = baseX + item.scaledX - 1
-        limitY = baseY + item.scaledZ - 1
-        limitZ = baseZ + item.scaledY - 1
+        limitX = baseX + item.scaledX
+        limitY = baseY + item.scaledZ
+        limitZ = baseZ + item.scaledY
         item.rotation = [90,0,0]
 
     return limitX, limitY, limitZ
