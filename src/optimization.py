@@ -323,7 +323,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     err_best_g = int(swarm[j].err_i)
 
             # uncomment this to see if algo is running
-            print(current_err_best)
+            #print(current_err_best)
 
             if current_err_best > err_best_g:
                 current_err_best = err_best_g
@@ -337,7 +337,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                     reInitialize(swarm, numParticles, problem_dimensions, bounds, vel_limit)
                     inside_convergence = 0
                     generation+=1
-                    print("restarting swarm due to stagnation of solution ...")
+                    #print("restarting swarm due to stagnation of solution ...")
                     continue
 
             # cycle through swarm and update velocities and position
