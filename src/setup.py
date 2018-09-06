@@ -100,7 +100,8 @@ def menu(models):
         pos=(0,0,-0.9), parent=info, scale=.05, command = goToMainMenu)
 
         # set model position and scale
-        currentModel.setPos(0,4,0)
+        currentModel.setScale(3)
+        currentModel.setPos(0,2,0)
 
         # lights
         dlight = DirectionalLight('dlight')
