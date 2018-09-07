@@ -178,27 +178,32 @@ def getArrangementBasedFromState(item, baseX, baseY, baseZ):
         limitX = baseX + item.scaledZ
         limitY = baseY + item.scaledY
         limitZ = baseZ + item.scaledX
-        item.rotation = [0,90,0]
+        # item.rotation = [0,90,0] - blender to panda: from xyz to zxy
+        item.rotation = [0,0,90]
     elif item.pos_state[0] == "side1":
         limitX = baseX + item.scaledY
         limitY = baseY + item.scaledX
         limitZ = baseZ + item.scaledZ
-        item.rotation = [0,0,90]
+        # item.rotation = [0,0,90]
+        item.rotation = [90,0,0]
     elif item.pos_state[0] == "side2":
         limitX = baseX + item.scaledZ
         limitY = baseY + item.scaledX
         limitZ = baseZ + item.scaledY
-        item.rotation = [90,0,90]
+        #item.rotation = [90,0,90]
+        item.rotation = [90,90,0]
     elif item.pos_state[0] == "up1":
         limitX = baseX + item.scaledY
         limitY = baseY + item.scaledZ
         limitZ = baseZ + item.scaledX
-        item.rotation = [90,90,0]
+        #item.rotation = [90,90,0]
+        item.rotation = [0,90,90]
     elif item.pos_state[0] == "up2":
         limitX = baseX + item.scaledX
         limitY = baseY + item.scaledZ
         limitZ = baseZ + item.scaledY
-        item.rotation = [90,0,0]
+        #item.rotation = [90,0,0]
+        item.rotation = [0,90,0]
 
     return limitX, limitY, limitZ
 
@@ -326,7 +331,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
             # uncomment this to see if algo is running
             #print(current_err_best)
-
+                
             if current_err_best > err_best_g:
                 current_err_best = err_best_g
                 inside_convergence = 0
@@ -368,6 +373,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         models_position.append(pos_best_g)
         models_local_error = err_best_g
         print(f"Generated coordinates for Model Num = {best_current_model.modelNum} is {pos_best_g} with error {err_best_g}")
+        inner_time = time.time()
+        print(f"time to insert model# {best_current_model.modelNum} is {inner_time - start_time}")
 
     if len(models_inside) == 1:
         print("cant fit anything inside the box. we suggest to use a bigger box ")
@@ -377,7 +384,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     
     end_time = time.time()
     time_elapsed = end_time - start_time
-
+    input("... diplsay result")
     displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1, time_elapsed)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
