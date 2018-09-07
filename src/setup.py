@@ -165,7 +165,8 @@ def menu(models):
 
         # For the actual displaying
         def optimizeDisplay():
-            modelsNode = render.attachNewNode("ModelSNode")
+            base.enableMouse()
+            base.cam.setPos(0,-1,0)
             uiNode = aspect2d.attachNewNode("UINODE")
             # convert chosenModels to list
             modelsList = []
@@ -203,55 +204,55 @@ def menu(models):
             # load box to panda
             box = loader.loadModel('./data/box.x')
             box.reparentTo(render)
+            box.setPos(0,0,0)
             # load models
             mdlsPanda = []
             mdlsPanda.append(None)
             for i in range(1, len(modelsInside)):
                 mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
-                mdlsPanda[i].reparentTo(modelsNode)
-                mdlsPanda[i].setPos((modelsPosition[i][0]), (modelsPosition[i][1]), (modelsPosition[i][2]))
+                mdlsPanda[i].setPos((modelsPosition[i][0])+box.getX(), (modelsPosition[i][1])+box.getY(), (modelsPosition[i][2])+box.getZ())
+                mdlsPanda[i].reparentTo(render)
                 print("=====================\n"+modelsInside[i].id)
                 print("Rotation: "+str(modelsInside[i].rotation))
                 print("Box Position: "+str((box.getX(), box.getY(), box.getZ())))
                 print("Position: "+str(((modelsPosition[i][0]), (modelsPosition[i][1]), (modelsPosition[i][2]))))
-                print("Box Dimensions: "+str((length*0.0254, width*0.0254, height*0.0254)))
-                mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
+                print("Box Dimensions: "+str(((int((length/2)*25.4)/1000), (int((width/2)*25.4)/1000), (int((height/2)*25.4)/1000))))
+                print("Object Dimensions: "+str((modelsInside[i].scaledX, modelsInside[i].scaledY, modelsInside[i].scaledZ)))
+                mdlsPanda[i].setHpr(modelsInside[i].rotation[2], modelsInside[i].rotation[0], modelsInside[i].rotation[1])
 
             percentageDisp = OnscreenText(text = "Volume: "+str(boxPercentage), scale = 0.05,
                 pos = (0,-0.9), align = TextNode.ACenter, parent = uiNode)
-
-            def cameraBack():
-                camera.setPos(0,camera.getY()-0.05,0)
-            def cameraForward():
-                camera.setPos(0,camera.getY()+0.05,0)
-            def rotateLeft():
-                box.setH(box.getH()-4)
-            def rotateRight():
-                box.setH(box.getH()+4)
-            def rotateUp():
-                box.setP(box.getP()-4)
-            def rotateDown():
-                box.setP(box.getP()+4)
-            back = DirectButton(text = "Back", pos = (-0.8, 0, 0),
-                command = cameraBack, scale = 0.05, parent = uiNode)
-            forward = DirectButton(text = "Forward", pos = (-0.8, 0, -0.2),
-                command = cameraForward, scale = 0.05, parent = uiNode)
-            rleft = DirectButton(text = "Rotate left", pos = (0.5, 0, -0.2),
-                command = rotateLeft, scale = 0.05, parent = uiNode)
-            rright = DirectButton(text = "Rotate right", pos = (0.8, 0, -0.2),
-                command = rotateRight, scale = 0.05, parent= uiNode)
-            rup = DirectButton(text = "Rotate Up", pos = (0.7, 0, 0),
-                command = rotateUp, scale = 0.05, parent= uiNode)
-            rdown = DirectButton(text = "Rotate Down", pos = (0.7, 0, -0.4),
-                command = rotateDown, scale = 0.05, parent= uiNode)
-            modelsNode.reparentTo(box)
-            box.setScale(2)
+            # def cameraBack():
+            #     camera.setPos(0,camera.getY()-0.05,0)
+            # def cameraForward():
+            #     camera.setPos(0,camera.getY()+0.05,0)
+            # # def rotateLeft():
+            #     box.setH(box.getH()-4)
+            # def rotateRight():
+            #     box.setH(box.getH()+4)
+            # def rotateUp():
+            #     box.setP(box.getP()-4)
+            # def rotateDown():
+            #     box.setP(box.getP()+4)
+            # back = DirectButton(text = "Back", pos = (-0.8, 0, 0),
+            #     command = cameraBack, scale = 0.05, parent = uiNode)
+            # forward = DirectButton(text = "Forward", pos = (-0.8, 0, -0.2),
+            #     command = cameraForward, scale = 0.05, parent = uiNode)
+            # rleft = DirectButton(text = "Rotate left", pos = (0.5, 0, -0.2),
+            #     command = rotateLeft, scale = 0.05, parent = uiNode)
+            # rright = DirectButton(text = "Rotate right", pos = (0.8, 0, -0.2),
+            #     command = rotateRight, scale = 0.05, parent= uiNode)
+            # rup = DirectButton(text = "Rotate Up", pos = (0.7, 0, 0),
+            #     command = rotateUp, scale = 0.05, parent= uiNode)
+            # rdown = DirectButton(text = "Rotate Down", pos = (0.7, 0, -0.4),
+            #     command = rotateDown, scale = 0.05, parent= uiNode)
             camera.setPos(0,-1,0)
             base.camLens.setNear(0.2)
             def exitToMainMenu():
+                for i in range(1, len(mdlsPanda)):
+                    mdlsPanda[i].removeNode()
                 uiNode.removeNode()
                 box.removeNode()
-                modelsNode.removeNode()
                 menu.show()
                 return
 
