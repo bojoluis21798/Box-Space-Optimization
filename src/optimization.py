@@ -6,6 +6,7 @@ from copy import deepcopy
 from src.model import Model
 from src.box import Box
 from src.locustParticle import LocustParticle
+from src.modelCombination import findBestModels
 
 # @params item = self.item
 # @params position = given particle position
@@ -284,6 +285,9 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     problem_dimensions = len(sample_solution)
     vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
     print(f"box total volume unscaled: {mainBox.totalVolume}")
+
+    models = findBestModels(models, mainBox.totalVolume)
+
     start_time = time.time()
     for model in models:
         if model.id == sys.maxsize:
@@ -385,7 +389,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     end_time = time.time()
     time_elapsed = end_time - start_time
     input("... diplsay result")
-    displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1, time_elapsed)
+    displayResult(mainBox, models_inside, models_position, box_percentage, len(models), time_elapsed)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
     

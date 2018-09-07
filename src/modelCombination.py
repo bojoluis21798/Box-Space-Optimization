@@ -1,43 +1,38 @@
 import numpy as np
 import sys
+from copy import deepcopy
+from itertools import combinations
 
-from src.model import Model
-from src.box import Box
-from src.particle import Particle
-
-def getOptimalModelCombination(models, box):
-    def objFunction(ndxs, models, box):
-        for i in range(0, len(ndxs)):
-            total += models[i].scaledSolidVolume
+def findBestModels(passed_models, target):
+    models = passed_models[1:] # remove None type
+    results = []
+    for x in range(len(models)):
+        results.extend(
+            [   
+                combo for combo in combinations(models , x)  
+                    if sum((model.solidVolume for model in combo)) == target
+            ]   
+        )
+    if len(results) == 0 and sum((model.solidVolume for model in models)) == target:
+        results.append(models)
+    elif len(results) == 0:
+        combis = []
+        for x in range(len(models) + 1):
+            combis.extend(
+                [
+                    combo for combo in combinations(models, x)
+                        if sum((model.solidVolume for model in combo)) < target and sum((model.solidVolume for model in combo)) > 0
+                ]
+            )
         
-        return total/box.scaledTotalVolume
-
-
-    num_dimensions = 1
-    numParticles = 1 if int( 0.20 * (len(models) - 1)) < 1 else int( 0.20 * (len(models) - 1))
-    err_best_g = -1
-    pos_best_g = []
-    bounds = [(1,255)]
-    vel_limit = [bounds[0][1]]
-
-    swarm=[]
-    for i in range(0,numParticles):
-        swarm.append(Particle(num_dimensions, bounds, vel_limit))
-    
-    generation = 0
-    while generation < 100:
-        for j in range(0,numParticles):
-            swarm[j].evaluate(objFunction, box)
-
-            if swarm[j].err_i > err_best_g or err_best_g == -1:
-                    pos_best_g=list(swarm[j].position_i)
-                    err_best_g=float(swarm[j].err_i)
-        
-        for j in range(0,numParticles):
-                swarm[j].updateVelocity(pos_best_g, num_dimensions)
-                swarm[j].updatePosition(bounds, num_dimensions)
-
-        generation+=1
-    
-    print(pos_best_g)
-    input("....")
+        maxsum = 0
+        maxcombi = []
+        for combi in combis:
+            temp = sum((model.solidVolume for model in combi))
+            if temp > maxsum:
+                maxsum = temp
+                maxcombi = combi
+        results.append(maxcombi)
+    final = list(results[0])
+    final.sort(key = lambda x: x.solidVolume, reverse = True)
+    return final
