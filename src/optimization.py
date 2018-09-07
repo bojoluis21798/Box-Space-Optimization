@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+import time
 from copy import deepcopy
 
 from src.model import Model
@@ -278,6 +279,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     problem_dimensions = len(sample_solution)
     vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
     print(f"box total volume unscaled: {mainBox.totalVolume}")
+    start_time = time.time()
     for model in models:
         if model.id == sys.maxsize:
             continue
@@ -374,17 +376,22 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
     scaleToCenter(models_position, models_inside, mainBox)
     scaleToMeter(models_position)
-    displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1)
+    
+    end_time = time.time()
+    time_elapsed = end_time - start_time
+
+    displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1, time_elapsed)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
     
-def displayResult(box, models, position, space_optimized, numExpected):
+def displayResult(box, models, position, space_optimized, numExpected, time_elapsed):
     print("")
     print(">>>>>>>>>>>> Results <<<<<<<<<<")
     print("")
     print(f"Box dimensions in meter: {box.scaledLength/1000}, {box.scaledWidth/1000}, {box.scaledHeight/1000}")
     print(f"Box percentage maximized: {space_optimized}%")
     print(f"Number of items inserted / number inputted: {len(models) - 1} / {numExpected}")
+    print(f"time it took: {time_elapsed} seconds")
     for i in range(1, len(models)):
         print("==================")
         print(f"model num: {models[i].modelNum}")
