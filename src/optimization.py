@@ -381,13 +381,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1, time_elapsed)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
-<<<<<<< HEAD
     
 def displayResult(box, models, position, space_optimized, numExpected, time_elapsed):
-=======
-
-def displayResult(box, models, position, space_optimized, numExpected):
->>>>>>> efcb8f5479426024ee79bcee6f1e072d8d3a3c26
     print("")
     print(">>>>>>>>>>>> Results <<<<<<<<<<")
     print("")
