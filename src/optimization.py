@@ -354,7 +354,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             # proceed to another item since this item cannot be inserted
             print("skipped.. no available space")
             continue
-        
+
         if len(best_current_model.pos_state) == 0:
             print("cant locate a coordinate")
             continue
@@ -371,8 +371,6 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
     if len(models_inside) == 1:
         print("cant fit anything inside the box. we suggest to use a bigger box ")
-        input("boj please check do argument check where if it is not empty display, else display an error message ..")
-
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
     scaleToCenter(models_position, models_inside, mainBox)
     scaleToMeter(models_position)
@@ -383,8 +381,13 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1, time_elapsed)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
+<<<<<<< HEAD
     
 def displayResult(box, models, position, space_optimized, numExpected, time_elapsed):
+=======
+
+def displayResult(box, models, position, space_optimized, numExpected):
+>>>>>>> efcb8f5479426024ee79bcee6f1e072d8d3a3c26
     print("")
     print(">>>>>>>>>>>> Results <<<<<<<<<<")
     print("")
