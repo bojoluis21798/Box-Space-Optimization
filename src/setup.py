@@ -12,7 +12,6 @@ import bpy
 
 def menu(models):
     """GUI Menu to display models and their attributes """
-
     menu = aspect2d.attachNewNode("Menu")
     spin = None
     chosenModels = {}
@@ -185,6 +184,8 @@ def menu(models):
             # call optimize model here
             mainBox, modelsInside, modelsPosition, boxPercentage = optimize(modelsList, length, width, height)
             ###
+            if len(modelsInside) == 1:
+                exitToMainMenu()
 
             # create box using blender
             box = bpy.context.selected_objects[0]
