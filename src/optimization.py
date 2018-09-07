@@ -285,7 +285,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         err_best_g = -1                                                         # global best error
         pos_best_g = []                                                         # global best position
         current_err_best = sys.maxsize
-        
+
         swarm = []                                                              # locust swarm
         for i in range(0,numParticles):
             swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
@@ -346,8 +346,6 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
     if len(models_inside) == 1:
         print("cant fit anything inside the box. we suggest to use a bigger box ")
-        input("boj please check do argument check where if it is not empty display, else display an error message ..")
-
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
     print(f"box percentage maximized: {box_percentage}")
     print(models_position)
@@ -356,8 +354,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     scaleToMeter(models_position)
     print(models_position)
     print(models_inside[1].pos_state)
-    input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
-    
-    
+
+
 
