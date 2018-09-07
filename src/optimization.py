@@ -1,5 +1,6 @@
 import numpy as np
 import sys
+from copy import deepcopy
 
 from src.model import Model
 from src.box import Box
@@ -16,54 +17,60 @@ def isSpaceAvailable(item, position, box):
     posX = position[0]
     posY = position[1]
     posZ = position[2]
-    #check if not over the box dimensions
-    # x,y,z position (front - 1)
-    if posX + item.scaledX < box.scaledLength and posY + item.scaledY < box.scaledWidth and posZ + item.scaledZ < box.scaledHeight :
-        limit = box.boxgrid[posX:posX + item.scaledX, posY:posY + item.scaledY, posZ:posZ + item.scaledZ]
-        #check if all in splice is 0, otherwise return false
-        if np.count_nonzero(limit) == 0:
-            item.pos_state.append("front1")
-            ret = True
+    states = item.pos_state
+    for state in states:
 
-    # z,y,x position (front - 2)
-    if posX + item.scaledZ < box.scaledLength and posY + item.scaledY < box.scaledWidth and posZ + item.scaledX < box.scaledHeight :
-        limit = box.boxgrid[posX:posX + item.scaledZ, posY:posY + item.scaledY, posZ:posZ + item.scaledX]
-        #check if all in splice is 0, otherwise return false
-        if np.count_nonzero(limit) == 0:
-            item.pos_state.append("front2")
-            ret = True
+        if state == "front1":
+            if posX + item.scaledX < box.scaledLength and posY + item.scaledY < box.scaledWidth and posZ + item.scaledZ < box.scaledHeight :
+                limit = box.boxgrid[posX:posX + item.scaledX, posY:posY + item.scaledY, posZ:posZ + item.scaledZ]
+                #check if all in splice is 0, otherwise return false
+                if np.count_nonzero(limit) == 0:
+                    ret = True
+                else:
+                    item.pos_state.remove("front1")
+        elif state == "front2":
+            if posX + item.scaledZ < box.scaledLength and posY + item.scaledY < box.scaledWidth and posZ + item.scaledX < box.scaledHeight :
+                limit = box.boxgrid[posX:posX + item.scaledZ, posY:posY + item.scaledY, posZ:posZ + item.scaledX]
+                #check if all in splice is 0, otherwise return false
+                if np.count_nonzero(limit) == 0:
+                    ret = True
+                else:
+                    item.pos_state.remove("front2")
+        elif state == "side1":
+            if posX + item.scaledY < box.scaledLength and posY + item.scaledX < box.scaledWidth and posZ + item.scaledZ < box.scaledHeight :
+                limit = box.boxgrid[posX:posX + item.scaledY, posY:posY + item.scaledX, posZ:posZ + item.scaledZ]
+                #check if all in splice is 0, otherwise return false
+                if np.count_nonzero(limit) == 0:
+                    ret = True
+                else:
+                    item.pos_state.remove("side1")
+        elif state == "side2":
+            if posX + item.scaledZ < box.scaledLength and posY + item.scaledX < box.scaledWidth and posZ + item.scaledY < box.scaledHeight :
+                limit = box.boxgrid[posX:posX + item.scaledZ, posY:posY + item.scaledX, posZ:posZ + item.scaledY]
+                #check if all in splice is 0, otherwise return false
+                if np.count_nonzero(limit) == 0:
+                    ret = True
+                else:
+                    item.pos_state.remove("side2")
+        elif state == "up1":
+            if posX + item.scaledY < box.scaledLength and posY + item.scaledZ < box.scaledWidth and posZ + item.scaledX < box.scaledHeight :
+                limit = box.boxgrid[posX:posX + item.scaledY, posY:posY + item.scaledZ, posZ:posZ + item.scaledX]
+                #check if all in splice is 0, otherwise return false
+                if np.count_nonzero(limit) == 0:
+                    ret = True
+                else:
+                    item.pos_state.remove("up1")
+        elif state == "up2":
+            if posX + item.scaledX < box.scaledLength and posY + item.scaledZ < box.scaledWidth and posZ + item.scaledY < box.scaledHeight :
+                limit = box.boxgrid[posX:posX + item.scaledX, posY:posY + item.scaledZ, posZ:posZ + item.scaledY]
+                #check if all in splice is 0, otherwise return false
+                if np.count_nonzero(limit) == 0:
+                    ret = True
+                else:
+                    item.pos_state.remove("up2")
 
-    # y,x,z position (side - 1)
-    if posX + item.scaledY < box.scaledLength and posY + item.scaledX < box.scaledWidth and posZ + item.scaledZ < box.scaledHeight :
-        limit = box.boxgrid[posX:posX + item.scaledY, posY:posY + item.scaledX, posZ:posZ + item.scaledZ]
-        #check if all in splice is 0, otherwise return false
-        if np.count_nonzero(limit) == 0:
-            item.pos_state.append("side1")
-            ret = True
-
-    # z,x,y position (side - 2)
-    if posX + item.scaledZ < box.scaledLength and posY + item.scaledX < box.scaledWidth and posZ + item.scaledY < box.scaledHeight :
-        limit = box.boxgrid[posX:posX + item.scaledZ, posY:posY + item.scaledX, posZ:posZ + item.scaledY]
-        #check if all in splice is 0, otherwise return false
-        if np.count_nonzero(limit) == 0:
-            item.pos_state.append("side2")
-            ret = True
-
-    # y,z,x position (up - 1)
-    if posX + item.scaledY < box.scaledLength and posY + item.scaledZ < box.scaledWidth and posZ + item.scaledX < box.scaledHeight :
-        limit = box.boxgrid[posX:posX + item.scaledY, posY:posY + item.scaledZ, posZ:posZ + item.scaledX]
-        #check if all in splice is 0, otherwise return false
-        if np.count_nonzero(limit) == 0:
-            item.pos_state.append("up1")
-            ret = True
-
-    # x,z,y position (up - 2)
-    if posX + item.scaledX < box.scaledLength and posY + item.scaledZ < box.scaledWidth and posZ + item.scaledY < box.scaledHeight :
-        limit = box.boxgrid[posX:posX + item.scaledX, posY:posY + item.scaledZ, posZ:posZ + item.scaledY]
-        #check if all in splice is 0, otherwise return false
-        if np.count_nonzero(limit) == 0:
-            item.pos_state.append("up2")
-            ret = True
+    if ret == False:
+        item.pos_state.clear()
 
     return ret
 
@@ -76,21 +83,27 @@ def isOverBound(item, position, box):
     # x,y,z position (front - 1)
     if (posX < box.scaledLength and posX + item.scaledX < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledY < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledZ < box.scaledHeight):
         ret = False
+        item.pos_state.append("front1")
     # z,y,x position (front - 2)
-    elif (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledY < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledY < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
         ret = False
+        item.pos_state.append("front2")
     # y,x,z position (side - 1)
-    elif (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledZ < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledZ < box.scaledHeight):
         ret = False
+        item.pos_state.append("side1")
     # z,x,y position (side - 2)
-    elif (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
         ret = False
+        item.pos_state.append("side2")
     # y,z,x position (up - 1)
-    elif (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
         ret = False
+        item.pos_state.append("up1")
     # x,z,y position (up - 2)
-    elif (posX < box.scaledLength and posX + item.scaledX < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledX < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
         ret = False
+        item.pos_state.append("up2")
 
     return ret
 
@@ -191,6 +204,7 @@ def getArrangementBasedFromState(item, baseX, baseY, baseZ):
 # insert an item inside the box
 # dont need to return anything since arrays are passed by reference
 def insertToBox(box, item, pos, itemNum):
+    print(pos)
     x,y,z = pos[0], pos[1], pos[2]
     limitX, limitY, limitZ = getArrangementBasedFromState(item,x,y,z)
     while x < limitX:
@@ -284,8 +298,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         is_insertable = True
         err_best_g = -1                                                         # global best error
         pos_best_g = []                                                         # global best position
-        current_err_best = sys.maxsize
-
+        current_err_best = sys.maxsize\
+        best_current_model = deepcopy(model)\
         swarm = []                                                              # locust swarm
         for i in range(0,numParticles):
             swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
@@ -295,6 +309,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         stagnation_counter = 0
         generation = 0
         while generation < 500 and stagnation_counter < 10:
+            current_model = deepcopy(model)
             # insert locust work here on item
             for j in range(0, numParticles):
                 swarm[j].addItem(model)
@@ -303,15 +318,18 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
                 # update global bests
                 # gregarious phase - analysis part 1
                 if swarm[j].err_i <= err_best_g or err_best_g == -1:
-                    model = swarm[j].item                                   # in case the particle updated the model attributes
+                    current_model = deepcopy(swarm[j].item)                                   # in case the particle updated the model attributes
                     pos_best_g = list(swarm[j].position_i)
                     err_best_g = int(swarm[j].err_i)
+
             # uncomment this to see if algo is running
             #print(current_err_best)
+
             if current_err_best > err_best_g:
                 current_err_best = err_best_g
                 inside_convergence = 0
                 stagnation_counter = 0
+                best_current_model = deepcopy(current_model)
             elif current_err_best <= err_best_g:
                 inside_convergence+=1
                 if inside_convergence == 10:
@@ -332,29 +350,44 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
         if current_err_best == sys.maxsize:
             # proceed to another item since this item cannot be inserted
+            print("skipped.. no available space")
+            continue
+        
+        if len(best_current_model.pos_state) == 0:
+            print("cant locate a coordinate")
             continue
 
         # solution (attack)
-        models_inside.append(model)
-        print(model.pos_state)
-        insertToBox(mainBox, model, pos_best_g, model.modelNum)
-        mainBox.scaledTotalObjectVolume += model.scaledSolidVolume
-        mainBox.totalObjectVolume += model.solidVolume
+        models_inside.append(best_current_model)
+        print(best_current_model.pos_state)
+        insertToBox(mainBox, best_current_model, pos_best_g, best_current_model.modelNum)
+        mainBox.scaledTotalObjectVolume += best_current_model.scaledSolidVolume
+        mainBox.totalObjectVolume += best_current_model.solidVolume
         models_position.append(pos_best_g)
         models_local_error = err_best_g
-        print(f"Generated coordinates for Model Num = {model.modelNum} is {pos_best_g} with error {err_best_g}")
+        print(f"Generated coordinates for Model Num = {best_current_model.modelNum} is {pos_best_g} with error {err_best_g}")
 
     if len(models_inside) == 1:
         print("cant fit anything inside the box. we suggest to use a bigger box ")
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
-    print(f"box percentage maximized: {box_percentage}")
-    print(models_position)
     scaleToCenter(models_position, models_inside, mainBox)
-    print(models_position)
     scaleToMeter(models_position)
-    print(models_position)
-    print(models_inside[1].pos_state)
+    displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1)
+    input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
-
-
+    
+def displayResult(box, models, position, space_optimized, numExpected):
+    print("")
+    print(">>>>>>>>>>>> Results <<<<<<<<<<")
+    print("")
+    print(f"Box dimensions in meter: {box.scaledLength/1000}, {box.scaledWidth/1000}, {box.scaledHeight/1000}")
+    print(f"Box percentage maximized: {space_optimized}%")
+    print(f"Number of items inserted / number inputted: {len(models) - 1} / {numExpected}")
+    for i in range(1, len(models)):
+        print("==================")
+        print(f"model num: {models[i].modelNum}")
+        print(f"dimensions in meter x,y,z = {models[i].scaledX / 1000},{models[i].scaledY / 1000},{models[i].scaledZ / 1000}")
+        print(f"model rotation: {models[i].rotation}")
+        print(f"model centroid coordinate: {position[i]}")
+        print("==================")
 

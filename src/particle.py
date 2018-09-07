@@ -1,10 +1,9 @@
 import random
-from copy import deepcopy
-# doesnt conform to a 3D box yet, just 1d array pa
-class LocustParticle:
 
-    def __init__(self, num_dimensions, bounds, vel_limit, item = None):
-        self.state = 0              # 0 - solitary, 1 - gregarious
+# doesnt conform to a 3D box yet, just 1d array pa
+class Particle:
+
+    def __init__(self, num_dimensions, bounds, vel_limit):
         self.position_i = []        # particle position, contains array of positions [x,y,z] per element
         self.velocity_i = []        # particle current velocity
         self.pos_best_i = []        # best position (self, not group)
@@ -13,14 +12,12 @@ class LocustParticle:
         self.c1 = 0.701503                 # cognitive parameter constant
         self.c2 = 0.246448                 # social parameter constant
         self.w = 0.687378                # inertia constant
-        self.item = item            # the item it currently is looking for an optimal space
 
         for i in range(0,num_dimensions):
             self.velocity_i.append(random.uniform(-1 * vel_limit[i], vel_limit[i]))   # can be improved
             self.position_i.append(random.randint(bounds[i][0], bounds[i][1]))             
 
     def reset(self,num_dimensions, bounds, vel_limit):
-        self.state = 0              # 0 - solitary, 1 - gregarious
         self.position_i = []        # particle position, contains array of positions [x,y,z] per element
         self.velocity_i = []        # particle current velocity
         self.pos_best_i = []        # best position (self, not group)
@@ -34,12 +31,9 @@ class LocustParticle:
             self.velocity_i.append(random.uniform(-1 * vel_limit[i], vel_limit[i]))   # can be improved
             self.position_i.append(random.randint(bounds[i][0], bounds[i][1]))
 
-    def addItem(self, item):
-        self.item = deepcopy(item)           # add item for particle to find space for
-    
     # evaluate this particle's current fitness
     def evaluate(self, costFunc, box):
-        self.err_i = costFunc(self.item, self.position_i, box)
+        self.err_i = costFunc(self.item, box)
         
         # check to see if the current position is an individual best
         if self.err_i < self.err_best_i or self.err_best_i == -1:
