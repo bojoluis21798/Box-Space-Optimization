@@ -208,7 +208,7 @@ def menu(models):
             for i in range(1, len(modelsInside)):
                 mdlsPanda.append(loader.loadModel(modelsInside[i].filename))
                 mdlsPanda[i].setPos((modelsPosition[i][0])+box.getX(), (modelsPosition[i][1])+box.getY(), (modelsPosition[i][2])+box.getZ())
-                mdlsPanda[i].wrtReparentTo(box)
+                mdlsPanda[i].reparentTo(render)
                 print("=====================\n"+modelsInside[i].id)
                 print("Rotation: "+str(modelsInside[i].rotation))
                 print("Box Position: "+str((box.getX(), box.getY(), box.getZ())))
@@ -223,29 +223,31 @@ def menu(models):
                 camera.setPos(0,camera.getY()-0.05,0)
             def cameraForward():
                 camera.setPos(0,camera.getY()+0.05,0)
-            def rotateLeft():
-                box.setH(box.getH()-4)
-            def rotateRight():
-                box.setH(box.getH()+4)
-            def rotateUp():
-                box.setP(box.getP()-4)
-            def rotateDown():
-                box.setP(box.getP()+4)
+            # def rotateLeft():
+            #     box.setH(box.getH()-4)
+            # def rotateRight():
+            #     box.setH(box.getH()+4)
+            # def rotateUp():
+            #     box.setP(box.getP()-4)
+            # def rotateDown():
+            #     box.setP(box.getP()+4)
             back = DirectButton(text = "Back", pos = (-0.8, 0, 0),
                 command = cameraBack, scale = 0.05, parent = uiNode)
             forward = DirectButton(text = "Forward", pos = (-0.8, 0, -0.2),
                 command = cameraForward, scale = 0.05, parent = uiNode)
-            rleft = DirectButton(text = "Rotate left", pos = (0.5, 0, -0.2),
-                command = rotateLeft, scale = 0.05, parent = uiNode)
-            rright = DirectButton(text = "Rotate right", pos = (0.8, 0, -0.2),
-                command = rotateRight, scale = 0.05, parent= uiNode)
-            rup = DirectButton(text = "Rotate Up", pos = (0.7, 0, 0),
-                command = rotateUp, scale = 0.05, parent= uiNode)
-            rdown = DirectButton(text = "Rotate Down", pos = (0.7, 0, -0.4),
-                command = rotateDown, scale = 0.05, parent= uiNode)
+            # rleft = DirectButton(text = "Rotate left", pos = (0.5, 0, -0.2),
+            #     command = rotateLeft, scale = 0.05, parent = uiNode)
+            # rright = DirectButton(text = "Rotate right", pos = (0.8, 0, -0.2),
+            #     command = rotateRight, scale = 0.05, parent= uiNode)
+            # rup = DirectButton(text = "Rotate Up", pos = (0.7, 0, 0),
+            #     command = rotateUp, scale = 0.05, parent= uiNode)
+            # rdown = DirectButton(text = "Rotate Down", pos = (0.7, 0, -0.4),
+            #     command = rotateDown, scale = 0.05, parent= uiNode)
             camera.setPos(0,-1,0)
             base.camLens.setNear(0.2)
             def exitToMainMenu():
+                for i in range(1, len(mdlsPanda)):
+                    mdlsPanda[i].removeNode()
                 uiNode.removeNode()
                 box.removeNode()
                 menu.show()
