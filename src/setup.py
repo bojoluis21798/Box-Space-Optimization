@@ -165,6 +165,8 @@ def menu(models):
 
         # For the actual displaying
         def optimizeDisplay():
+            base.enableMouse()
+            base.cam.setPos(0,-1,0)
             uiNode = aspect2d.attachNewNode("UINODE")
             # convert chosenModels to list
             modelsList = []
@@ -202,6 +204,7 @@ def menu(models):
             # load box to panda
             box = loader.loadModel('./data/box.x')
             box.reparentTo(render)
+            box.setPos(0,0,0)
             # load models
             mdlsPanda = []
             mdlsPanda.append(None)
@@ -219,11 +222,11 @@ def menu(models):
 
             percentageDisp = OnscreenText(text = "Volume: "+str(boxPercentage), scale = 0.05,
                 pos = (0,-0.9), align = TextNode.ACenter, parent = uiNode)
-            def cameraBack():
-                camera.setPos(0,camera.getY()-0.05,0)
-            def cameraForward():
-                camera.setPos(0,camera.getY()+0.05,0)
-            # def rotateLeft():
+            # def cameraBack():
+            #     camera.setPos(0,camera.getY()-0.05,0)
+            # def cameraForward():
+            #     camera.setPos(0,camera.getY()+0.05,0)
+            # # def rotateLeft():
             #     box.setH(box.getH()-4)
             # def rotateRight():
             #     box.setH(box.getH()+4)
@@ -231,10 +234,10 @@ def menu(models):
             #     box.setP(box.getP()-4)
             # def rotateDown():
             #     box.setP(box.getP()+4)
-            back = DirectButton(text = "Back", pos = (-0.8, 0, 0),
-                command = cameraBack, scale = 0.05, parent = uiNode)
-            forward = DirectButton(text = "Forward", pos = (-0.8, 0, -0.2),
-                command = cameraForward, scale = 0.05, parent = uiNode)
+            # back = DirectButton(text = "Back", pos = (-0.8, 0, 0),
+            #     command = cameraBack, scale = 0.05, parent = uiNode)
+            # forward = DirectButton(text = "Forward", pos = (-0.8, 0, -0.2),
+            #     command = cameraForward, scale = 0.05, parent = uiNode)
             # rleft = DirectButton(text = "Rotate left", pos = (0.5, 0, -0.2),
             #     command = rotateLeft, scale = 0.05, parent = uiNode)
             # rright = DirectButton(text = "Rotate right", pos = (0.8, 0, -0.2),
