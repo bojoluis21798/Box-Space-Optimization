@@ -388,7 +388,7 @@ def displayResult(box, models, position, space_optimized, numExpected):
     for i in range(1, len(models)):
         print("==================")
         print(f"model num: {models[i].modelNum}")
-        print(f"dimensions in meter x,y,z = {models[i].scaledX / 1000},{models[i].scaledZ / 1000},{models[i].scaledY / 1000}")
+        print(f"dimensions in meter x,y,z = {models[i].scaledX / 1000},{models[i].scaledY / 1000},{models[i].scaledZ / 1000}")
         print(f"model rotation: {models[i].rotation}")
         print(f"model centroid coordinate: {position[i]}")
         print("==================")
