@@ -298,8 +298,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         is_insertable = True
         err_best_g = -1                                                         # global best error
         pos_best_g = []                                                         # global best position
-        current_err_best = sys.maxsize
-        best_current_model = deepcopy(model)
+        current_err_best = sys.maxsize\
+        best_current_model = deepcopy(model)\
         swarm = []                                                              # locust swarm
         for i in range(0,numParticles):
             swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
@@ -369,8 +369,6 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
     if len(models_inside) == 1:
         print("cant fit anything inside the box. we suggest to use a bigger box ")
-        input("boj please check do argument check where if it is not empty display, else display an error message ..")
-
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
     scaleToCenter(models_position, models_inside, mainBox)
     scaleToMeter(models_position)
