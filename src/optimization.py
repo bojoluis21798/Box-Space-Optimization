@@ -179,32 +179,27 @@ def getArrangementBasedFromState(item, baseX, baseY, baseZ):
         limitX = baseX + item.scaledZ
         limitY = baseY + item.scaledY
         limitZ = baseZ + item.scaledX
-        # item.rotation = [0,90,0] - blender to panda: from xyz to zxy
-        item.rotation = [0,0,90]
+        item.rotation = [0,90,0]
     elif item.pos_state[0] == "side1":
         limitX = baseX + item.scaledY
         limitY = baseY + item.scaledX
         limitZ = baseZ + item.scaledZ
-        # item.rotation = [0,0,90]
-        item.rotation = [90,0,0]
+        item.rotation = [0,0,90]
     elif item.pos_state[0] == "side2":
         limitX = baseX + item.scaledZ
         limitY = baseY + item.scaledX
         limitZ = baseZ + item.scaledY
-        #item.rotation = [90,0,90]
-        item.rotation = [90,90,0]
+        item.rotation = [90,0,90]
     elif item.pos_state[0] == "up1":
         limitX = baseX + item.scaledY
         limitY = baseY + item.scaledZ
         limitZ = baseZ + item.scaledX
-        #item.rotation = [90,90,0]
-        item.rotation = [0,90,90]
+        item.rotation = [90,90,0]
     elif item.pos_state[0] == "up2":
         limitX = baseX + item.scaledX
         limitY = baseY + item.scaledZ
         limitZ = baseZ + item.scaledY
-        #item.rotation = [90,0,0]
-        item.rotation = [0,90,0]
+        item.rotation = [90,0,0]
 
     return limitX, limitY, limitZ
 
