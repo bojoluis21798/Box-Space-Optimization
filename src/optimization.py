@@ -373,7 +373,6 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     scaleToCenter(models_position, models_inside, mainBox)
     scaleToMeter(models_position)
     displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1)
-    input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
 
 def displayResult(box, models, position, space_optimized, numExpected):
