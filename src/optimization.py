@@ -298,8 +298,8 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         is_insertable = True
         err_best_g = -1                                                         # global best error
         pos_best_g = []                                                         # global best position
-        current_err_best = sys.maxsize\
-        best_current_model = deepcopy(model)\
+        current_err_best = sys.maxsize
+        best_current_model = deepcopy(model)
         swarm = []                                                              # locust swarm
         for i in range(0,numParticles):
             swarm.append(LocustParticle(problem_dimensions,bounds,vel_limit))
@@ -352,7 +352,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
             # proceed to another item since this item cannot be inserted
             print("skipped.. no available space")
             continue
-        
+
         if len(best_current_model.pos_state) == 0:
             print("cant locate a coordinate")
             continue
@@ -375,7 +375,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
-    
+
 def displayResult(box, models, position, space_optimized, numExpected):
     print("")
     print(">>>>>>>>>>>> Results <<<<<<<<<<")
