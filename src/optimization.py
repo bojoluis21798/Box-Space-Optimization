@@ -85,23 +85,23 @@ def isOverBound(item, position, box):
         ret = False
         item.pos_state.append("front1")
     # z,y,x position (front - 2)
-    elif (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledY < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledY < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
         ret = False
         item.pos_state.append("front2")
     # y,x,z position (side - 1)
-    elif (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledZ < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledZ < box.scaledHeight):
         ret = False
         item.pos_state.append("side1")
     # z,x,y position (side - 2)
-    elif (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledZ < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledX < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
         ret = False
         item.pos_state.append("side2")
     # y,z,x position (up - 1)
-    elif (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledY < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledX < box.scaledHeight):
         ret = False
         item.pos_state.append("up1")
     # x,z,y position (up - 2)
-    elif (posX < box.scaledLength and posX + item.scaledX < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
+    if (posX < box.scaledLength and posX + item.scaledX < box.scaledLength) and (posY < box.scaledWidth and posY + item.scaledZ < box.scaledWidth) and (posZ < box.scaledHeight and posZ + item.scaledY < box.scaledHeight):
         ret = False
         item.pos_state.append("up2")
 
@@ -168,9 +168,9 @@ def objectiveFunctionSpace(item, pos, box):
     return freeSpace
 
 def getArrangementBasedFromState(item, baseX, baseY, baseZ):
-    limitX = baseX + item.scaledX - 1
-    limitY = baseY + item.scaledY - 1
-    limitZ = baseZ + item.scaledZ - 1
+    limitX = baseX + item.scaledX
+    limitY = baseY + item.scaledY
+    limitZ = baseZ + item.scaledZ
 
     item.rotation = [0,0,0]
     if item.pos_state[0] == "front2":
