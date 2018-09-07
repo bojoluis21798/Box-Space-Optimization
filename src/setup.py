@@ -18,6 +18,7 @@ def menu(models):
     chosenModels = {}
     def displayModels(idx = 1):
         # hide menu items
+        camera.setPos(0,0,0)
         menu.hide()
 
         info = aspect2d.attachNewNode("Info")
@@ -166,6 +167,7 @@ def menu(models):
         # For the actual displaying
         def optimizeDisplay():
             modelsNode = render.attachNewNode("ModelSNode")
+            uiNode = aspect2d.attachNewNode("UINODE")
             # convert chosenModels to list
             modelsList = []
             modelsList.append(Model(""))
@@ -215,21 +217,46 @@ def menu(models):
                 mdlsPanda[i].setHpr(modelsInside[i].rotation[0], modelsInside[i].rotation[1], modelsInside[i].rotation[2])
 
             percentageDisp = OnscreenText(text = "Volume: "+str(boxPercentage), scale = 0.05,
-                pos = (0,-0.9), align = TextNode.ACenter)
-            modelsNode.reparentTo(box)
-            box.setPos(0,2,0)
+                pos = (0,-0.9), align = TextNode.ACenter, parent = uiNode)
 
+            def cameraBack():
+                camera.setPos(0,camera.getY()-0.05,0)
+            def cameraForward():
+                camera.setPos(0,camera.getY()+0.05,0)
+            def rotateLeft():
+                box.setH(box.getH()-4)
+            def rotateRight():
+                box.setH(box.getH()+4)
+            def rotateUp():
+                box.setP(box.getP()-4)
+            def rotateDown():
+                box.setP(box.getP()+4)
+            back = DirectButton(text = "Back", pos = (-0.8, 0, 0),
+                command = cameraBack, scale = 0.05, parent = uiNode)
+            forward = DirectButton(text = "Forward", pos = (-0.8, 0, -0.2),
+                command = cameraForward, scale = 0.05, parent = uiNode)
+            rleft = DirectButton(text = "Rotate left", pos = (0.5, 0, -0.2),
+                command = rotateLeft, scale = 0.05, parent = uiNode)
+            rright = DirectButton(text = "Rotate right", pos = (0.8, 0, -0.2),
+                command = rotateRight, scale = 0.05, parent= uiNode)
+            rup = DirectButton(text = "Rotate Up", pos = (0.7, 0, 0),
+                command = rotateUp, scale = 0.05, parent= uiNode)
+            rdown = DirectButton(text = "Rotate Down", pos = (0.7, 0, -0.4),
+                command = rotateDown, scale = 0.05, parent= uiNode)
+            modelsNode.reparentTo(box)
+            box.setScale(2)
+            camera.setPos(0,-1,0)
+            base.camLens.setNear(0.2)
             def exitToMainMenu():
-                exitButton.removeNode()
+                uiNode.removeNode()
                 box.removeNode()
-                percentageDisp.removeNode()
                 modelsNode.removeNode()
                 menu.show()
                 return
 
             # exit button
             exitButton = DirectButton(text = "Exit to main menu",
-                pos = (0,0,-0.8), scale = 0.1, command = exitToMainMenu)
+                pos = (0,0,-0.8), scale = 0.1, command = exitToMainMenu, parent = uiNode)
 
             # lights
             dlight = DirectionalLight('dlight')
@@ -237,9 +264,6 @@ def menu(models):
             dlnp = render.attachNewNode(dlight)
             dlnp.lookAt(box)
             render.setLight(dlnp)
-
-            camera.setPos(0,-10,0)
-            base.enableMouse()
             boxParams.removeNode()
 
         optimizeButton = DirectButton(text = "Optimize", pos = (0,0,0.1),
