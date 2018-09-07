@@ -350,6 +350,7 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
 
         if current_err_best == sys.maxsize:
             # proceed to another item since this item cannot be inserted
+            print("skipped.. no available space")
             continue
         
         if len(best_current_model.pos_state) == 0:
@@ -371,15 +372,24 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
         input("boj please check do argument check where if it is not empty display, else display an error message ..")
 
     box_percentage = (mainBox.scaledTotalObjectVolume / mainBox.scaledTotalVolume) * 100
-    print(f"box percentage maximized: {box_percentage}")
-    print(models_position)
     scaleToCenter(models_position, models_inside, mainBox)
-    print(models_position)
     scaleToMeter(models_position)
-    print(models_position)
-    print(models_inside[1].pos_state)
+    displayResult(mainBox, models_inside, models_position, box_percentage, len(models) - 1)
     input("proceed to visualizing")
     return mainBox, models_inside, models_position, box_percentage
     
-    
+def displayResult(box, models, position, space_optimized, numExpected):
+    print("")
+    print(">>>>>>>>>>>> Results <<<<<<<<<<")
+    print("")
+    print(f"Box dimensions in meter: {box.scaledLength/1000}, {box.scaledWidth/1000}, {box.scaledHeight/1000}")
+    print(f"Box percentage maximized: {space_optimized}%")
+    print(f"Number of items inserted / number inputted: {len(models) - 1} / {numExpected}")
+    for i in range(1, len(models)):
+        print("==================")
+        print(f"model num: {models[i].modelNum}")
+        print(f"dimensions in meter x,y,z = {models[i].scaledX / 1000},{models[i].scaledZ / 1000},{models[i].scaledY / 1000}")
+        print(f"model rotation: {models[i].rotation}")
+        print(f"model centroid coordinate: {position[i]}")
+        print("==================")
 
