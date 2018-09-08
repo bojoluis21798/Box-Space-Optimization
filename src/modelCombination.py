@@ -4,6 +4,7 @@ from copy import deepcopy
 from itertools import combinations
 
 def findBestModels(passed_models, target):
+    print("looking for best combinations ... ")
     models = passed_models[1:] # remove None type
     results = []
     for x in range(len(models)):
@@ -35,4 +36,5 @@ def findBestModels(passed_models, target):
         results.append(maxcombi)
     final = list(results[0])
     final.sort(key = lambda x: x.solidVolume, reverse = True)
+    print("found a good combination!")
     return final

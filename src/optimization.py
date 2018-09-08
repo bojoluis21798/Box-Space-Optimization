@@ -280,10 +280,9 @@ def optimize(models, scaledLength, scaledWidth, scaledHeight):
     problem_dimensions = len(sample_solution)
     vel_limit = [int(bounds[0][1] * 0.10), int(bounds[1][1] * 0.10), int(bounds[2][1] * 0.10)]
     print(f"box total volume unscaled: {mainBox.totalVolume}")
-
-    models = findBestModels(models, mainBox.totalVolume)
-
+    
     start_time = time.time()
+    models = findBestModels(models, mainBox.totalVolume)
     for model in models:
         if model.id == sys.maxsize:
             continue
